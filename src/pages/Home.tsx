@@ -1,4 +1,3 @@
-import LibraryImage from '../assets/images/library.jpg';
 import { Box, Typography } from '@mui/material';
 import WatchLaterRoundedIcon from '@mui/icons-material/WatchLaterRounded';
 import CreditScoreIcon from '@mui/icons-material/CreditScore';
@@ -7,6 +6,9 @@ import SecurityIcon from '@mui/icons-material/Security';
 import StoreIcon from '@mui/icons-material/Store';
 import GroupsIcon from '@mui/icons-material/Groups';
 import LibraryBooksIcon from '@mui/icons-material/LibraryBooks';
+
+import LibraryImage from '../assets/images/library.jpg';
+import Subscribe from '../components/Subscribe';
 
 const Home = () => {
   return (
@@ -172,19 +174,7 @@ const Home = () => {
           </Typography>
         </Box>
       </Box>
-
-      <Box sx={{ width: '100%', backgroundColor: '#58db7b', color: 'white' }}>
-        <Box
-          sx={{
-            width: '100%',
-            height: '300px',
-            maxWidth: '80%',
-            marginX: 'auto',
-          }}
-        >
-          Subcribe
-        </Box>
-      </Box>
+      <Subscribe />
     </Box>
   );
 };
