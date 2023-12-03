@@ -9,7 +9,30 @@ import Books10TopRated from '../components/Books10TopRated';
 import Statistics from '../components/Statistics';
 import Subscribe from '../components/Subscribe';
 
+import { useAppDispatch, useAppSelector } from '../redux/hooks';
+import { useEffect } from 'react';
+import { fetchBooks } from '../redux/slices/booksSlice';
+import { PaginationRequestParams } from '../types/pagination';
+
 const Home = () => {
+  const dispatch = useAppDispatch();
+  const books = useAppSelector((state) => state.books);
+  const status = useAppSelector((state) => state.books.status);
+  console.log(books);
+
+  // TODO:  useMemo
+  const paginationObj: PaginationRequestParams = {
+    page: 1,
+    limit: 50,
+  };
+
+  useEffect(() => {
+    if (status === 'idle') {
+      dispatch(fetchBooks(paginationObj));
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [dispatch, status]);
+
   return (
     <Box>
       <Introduction />
