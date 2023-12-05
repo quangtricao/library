@@ -1,9 +1,9 @@
 export type PaginationResponse = {
   page: number;
-  totalPage: number;
+  totalPages: number;
 };
 
 export type PaginationRequestParams = {
-  page: number;
-  limit: number;
+  page?: number;
+  limit?: number;
 };

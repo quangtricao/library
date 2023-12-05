@@ -33,7 +33,7 @@ const initialState: initialStateType = {
   genres: [],
   pagination: {
     page: 1,
-    totalPage: 1,
+    totalPages: 1,
   },
   status: 'idle',
   error: null,

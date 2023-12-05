@@ -10,11 +10,9 @@ export const fetchBooks = createAsyncThunk<
   BooksResponse,
   PaginationRequestParams,
   { rejectValue: string }
->('books/fetchBooks', async (paginationObj, { rejectWithValue }) => {
+>('books/fetchBooks', async ({ page = 1, limit = 6 }, { rejectWithValue }) => {
   try {
-    const response = await axios.get(
-      `${API_URL}/books?page=${paginationObj.page}&limit=${paginationObj.limit}`
-    );
+    const response = await axios.get(`${API_URL}/books?page=${page}&limit=${limit}`);
     return response.data;
   } catch (err) {
     const error = err as Error | AxiosError;
@@ -33,7 +31,7 @@ const initialState: initialStateType = {
   books: [],
   pagination: {
     page: 1,
-    totalPage: 1,
+    totalPages: 1,
   },
   status: 'idle',
   error: null,

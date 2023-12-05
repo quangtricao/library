@@ -1,9 +1,30 @@
-import { Box, Checkbox, Grid, Typography } from '@mui/material';
+import { Box, Checkbox, Grid, Typography, Pagination, Stack, Button } from '@mui/material';
 
-import Service from '../components/Service';
 import Subscribe from '../components/Subscribe';
 
+import { useAppDispatch, useAppSelector } from '../redux/hooks';
+import { useEffect, useState } from 'react';
+import { fetchBooks } from '../redux/slices/booksSlice';
+
 const Books = () => {
+  const dispatch = useAppDispatch();
+  const books = useAppSelector((state) => state.books.books);
+  const { totalPages } = useAppSelector((state) => state.books.pagination);
+  const status = useAppSelector((state) => state.books.status);
+  const [localPage, setLocalPage] = useState<number>(1);
+
+  const handleLocalPageChange = (_event: React.ChangeEvent<unknown>, value: number) => {
+    dispatch(fetchBooks({ page: value, limit: 6 }));
+    setLocalPage(value);
+  };
+
+  useEffect(() => {
+    if (status === 'idle') {
+      dispatch(fetchBooks({}));
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
   return (
     <Box>
       <Box sx={{ display: 'flex' }}>
@@ -41,28 +62,26 @@ const Books = () => {
         <Box sx={{ width: '80%' }}>
           <Typography>Books</Typography>
           <Grid container spacing={4} columns={3} sx={{ marginTop: '30px' }}>
-            <Grid item xs={1} sx={{ height: '500px', width: '200px' }}>
-              <Box sx={{ backgroundColor: '#edfff2', height: '100%' }}>123</Box>
-            </Grid>
-            <Grid item xs={1} sx={{ height: '500px', width: '200px' }}>
-              <Box sx={{ backgroundColor: '#edfff2', height: '100%' }}>123</Box>
-            </Grid>
-            <Grid item xs={1} sx={{ height: '500px', width: '200px' }}>
-              <Box sx={{ backgroundColor: '#edfff2', height: '100%' }}>123</Box>
-            </Grid>
-            <Grid item xs={1} sx={{ height: '500px', width: '200px' }}>
-              <Box sx={{ backgroundColor: '#edfff2', height: '100%' }}>123</Box>
-            </Grid>
-            <Grid item xs={1} sx={{ height: '500px', width: '200px' }}>
-              <Box sx={{ backgroundColor: '#edfff2', height: '100%' }}>123</Box>
-            </Grid>
-            <Grid item xs={1} sx={{ height: '500px', width: '200px' }}>
-              <Box sx={{ backgroundColor: '#edfff2', height: '100%' }}>123</Box>
-            </Grid>
+            {books.map((book) => (
+              <Grid key={book._id} item xs={1}>
+                <img src={`https://picsum.photos/250/${250 * 1.5}`} alt={`Book ${book.title}`} />
+                <Box>
+                  {book.status === 'available' ? (
+                    <Button variant='contained'>Borrow</Button>
+                  ) : (
+                    <Button variant='contained'>Not in Library</Button>
+                  )}
+                  <Box>{book.title}</Box>
+                </Box>
+              </Grid>
+            ))}
           </Grid>
+          <Stack spacing={2}>
+            <Pagination count={totalPages} page={localPage} onChange={handleLocalPageChange} />
+          </Stack>
         </Box>
       </Box>
-      <Service />
+
       <Subscribe />
     </Box>
   );
