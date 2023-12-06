@@ -1,4 +1,4 @@
-import { PaginationResponse } from './pagination';
+import { PaginationResponse, PaginationRequestParams } from './pagination';
 import { StatusType } from './status';
 
 export type BookType = {
@@ -24,4 +24,14 @@ export type BooksResponse = {
   };
 } & {
   status: StatusType;
+};
+
+export type BooksAuthorsRequest = {
+  authorId: string;
+  pagination: PaginationRequestParams;
+};
+
+export type BooksGenresRequest = {
+  authorId: string;
+  pagination: PaginationRequestParams;
 };

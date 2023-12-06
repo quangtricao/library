@@ -3,22 +3,27 @@ import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 
 import { API_URL } from '../../config/api';
 import { StatusType } from '../../types/status';
-import { BooksResponse, BookType } from '../../types/book';
-import { PaginationResponse, PaginationRequestParams } from '../../types/pagination';
+import { BooksResponse, BookType, BooksGenresRequest } from '../../types/book';
+import { PaginationResponse } from '../../types/pagination';
 
-export const getBooks = createAsyncThunk<
+export const getBooksGenres = createAsyncThunk<
   BooksResponse,
-  PaginationRequestParams,
+  BooksGenresRequest,
   { rejectValue: string }
->('books/getBooks', async ({ page = 1, limit = 6 }, { rejectWithValue }) => {
-  try {
-    const response = await axios.get(`${API_URL}/books?page=${page}&limit=${limit}`);
-    return response.data;
-  } catch (err) {
-    const error = err as Error | AxiosError;
-    return rejectWithValue(error.message);
+>(
+  'books/getBooksGenres',
+  async ({ authorId, pagination: { page = 1, limit = 6 } }, { rejectWithValue }) => {
+    try {
+      const response = await axios.get(
+        `${API_URL}/genres/${authorId}/books?page=${page}&limit=${limit}`
+      );
+      return response.data;
+    } catch (err) {
+      const error = err as Error | AxiosError;
+      return rejectWithValue(error.message);
+    }
   }
-});
+);
 
 type initialStateType = {
   books: BookType[];
@@ -42,15 +47,15 @@ const booksSlice = createSlice({
   initialState,
   reducers: {},
   extraReducers: (builder) => {
-    builder.addCase(getBooks.pending, (state) => {
+    builder.addCase(getBooksGenres.pending, (state) => {
       state.status = 'loading';
     });
-    builder.addCase(getBooks.fulfilled, (state, { payload }) => {
+    builder.addCase(getBooksGenres.fulfilled, (state, { payload }) => {
       state.books = payload.data.books;
       state.pagination = payload.data.pagination;
       state.status = payload.status;
     });
-    builder.addCase(getBooks.rejected, (state, action) => {
+    builder.addCase(getBooksGenres.rejected, (state, action) => {
       if (action.payload) {
         state.status = 'error';
         state.error = action.payload;

@@ -1,16 +1,17 @@
 import { PaginationResponse } from './pagination';
 import { StatusType } from './status';
 
-export type GenreType = {
-  title: string;
-  booksCount: number;
+export type AuthorType = {
+  name: string;
+  bio: string;
+  image: string;
   __v: number;
   _id: string;
 };
 
-export type GenresResponse = {
+export type AuthorsResponse = {
   data: {
-    genres: GenreType[];
+    authors: AuthorType[];
     pagination: PaginationResponse;
   };
 } & {

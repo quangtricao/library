@@ -6,15 +6,34 @@ import { StatusType } from '../../types/status';
 import { GenresResponse, GenreType } from '../../types/genre';
 import { PaginationResponse, PaginationRequestParams } from '../../types/pagination';
 
-export const fetchGenres = createAsyncThunk<
+/**
+ * TO DO
+ */
+export const getGenres = createAsyncThunk<
   GenresResponse,
   PaginationRequestParams,
   { rejectValue: string }
->('genres/fetchgenres', async (paginationObj, { rejectWithValue }) => {
+>('genres/getGenres', async ({ page = 1, limit = 3 }, { rejectWithValue }) => {
   try {
-    const response = await axios.get(
-      `${API_URL}/genres?page=${paginationObj.page}&limit=${paginationObj.limit}`
-    );
+    const response = await axios.get(`${API_URL}/genres?page=${page}&limit=${limit}`);
+    return response.data;
+  } catch (err) {
+    const error = err as Error | AxiosError;
+    return rejectWithValue(error.message);
+  }
+});
+
+/**
+ * @param page A page type number
+ * @example getAndPushGenres(2)
+ */
+export const getAndPushGenres = createAsyncThunk<
+  GenresResponse,
+  PaginationRequestParams,
+  { rejectValue: string }
+>('genres/getAndPushGenres', async ({ page, limit = 3 }, { rejectWithValue }) => {
+  try {
+    const response = await axios.get(`${API_URL}/genres?page=${page}&limit=${limit}`);
     return response.data;
   } catch (err) {
     const error = err as Error | AxiosError;
@@ -44,15 +63,29 @@ const genresSlice = createSlice({
   initialState,
   reducers: {},
   extraReducers: (builder) => {
-    builder.addCase(fetchGenres.pending, (state) => {
+    builder.addCase(getGenres.pending, (state) => {
       state.status = 'loading';
     });
-    builder.addCase(fetchGenres.fulfilled, (state, { payload }) => {
-      state.genres = payload.data.genre;
+    builder.addCase(getGenres.fulfilled, (state, { payload }) => {
+      state.genres = payload.data.genres;
       state.pagination = payload.data.pagination;
       state.status = payload.status;
     });
-    builder.addCase(fetchGenres.rejected, (state, action) => {
+    builder.addCase(getGenres.rejected, (state, action) => {
+      if (action.payload) {
+        state.status = 'error';
+        state.error = action.payload;
+      }
+    });
+    builder.addCase(getAndPushGenres.pending, (state) => {
+      state.status = 'loading';
+    });
+    builder.addCase(getAndPushGenres.fulfilled, (state, { payload }) => {
+      state.genres.push(...payload.data.genres);
+      state.pagination = payload.data.pagination;
+      state.status = payload.status;
+    });
+    builder.addCase(getAndPushGenres.rejected, (state, action) => {
       if (action.payload) {
         state.status = 'error';
         state.error = action.payload;

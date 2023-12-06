@@ -4,52 +4,54 @@ import Subscribe from '../components/Subscribe';
 
 import { useAppDispatch, useAppSelector } from '../redux/hooks';
 import { useEffect, useState } from 'react';
-import { fetchBooks } from '../redux/slices/booksSlice';
+import { getBooks } from '../redux/slices/booksSlice';
+import { getGenres, getAndPushGenres } from '../redux/slices/genresSlice';
 
 const Books = () => {
   const dispatch = useAppDispatch();
   const books = useAppSelector((state) => state.books.books);
-  const { totalPages } = useAppSelector((state) => state.books.pagination);
-  const status = useAppSelector((state) => state.books.status);
+  const bookTotalPage = useAppSelector((state) => state.books.pagination.totalPages);
+  const bookStatus = useAppSelector((state) => state.books.status);
+
+  const genres = useAppSelector((state) => state.genres.genres);
+  const genrePage = useAppSelector((state) => state.genres.pagination.page);
+  const genreStatus = useAppSelector((state) => state.genres.status);
+
   const [localPage, setLocalPage] = useState<number>(1);
 
-  const handleLocalPageChange = (_event: React.ChangeEvent<unknown>, value: number) => {
-    dispatch(fetchBooks({ page: value, limit: 6 }));
-    setLocalPage(value);
-  };
-
   useEffect(() => {
-    if (status === 'idle') {
-      dispatch(fetchBooks({}));
+    if (bookStatus === 'idle') {
+      dispatch(getBooks({}));
+    }
+    if (genreStatus === 'idle') {
+      dispatch(getGenres({}));
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
+  const handleLocalPageChange = (_event: React.ChangeEvent<unknown>, value: number) => {
+    dispatch(getBooks({ page: value, limit: 6 }));
+    setLocalPage(value);
+  };
+
+  const handleLoadMoreGenres = () => {
+    dispatch(getAndPushGenres({ page: genrePage + 1 }));
+  };
+
   return (
-    <Box>
+    <Box sx={{ maxWidth: '80%', marginX: 'auto' }}>
       <Box sx={{ display: 'flex' }}>
         <Box sx={{ width: '20%', display: 'flex', flexDirection: 'column' }}>
           <Typography>Filter</Typography>
           <Typography>Genres</Typography>
-          <Box>
-            <Checkbox /> 1
-          </Box>
-          <Box>
-            <Checkbox /> 2
-          </Box>
-          <Box>
-            <Checkbox /> 3
-          </Box>
-          <Box>
-            <Checkbox /> 4
-          </Box>
-          <Box>
-            <Checkbox /> 5
-          </Box>
-          <Box>
-            <Checkbox /> 6
-          </Box>
-          <Typography>Load more</Typography>
+          {genres.map((genre) => (
+            <Box key={genre._id}>
+              <Checkbox /> {genre.title}
+            </Box>
+          ))}
+          <Button sx={{ width: '75%' }} variant='contained' onClick={handleLoadMoreGenres}>
+            Load more
+          </Button>
           <Typography>Status</Typography>
           <Box>
             <Checkbox /> Borrowed
@@ -64,12 +66,12 @@ const Books = () => {
           <Grid container spacing={4} columns={3} sx={{ marginTop: '30px' }}>
             {books.map((book) => (
               <Grid key={book._id} item xs={1}>
-                <img src={`https://picsum.photos/250/${250 * 1.5}`} alt={`Book ${book.title}`} />
+                <img src={`https://picsum.photos/300/${300 * 1.5}`} alt={`Book ${book.title}`} />
                 <Box>
                   {book.status === 'available' ? (
                     <Button variant='contained'>Borrow</Button>
                   ) : (
-                    <Button variant='contained'>Not in Library</Button>
+                    <Button variant='contained' disabled>Not in Library</Button>
                   )}
                   <Box>{book.title}</Box>
                 </Box>
@@ -77,7 +79,7 @@ const Books = () => {
             ))}
           </Grid>
           <Stack spacing={2}>
-            <Pagination count={totalPages} page={localPage} onChange={handleLocalPageChange} />
+            <Pagination count={bookTotalPage} page={localPage} onChange={handleLocalPageChange} />
           </Stack>
         </Box>
       </Box>
