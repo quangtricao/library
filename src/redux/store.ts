@@ -4,11 +4,25 @@ import booksReducer from './slices/booksSlice';
 import genresReducer from './slices/genresSlice';
 import cartReducer from './slices/cartSlice';
 import authorsReducer from './slices/authorsSlice';
-import userReducer from './slices/userSlice';
+import accountReducer, { initialStateType } from './slices/accountSlice';
 import booksAuthorsReducer from './slices/booksAuthorsSlice';
 import booksGenresReducer from './slices/booksGenresSlice';
 
-export const initializaStore = () =>
+import { IDLE } from '../types/status';
+import { getAccountFromLocalStorage, saveAccountToLocalStorage } from '../utils/localStorage';
+
+const preLoadedAccountReducer: initialStateType = {
+  account: getAccountFromLocalStorage(),
+  status: IDLE,
+  error: null,
+};
+
+const updateLocalStorage = () => {
+  const updatedAccount = store.getState().account.account;
+  saveAccountToLocalStorage(updatedAccount);
+};
+
+export const createStore = () =>
   configureStore({
     reducer: {
       books: booksReducer,
@@ -17,10 +31,15 @@ export const initializaStore = () =>
       genres: genresReducer,
       cart: cartReducer,
       authors: authorsReducer,
-      user: userReducer,
+      account: accountReducer,
+    },
+    preloadedState: {
+      account: preLoadedAccountReducer,
     },
   });
-const store = initializaStore();
+
+const store = createStore();
+store.subscribe(updateLocalStorage);
 
 export type RootState = ReturnType<typeof store.getState>;
 export type AppDispatch = typeof store.dispatch;

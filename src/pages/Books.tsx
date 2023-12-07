@@ -3,7 +3,7 @@ import { Box, Checkbox, Grid, Typography, Pagination, Stack, Button } from '@mui
 import Subscribe from '../components/Subscribe';
 
 import { useAppDispatch, useAppSelector } from '../redux/hooks';
-import { useEffect, useState } from 'react';
+import { useEffect, useState, ChangeEvent } from 'react';
 import { getBooks } from '../redux/slices/booksSlice';
 import { getGenres, getAndPushGenres } from '../redux/slices/genresSlice';
 
@@ -29,7 +29,7 @@ const Books = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  const handleLocalPageChange = (_event: React.ChangeEvent<unknown>, value: number) => {
+  const handleLocalPageChange = (_event: ChangeEvent<unknown>, value: number) => {
     dispatch(getBooks({ page: value, limit: 6 }));
     setLocalPage(value);
   };
@@ -71,7 +71,9 @@ const Books = () => {
                   {book.status === 'available' ? (
                     <Button variant='contained'>Borrow</Button>
                   ) : (
-                    <Button variant='contained' disabled>Not in Library</Button>
+                    <Button variant='contained' disabled>
+                      Not in Library
+                    </Button>
                   )}
                   <Box>{book.title}</Box>
                 </Box>

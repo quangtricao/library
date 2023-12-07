@@ -30,12 +30,16 @@ const pages = [
 const NotLogin = () => {
   return (
     <Box>
-      <Button variant='text' sx={{ color: 'white' }}>
-        Log In
-      </Button>
-      <Button variant='contained' color='secondary'>
-        Sign Up
-      </Button>
+      <Link to='/account/login'>
+        <Button variant='text' sx={{ color: 'white' }}>
+          Log In
+        </Button>
+      </Link>
+      <Link to='/account/signup'>
+        <Button variant='contained' color='secondary'>
+          Sign Up
+        </Button>
+      </Link>
     </Box>
   );
 };
@@ -83,7 +87,8 @@ const Login = () => {
 };
 
 const Header = () => {
-  const users = useAppSelector((state) => state.user);
+  const account = useAppSelector((state) => state.account.account);
+
   const [anchorElNav, setAnchorElNav] = useState<null | HTMLElement>(null);
   const [theme, changeTheme] = useState<boolean>(true);
 
@@ -197,7 +202,7 @@ const Header = () => {
               </IconButton>
             </Tooltip>
           )}
-          {users.length === 0 ? <NotLogin /> : <Login />}
+          {account ? <Login /> : <NotLogin />}
         </Toolbar>
       </Container>
     </AppBar>

@@ -5,6 +5,8 @@ import Home from '../pages/Home';
 import Books from '../pages/Books';
 import Authors from '../pages/Authors';
 import Genres from '../pages/Genres';
+import Account from '../pages/Account';
+import Login from '../pages/Login';
 
 const router = createBrowserRouter([
   {
@@ -26,6 +28,14 @@ const router = createBrowserRouter([
       {
         path: '/genres',
         element: <Genres />,
+      },
+      {
+        path: '/account',
+        element: <Account />,
+      },
+      {
+        path: '/account/login',
+        element: <Login />,
       },
     ],
   },
