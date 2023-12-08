@@ -1,33 +1,10 @@
-import axios, { AxiosError } from 'axios';
-import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
+import { createSlice } from '@reduxjs/toolkit';
 
-import { API_URL } from '../../config/api';
-import { ERROR, IDLE, LOADING, StatusType } from '../../types/status';
-import { BooksResponse, BookType } from '../../types/book';
-import { PaginationResponse, PaginationRequestParams } from '../../types/pagination';
+import { BooksState } from '../../types/book';
+import { ERROR, IDLE, LOADING } from '../../types/status';
+import { getBooks } from '../../services/booksService';
 
-export const getBooks = createAsyncThunk<
-  BooksResponse,
-  PaginationRequestParams,
-  { rejectValue: string }
->('books/getBooks', async ({ page = 1, limit = 6 }, { rejectWithValue }) => {
-  try {
-    const response = await axios.get(`${API_URL}/books?page=${page}&limit=${limit}`);
-    return response.data;
-  } catch (err) {
-    const error = err as Error | AxiosError;
-    return rejectWithValue(error.message);
-  }
-});
-
-type initialStateType = {
-  books: BookType[];
-  pagination: PaginationResponse;
-  status: StatusType;
-  error: string | null;
-};
-
-const initialState: initialStateType = {
+const initialState: BooksState = {
   books: [],
   pagination: {
     page: 1,

@@ -4,14 +4,15 @@ import booksReducer from './slices/booksSlice';
 import genresReducer from './slices/genresSlice';
 import cartReducer from './slices/cartSlice';
 import authorsReducer from './slices/authorsSlice';
-import accountReducer, { initialStateType } from './slices/accountSlice';
+import accountReducer from './slices/accountSlice';
 import booksAuthorsReducer from './slices/booksAuthorsSlice';
 import booksGenresReducer from './slices/booksGenresSlice';
 
 import { IDLE } from '../types/status';
+import { AccountState } from '../types/account';
 import { getAccountFromLocalStorage, saveAccountToLocalStorage } from '../utils/localStorage';
 
-const preLoadedAccountReducer: initialStateType = {
+const preLoadedAccountReducer: AccountState = {
   account: getAccountFromLocalStorage(),
   status: IDLE,
   error: null,

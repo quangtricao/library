@@ -3,8 +3,8 @@ import { useAppDispatch, useAppSelector } from '../redux/hooks';
 import { useEffect, useState } from 'react';
 
 import { IDLE } from '../types/status';
-import { getAuthors } from '../redux/slices/authorsSlice';
-import { getBooksAuthors } from '../redux/slices/booksAuthorsSlice';
+import { getAuthors } from '../services/authorsService';
+import { getBooksAuthors } from '../services/booksAuthorsService';
 
 const Authors = () => {
   const dispatch = useAppDispatch();

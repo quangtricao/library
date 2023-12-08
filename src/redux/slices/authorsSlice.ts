@@ -1,33 +1,10 @@
-import axios, { AxiosError } from 'axios';
-import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
+import { createSlice } from '@reduxjs/toolkit';
 
-import { API_URL } from '../../config/api';
-import { ERROR, IDLE, LOADING, StatusType } from '../../types/status';
-import { AuthorsResponse, AuthorType } from '../../types/author';
-import { PaginationResponse, PaginationRequestParams } from '../../types/pagination';
+import { AuthorsState } from '../../types/author';
+import { ERROR, IDLE, LOADING } from '../../types/status';
+import { getAuthors } from '../../services/authorsService';
 
-export const getAuthors = createAsyncThunk<
-  AuthorsResponse,
-  PaginationRequestParams,
-  { rejectValue: string }
->('authors/getAuthors', async ({ page = 1, limit = 10 }, { rejectWithValue }) => {
-  try {
-    const response = await axios.get(`${API_URL}/authors?page=${page}&limit=${limit}`);
-    return response.data;
-  } catch (err) {
-    const error = err as Error | AxiosError;
-    return rejectWithValue(error.message);
-  }
-});
-
-type initialStateType = {
-  authors: AuthorType[];
-  pagination: PaginationResponse;
-  status: StatusType;
-  error: string | null;
-};
-
-const initialState: initialStateType = {
+const initialState: AuthorsState = {
   authors: [],
   pagination: {
     page: 1,

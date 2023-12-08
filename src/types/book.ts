@@ -35,3 +35,24 @@ export type BooksGenresRequest = {
   authorId: string;
   pagination: PaginationRequestParams;
 };
+
+export type BooksState = {
+  books: BookType[];
+  pagination: PaginationResponse;
+  status: StatusType;
+  error: string | null;
+};
+
+export type BooksAuthorsState = {
+  books: BookType[];
+  pagination: PaginationResponse;
+  status: StatusType;
+  error: string | null;
+};
+
+export type BooksGenresState = {
+  books: BookType[];
+  pagination: PaginationResponse;
+  status: StatusType;
+  error: string | null;
+};

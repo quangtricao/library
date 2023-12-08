@@ -5,8 +5,8 @@ import { useNavigate } from 'react-router-dom';
 import LoginForm from './LoginForm';
 import SignUpForm from './SignupForm';
 import { useAppDispatch } from '../redux/hooks';
-import { getProfile, login, signup } from '../redux/slices/accountSlice';
-import { LoginRequest, SignupRequest } from '../types/authentication';
+import { getProfile, login, signup } from '../services/accountService';
+import { LoginRequest, SignupRequest } from '../types/account';
 import { saveTokenToLocalStorage } from '../utils/localStorage';
 
 const Login = () => {

@@ -12,10 +12,10 @@ import Subscribe from '../components/Subscribe';
 
 import { IDLE } from '../types/status';
 import { useAppDispatch, useAppSelector } from '../redux/hooks';
-import { getProfile } from '../redux/slices/accountSlice';
-import { getGenres } from '../redux/slices/genresSlice';
-import { getBooks } from '../redux/slices/booksSlice';
-import { getAuthors } from '../redux/slices/authorsSlice';
+import { getProfile } from '../services/accountService';
+import { getGenres } from '../services/genresService';
+import { getBooks } from '../services/booksService';
+import { getAuthors } from '../services/authorsService';
 import { getTokenFromLocalStorage } from '../utils/localStorage';
 
 const Home = () => {

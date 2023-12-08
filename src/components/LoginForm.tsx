@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 import { Avatar, Button, TextField, Box, Typography } from '@mui/material';
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 
-import { LoginRequest } from '../types/authentication';
+import { LoginRequest } from '../types/account';
 
 type LoginFormProps = {
   handleSetForm: () => void;

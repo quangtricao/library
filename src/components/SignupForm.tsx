@@ -1,7 +1,7 @@
 import { Avatar, Button, TextField, Grid, Box, Typography } from '@mui/material';
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 
-import { SignupRequest } from '../types/authentication';
+import { SignupRequest } from '../types/account';
 
 type LoginFormProps = {
   handleSetForm: () => void;

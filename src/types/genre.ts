@@ -16,3 +16,10 @@ export type GenresResponse = {
 } & {
   status: StatusType;
 };
+
+export type GenresState = {
+  genres: GenreType[];
+  pagination: PaginationResponse;
+  status: StatusType;
+  error: string | null;
+};

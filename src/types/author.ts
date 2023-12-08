@@ -17,3 +17,10 @@ export type AuthorsResponse = {
 } & {
   status: StatusType;
 };
+
+export type AuthorsState = {
+  authors: AuthorType[];
+  pagination: PaginationResponse;
+  status: StatusType;
+  error: string | null;
+};

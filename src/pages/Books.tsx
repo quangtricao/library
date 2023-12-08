@@ -4,8 +4,8 @@ import Subscribe from '../components/Subscribe';
 import { IDLE } from '../types/status';
 import { useAppDispatch, useAppSelector } from '../redux/hooks';
 import { useState, ChangeEvent, useEffect } from 'react';
-import { getBooks } from '../redux/slices/booksSlice';
-import { getAndPushGenres, getGenres } from '../redux/slices/genresSlice';
+import { getBooks } from '../services/booksService';
+import { getGenres, getAndPushGenres } from '../services/genresService';
 
 const Books = () => {
   const dispatch = useAppDispatch();
