@@ -6,7 +6,7 @@ import Books from '../pages/Books';
 import Authors from '../pages/Authors';
 import Genres from '../pages/Genres';
 import Account from '../pages/Account';
-import Login from '../pages/Login';
+import ProtectedRoute from '../components/ProtectedRoute';
 
 const router = createBrowserRouter([
   {
@@ -31,11 +31,11 @@ const router = createBrowserRouter([
       },
       {
         path: '/account',
-        element: <Account />,
-      },
-      {
-        path: '/account/login',
-        element: <Login />,
+        element: (
+          <ProtectedRoute>
+            <Account />
+          </ProtectedRoute>
+        ),
       },
     ],
   },

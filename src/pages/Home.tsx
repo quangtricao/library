@@ -10,19 +10,34 @@ import Books10TopRated from '../components/Books10TopRated';
 import Statistics from '../components/Statistics';
 import Subscribe from '../components/Subscribe';
 
+import { IDLE } from '../types/status';
 import { useAppDispatch, useAppSelector } from '../redux/hooks';
 import { getProfile } from '../redux/slices/accountSlice';
+import { getGenres } from '../redux/slices/genresSlice';
+import { getBooks } from '../redux/slices/booksSlice';
+import { getAuthors } from '../redux/slices/authorsSlice';
 import { getTokenFromLocalStorage } from '../utils/localStorage';
 
 const Home = () => {
   const dispatch = useAppDispatch();
   const user = useAppSelector((state) => state.account.account);
-  console.log(user?.email);
+  const genresStatus = useAppSelector((state) => state.genres.status);
+  const booksStatus = useAppSelector((state) => state.books.status);
+  const authorsStatus = useAppSelector((state) => state.authors.status);
 
   useEffect(() => {
     const token = getTokenFromLocalStorage();
     if (token && user === null) {
       dispatch(getProfile(token));
+    }
+    if (booksStatus === IDLE) {
+      dispatch(getBooks({}));
+    }
+    if (genresStatus === IDLE) {
+      dispatch(getGenres({}));
+    }
+    if (authorsStatus === IDLE) {
+      dispatch(getAuthors({}));
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);

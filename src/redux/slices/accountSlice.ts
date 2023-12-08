@@ -2,7 +2,7 @@ import axios, { AxiosError } from 'axios';
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 
 import { API_URL } from '../../config/api';
-import { StatusType } from '../../types/status';
+import { ERROR, IDLE, LOADING, StatusType } from '../../types/status';
 import {
   LoginRequest,
   LoginResponse,
@@ -62,7 +62,7 @@ export type initialStateType = {
 
 const initialState: initialStateType = {
   account: null,
-  status: 'idle',
+  status: IDLE,
   error: null,
 };
 
@@ -72,7 +72,7 @@ const accountSlice = createSlice({
   reducers: {},
   extraReducers: (builder) => {
     builder.addCase(getProfile.pending, (state) => {
-      state.status = 'loading';
+      state.status = LOADING;
     });
     builder.addCase(getProfile.fulfilled, (state, { payload }) => {
       state.account = payload.data;
@@ -80,7 +80,7 @@ const accountSlice = createSlice({
     });
     builder.addCase(getProfile.rejected, (state, action) => {
       if (action.payload) {
-        state.status = 'error';
+        state.status = ERROR;
         state.error = action.payload;
       }
     });

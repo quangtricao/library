@@ -2,6 +2,7 @@ import { Box, Button, Grid, Pagination, Stack } from '@mui/material';
 import { useAppDispatch, useAppSelector } from '../redux/hooks';
 import { useEffect, useState } from 'react';
 
+import { IDLE } from '../types/status';
 import { getAuthors } from '../redux/slices/authorsSlice';
 import { getBooksAuthors } from '../redux/slices/booksAuthorsSlice';
 
@@ -18,7 +19,7 @@ const Authors = () => {
   const [booksAuthorsLocalPage, setBooksAuthorsLocalPage] = useState<number>(1);
 
   useEffect(() => {
-    if (authorStatus === 'idle') {
+    if (authorStatus === IDLE) {
       dispatch(getAuthors({}));
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps

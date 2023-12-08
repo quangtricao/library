@@ -18,7 +18,10 @@ import { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { useAppSelector } from '../redux/hooks';
 
-const settings = ['Profile', 'Logout'];
+const settings = [
+  { name: 'Profile', path: '/account' },
+  { name: 'Logout', path: '/' },
+];
 
 const pages = [
   { name: 'Home', path: '/' },
@@ -30,14 +33,9 @@ const pages = [
 const NotLogin = () => {
   return (
     <Box>
-      <Link to='/account/login'>
+      <Link to='/account/'>
         <Button variant='text' sx={{ color: 'white' }}>
           Log In
-        </Button>
-      </Link>
-      <Link to='/account/signup'>
-        <Button variant='contained' color='secondary'>
-          Sign Up
         </Button>
       </Link>
     </Box>
@@ -77,8 +75,10 @@ const Login = () => {
         onClose={handleCloseUserMenu}
       >
         {settings.map((setting) => (
-          <MenuItem key={setting} onClick={handleCloseUserMenu}>
-            <Typography textAlign='center'>{setting}</Typography>
+          <MenuItem key={setting.name} onClick={handleCloseUserMenu}>
+            <Link to={setting.path}>
+              <Button size='small'>{setting.name}</Button>
+            </Link>
           </MenuItem>
         ))}
       </Menu>

@@ -1,13 +1,13 @@
 import { Box } from '@mui/material';
 import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 
+import LoginForm from './LoginForm';
+import SignUpForm from './SignupForm';
 import { useAppDispatch } from '../redux/hooks';
-import LoginForm from '../components/LoginForm';
-import SignUpForm from '../components/SignupForm';
 import { getProfile, login, signup } from '../redux/slices/accountSlice';
 import { LoginRequest, SignupRequest } from '../types/authentication';
 import { saveTokenToLocalStorage } from '../utils/localStorage';
-import { useNavigate } from 'react-router-dom';
 
 const Login = () => {
   const navigate = useNavigate();
@@ -31,8 +31,15 @@ const Login = () => {
   };
 
   const handleSignup = async ({ email, password, image, firstName, lastName }: SignupRequest) => {
-    const response = await dispatch(signup({ email, password, image, firstName, lastName }));
-    console.log(response);
+    const response = await dispatch(
+      signup({ email, password, image, firstName, lastName })
+    ).unwrap();
+    if (typeof response === 'string') {
+      console.log(response);
+    } else {
+      setForm(!form);
+      console.log('Signup sucessful');
+    }
   };
 
   return (

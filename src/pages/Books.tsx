@@ -1,11 +1,11 @@
 import { Box, Checkbox, Grid, Typography, Pagination, Stack, Button } from '@mui/material';
 
 import Subscribe from '../components/Subscribe';
-
+import { IDLE } from '../types/status';
 import { useAppDispatch, useAppSelector } from '../redux/hooks';
-import { useEffect, useState, ChangeEvent } from 'react';
+import { useState, ChangeEvent, useEffect } from 'react';
 import { getBooks } from '../redux/slices/booksSlice';
-import { getGenres, getAndPushGenres } from '../redux/slices/genresSlice';
+import { getAndPushGenres, getGenres } from '../redux/slices/genresSlice';
 
 const Books = () => {
   const dispatch = useAppDispatch();
@@ -20,10 +20,10 @@ const Books = () => {
   const [localPage, setLocalPage] = useState<number>(1);
 
   useEffect(() => {
-    if (bookStatus === 'idle') {
+    if (bookStatus === IDLE) {
       dispatch(getBooks({}));
     }
-    if (genreStatus === 'idle') {
+    if (genreStatus === IDLE) {
       dispatch(getGenres({}));
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps

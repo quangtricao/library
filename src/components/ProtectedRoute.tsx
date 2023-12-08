@@ -1,12 +1,15 @@
-import { Navigate } from 'react-router-dom';
+import { getAccountFromLocalStorage } from '../utils/localStorage';
+import Login from './Login';
 
 type ProtectedRouteProp = {
   children: JSX.Element;
 };
 
 const ProtectedRoute = ({ children }: ProtectedRouteProp) => {
-  if (false) {
-    return <Navigate to='/login' />;
+  const user = getAccountFromLocalStorage();
+
+  if (!user || !user.email) {
+    return <Login />;
   }
 
   return children;

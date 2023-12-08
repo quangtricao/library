@@ -2,7 +2,7 @@ import axios, { AxiosError } from 'axios';
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 
 import { API_URL } from '../../config/api';
-import { StatusType } from '../../types/status';
+import { ERROR, IDLE, LOADING, StatusType } from '../../types/status';
 import { BooksResponse, BookType, BooksAuthorsRequest } from '../../types/book';
 import { PaginationResponse } from '../../types/pagination';
 
@@ -11,7 +11,7 @@ export const getBooksAuthors = createAsyncThunk<
   BooksAuthorsRequest,
   { rejectValue: string }
 >(
-  'books/getBooksAuthors',
+  'booksAuthors/getBooksAuthors',
   async ({ authorId, pagination: { page = 1, limit = 6 } }, { rejectWithValue }) => {
     try {
       const response = await axios.get(
@@ -38,17 +38,17 @@ const initialState: initialStateType = {
     page: 1,
     totalPages: 1,
   },
-  status: 'idle',
+  status: IDLE,
   error: null,
 };
 
 const booksSlice = createSlice({
-  name: 'books',
+  name: 'booksAuthors',
   initialState,
   reducers: {},
   extraReducers: (builder) => {
     builder.addCase(getBooksAuthors.pending, (state) => {
-      state.status = 'loading';
+      state.status = LOADING;
     });
     builder.addCase(getBooksAuthors.fulfilled, (state, { payload }) => {
       state.books = payload.data.books;
@@ -57,7 +57,7 @@ const booksSlice = createSlice({
     });
     builder.addCase(getBooksAuthors.rejected, (state, action) => {
       if (action.payload) {
-        state.status = 'error';
+        state.status = ERROR;
         state.error = action.payload;
       }
     });

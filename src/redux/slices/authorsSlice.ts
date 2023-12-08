@@ -2,7 +2,7 @@ import axios, { AxiosError } from 'axios';
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 
 import { API_URL } from '../../config/api';
-import { StatusType } from '../../types/status';
+import { ERROR, IDLE, LOADING, StatusType } from '../../types/status';
 import { AuthorsResponse, AuthorType } from '../../types/author';
 import { PaginationResponse, PaginationRequestParams } from '../../types/pagination';
 
@@ -33,7 +33,7 @@ const initialState: initialStateType = {
     page: 1,
     totalPages: 1,
   },
-  status: 'idle',
+  status: IDLE,
   error: null,
 };
 
@@ -43,7 +43,7 @@ const authorsSlice = createSlice({
   reducers: {},
   extraReducers: (builder) => {
     builder.addCase(getAuthors.pending, (state) => {
-      state.status = 'loading';
+      state.status = LOADING;
     });
     builder.addCase(getAuthors.fulfilled, (state, { payload }) => {
       state.authors = payload.data.authors;
@@ -52,7 +52,7 @@ const authorsSlice = createSlice({
     });
     builder.addCase(getAuthors.rejected, (state, action) => {
       if (action.payload) {
-        state.status = 'error';
+        state.status = ERROR;
         state.error = action.payload;
       }
     });

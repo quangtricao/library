@@ -2,6 +2,7 @@ import { Box, Button, Grid, Pagination, Stack } from '@mui/material';
 import { useAppDispatch, useAppSelector } from '../redux/hooks';
 import { useEffect, useState } from 'react';
 
+import { IDLE } from '../types/status';
 import { getGenres } from '../redux/slices/genresSlice';
 import { getBooksAuthors } from '../redux/slices/booksAuthorsSlice';
 
@@ -18,7 +19,7 @@ const Genres = () => {
   const [booksGenresLocalPage, setBooksGenresLocalPage] = useState<number>(1);
 
   useEffect(() => {
-    if (genreStatus === 'idle') {
+    if (genreStatus === IDLE) {
       dispatch(getGenres({}));
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
