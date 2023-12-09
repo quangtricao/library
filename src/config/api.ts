@@ -1,1 +1,1 @@
-export const API_URL = 'https://library.egorushque.space/api/v1';
+export const API_URL = 'https://cqtri-library.onrender.com/api/v1';

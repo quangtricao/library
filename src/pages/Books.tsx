@@ -1,7 +1,7 @@
 import { Box, Checkbox, Grid, Typography, Pagination, Stack, Button } from '@mui/material';
 
 import Subscribe from '../components/Subscribe';
-import { IDLE } from '../types/status';
+import { IDLE, LOADING } from '../types/status';
 import { useAppDispatch, useAppSelector } from '../redux/hooks';
 import { useState, ChangeEvent, useEffect } from 'react';
 import { getBooks } from '../services/booksService';
@@ -38,6 +38,15 @@ const Books = () => {
     dispatch(getAndPushGenres({ page: genrePage + 1 }));
   };
 
+  if(bookStatus === LOADING) {
+
+    return(
+      <Box>
+        The first time loading might be slow
+      </Box>
+    )
+  }
+
   return (
     <Box sx={{ maxWidth: '80%', marginX: 'auto' }}>
       <Box sx={{ display: 'flex' }}>
@@ -66,7 +75,13 @@ const Books = () => {
           <Grid container spacing={4} columns={3} sx={{ marginTop: '30px' }}>
             {books.map((book) => (
               <Grid key={book._id} item xs={1}>
-                <img src={`https://picsum.photos/300/${300 * 1.5}`} alt={`Book ${book.title}`} />
+                <Box sx={{ width: '250px', heigh: '350px' }}>
+                  <img
+                    src={book.image}
+                    alt={`Book ${book.title}`}
+                    style={{ width: '100%', minHeight: '350px' }}
+                  />
+                </Box>
                 <Box>
                   {book.status === 'available' ? (
                     <Button variant='contained'>Borrow</Button>
