@@ -3,10 +3,7 @@ import { useEffect } from 'react';
 
 import Introduction from '../components/Introduction';
 import BooksTrending from '../components/BooksTrending';
-import BooksFeatured from '../components/BooksFeatured';
 import Service from '../components/Service';
-import BooksBestSellers from '../components/BooksBestSellers';
-import Books10TopRated from '../components/Books10TopRated';
 import Statistics from '../components/Statistics';
 import Subscribe from '../components/Subscribe';
 
@@ -20,18 +17,18 @@ import { getTokenFromLocalStorage } from '../utils/localStorage';
 
 const Home = () => {
   const dispatch = useAppDispatch();
-  const user = useAppSelector((state) => state.account.account);
+  const account = useAppSelector((state) => state.account.account);
   const genresStatus = useAppSelector((state) => state.genres.status);
   const booksStatus = useAppSelector((state) => state.books.status);
   const authorsStatus = useAppSelector((state) => state.authors.status);
 
   useEffect(() => {
     const token = getTokenFromLocalStorage();
-    if (token && user === null) {
+    if (token && account === null) {
       dispatch(getProfile(token));
     }
     if (booksStatus === IDLE) {
-      dispatch(getBooks({}));
+      dispatch(getBooks({ limit: 8 }));
     }
     if (genresStatus === IDLE) {
       dispatch(getGenres({}));
@@ -46,10 +43,7 @@ const Home = () => {
     <Box>
       <Introduction />
       <BooksTrending />
-      <BooksFeatured />
       <Service />
-      <BooksBestSellers />
-      <Books10TopRated />
       <Statistics />
       <Subscribe />
     </Box>

@@ -2,6 +2,7 @@ import { createBrowserRouter } from 'react-router-dom';
 
 import Layout from '../components/Layout';
 import Home from '../pages/Home';
+import Book from '../pages/Book'
 import Books from '../pages/Books';
 import Authors from '../pages/Authors';
 import Genres from '../pages/Genres';
@@ -20,6 +21,10 @@ const router = createBrowserRouter([
       {
         path: '/books',
         element: <Books />,
+      },
+      {
+        path: '/books/:isbn',
+        element: <Book />,
       },
       {
         path: '/authors',

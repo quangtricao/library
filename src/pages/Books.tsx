@@ -1,6 +1,6 @@
+import { Link } from 'react-router-dom';
 import { Box, Checkbox, Grid, Typography, Pagination, Stack, Button } from '@mui/material';
 
-import Subscribe from '../components/Subscribe';
 import { IDLE, LOADING } from '../types/status';
 import { useAppDispatch, useAppSelector } from '../redux/hooks';
 import { useState, ChangeEvent, useEffect } from 'react';
@@ -10,6 +10,7 @@ import { getGenres, getAndPushGenres } from '../services/genresService';
 const Books = () => {
   const dispatch = useAppDispatch();
   const books = useAppSelector((state) => state.books.books);
+  const bookPage = useAppSelector((state) => state.books.pagination.page);
   const bookTotalPage = useAppSelector((state) => state.books.pagination.totalPages);
   const bookStatus = useAppSelector((state) => state.books.status);
 
@@ -21,7 +22,7 @@ const Books = () => {
 
   useEffect(() => {
     if (bookStatus === IDLE) {
-      dispatch(getBooks({}));
+      dispatch(getBooks({ limit: 8 }));
     }
     if (genreStatus === IDLE) {
       dispatch(getGenres({}));
@@ -30,7 +31,7 @@ const Books = () => {
   }, []);
 
   const handleLocalPageChange = (_event: ChangeEvent<unknown>, value: number) => {
-    dispatch(getBooks({ page: value, limit: 6 }));
+    dispatch(getBooks({ page: value, limit: 8 }));
     setLocalPage(value);
   };
 
@@ -38,51 +39,61 @@ const Books = () => {
     dispatch(getAndPushGenres({ page: genrePage + 1 }));
   };
 
-  if(bookStatus === LOADING) {
-
-    return(
-      <Box>
-        The first time loading might be slow
-      </Box>
-    )
+  if (bookStatus === LOADING) {
+    return <Box>The first time loading might be slow</Box>;
   }
 
   return (
-    <Box sx={{ maxWidth: '80%', marginX: 'auto' }}>
+    <Box sx={{ maxWidth: '80%', marginX: 'auto', marginY: '50px' }}>
       <Box sx={{ display: 'flex' }}>
-        <Box sx={{ width: '20%', display: 'flex', flexDirection: 'column' }}>
-          <Typography>Filter</Typography>
-          <Typography>Genres</Typography>
-          {genres.map((genre) => (
-            <Box key={genre._id}>
-              <Checkbox /> {genre.title}
-            </Box>
-          ))}
-          <Button sx={{ width: '75%' }} variant='contained' onClick={handleLoadMoreGenres}>
-            Load more
-          </Button>
-          <Typography>Status</Typography>
+        <Box sx={{ width: '20%', display: 'flex', flexDirection: 'column', gap: '10px' }}>
+          <Typography sx={{ fontSize: '30px' }}>Filter</Typography>
+
           <Box>
-            <Checkbox /> Borrowed
+            <Typography>Genres</Typography>
+            {genres.map((genre) => (
+              <Box key={genre._id}>
+                <Checkbox /> {genre.title}
+              </Box>
+            ))}
+            <Button sx={{ fontSize: '12px' }} variant='contained' onClick={handleLoadMoreGenres}>
+              Load more
+            </Button>
           </Box>
           <Box>
-            <Checkbox /> Available
+            <Typography>Status</Typography>
+            <Box>
+              <Checkbox /> Borrowed
+            </Box>
+            <Box>
+              <Checkbox /> Available
+            </Box>
           </Box>
         </Box>
 
         <Box sx={{ width: '80%' }}>
-          <Typography>Books</Typography>
-          <Grid container spacing={4} columns={3} sx={{ marginTop: '30px' }}>
+          <Typography sx={{ fontSize: '30px' }}>Books</Typography>
+          <Grid container columns={4}>
             {books.map((book) => (
-              <Grid key={book._id} item xs={1}>
-                <Box sx={{ width: '250px', heigh: '350px' }}>
+              <Grid key={book._id} item xs={1} sx={{ padding: '10px' }}>
+                <Link to={`/books/${book.isbn}`}>
                   <img
                     src={book.image}
                     alt={`Book ${book.title}`}
-                    style={{ width: '100%', minHeight: '350px' }}
+                    style={{
+                      width: '100%',
+                      height: '400px',
+                      objectFit: 'contain',
+                    }}
                   />
-                </Box>
-                <Box>
+                </Link>
+                <Box sx={{ display: 'flex', flexDirection: 'column', gap: '5px' }}>
+                  <Link to={`/books/${book.isbn}`} style={{ textDecoration: 'none' }}>
+                    <Box sx={{ fontWeight: 'bold', color: 'primary.main' }}>
+                      {book.title.length < 28 ? book.title : book.title.slice(0, 28) + '...'}
+                    </Box>
+                  </Link>
+
                   {book.status === 'available' ? (
                     <Button variant='contained'>Borrow</Button>
                   ) : (
@@ -90,18 +101,22 @@ const Books = () => {
                       Not in Library
                     </Button>
                   )}
-                  <Box>{book.title}</Box>
                 </Box>
               </Grid>
             ))}
           </Grid>
-          <Stack spacing={2}>
-            <Pagination count={bookTotalPage} page={localPage} onChange={handleLocalPageChange} />
+          <Stack spacing={1} sx={{ marginTop: '50px' }}>
+            <Pagination
+              size='large'
+              count={bookTotalPage}
+              page={bookPage ? bookPage : localPage}
+              onChange={handleLocalPageChange}
+              showFirstButton
+              showLastButton
+            />
           </Stack>
         </Box>
       </Box>
-
-      <Subscribe />
     </Box>
   );
 };

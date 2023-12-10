@@ -1,18 +1,20 @@
 import { PaginationResponse, PaginationRequestParams } from './pagination';
 import { StatusType } from './status';
+import { AuthorType } from './author';
+import { GenreType } from './genre';
 
 export type BookType = {
   isbn: string;
   title: string;
   image: string;
   publisher: string;
-  publishedDate: string;
+  publishedYear: number;
   status: 'available' | 'borrowed';
   borrowerId: string | undefined;
   borrowDate: string | undefined;
   returnDate: string | undefined;
-  authors: string[] | undefined;
-  genres: string[] | undefined;
+  authors: AuthorType[];
+  genres: GenreType[];
   __v: number;
   _id: string;
 };
@@ -22,6 +24,12 @@ export type BooksResponse = {
     books: BookType[];
     pagination: PaginationResponse;
   };
+} & {
+  status: StatusType;
+};
+
+export type SingleBookResponse = {
+  data: BookType;
 } & {
   status: StatusType;
 };
