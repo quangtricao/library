@@ -1,13 +1,8 @@
-import { Box, Button, Grid, Typography } from '@mui/material';
+import { ChangeEvent, useEffect } from 'react';
 import { Navigate } from 'react-router-dom';
+import { Box, Typography } from '@mui/material';
 
 import { useAppDispatch, useAppSelector } from '../redux/hooks';
-import BookPreview from '../components/BookPreview';
-import { ChangeEvent, useEffect } from 'react';
-import { addBookToAccountSlice, removeBookFromAccountSlice } from '../redux/slices/accountSlice';
-import { borrowBooks, getProfile, returnBooks } from '../services/accountService';
-import { getTokenFromLocalStorage } from '../utils/localStorage';
-import { BookType } from '../types/book';
 import {
   addBookToReturn,
   clearCart,
@@ -15,6 +10,16 @@ import {
   removeBookToReturn,
 } from '../redux/slices/cartSlice';
 import { changeBookStatusToAvailable } from '../redux/slices/booksSlice';
+import { addBookToAccountSlice, removeBookFromAccountSlice } from '../redux/slices/accountSlice';
+import { getBooks } from '../services/booksService';
+import { borrowBooks, getProfile, returnBooks } from '../services/accountService';
+
+import { BookType } from '../types/book';
+import { getTokenFromLocalStorage } from '../utils/localStorage';
+import Checkout from '../components/Checkout';
+import BookBorrowed from '../components/BookBorrowed';
+import BookInCartPreviewType from '../components/BookInCartPreview';
+import AccountInformation from '../components/AccountInformation';
 
 const Account = () => {
   const dispatch = useAppDispatch();
@@ -57,6 +62,7 @@ const Account = () => {
     await dispatch(borrowBooks({ accountId: account._id, token, booksId: booksToBorrowIdList }));
     await dispatch(returnBooks({ accountId: account._id, token, booksId: booksToReturnIdList }));
     await dispatch(getProfile(token));
+    await dispatch(getBooks({ limit: 8 }));
     dispatch(clearCart());
   };
 
@@ -71,119 +77,31 @@ const Account = () => {
         marginX: 'auto',
         display: 'flex',
         flexDirection: 'column',
-        gap: '30px',
+        gap: '40px',
       }}
     >
-      <Box sx={{ display: 'flex', justifyContent: 'center' }}>
-        <img
-          src={account?.image}
-          alt={`Avatar of ${account.firstName}`}
-          style={{ width: '300px', borderRadius: '30px' }}
+      <AccountInformation account={account} />
+      <BookBorrowed account={account} handleReturnBook={handleReturnBook} />
+      <Box>
+        <Typography sx={{ fontSize: '25px', fontWeight: 'bold' }}> Book in Cart</Typography>
+        <BookInCartPreviewType
+          status='BooksToBorrow'
+          booksInCart={booksToBorrow}
+          handleNoBorrow={handleNoBorrow}
+          handleNoReturn={handleNoReturn}
         />
-        <Box sx={{ display: 'flex', flexDirection: 'column' }}>
-          <Box>{account.firstName}</Box>
-          <Box>{account.lastName}</Box>
-          <Box>{account.email}</Box>
-          <Box>{account.role}</Box>
-        </Box>
+        <BookInCartPreviewType
+          status='BooksToReturn'
+          booksInCart={booksToReturn}
+          handleNoBorrow={handleNoBorrow}
+          handleNoReturn={handleNoReturn}
+        />
       </Box>
-
-      <Box>
-        <Typography sx={{ fontSize: '25px', fontWeight: 'bold' }}>
-          Your borrowed books. Remember to return them.
-        </Typography>
-
-        {account.borrowedBooks.length === 0 ? (
-          <Box>Great. You have no books in loan</Box>
-        ) : (
-          <Box>
-            <Grid container columns={5}>
-              {account.borrowedBooks.map((book) => (
-                <Grid key={book._id} item xs={1} sx={{ padding: '10px' }}>
-                  <BookPreview book={book} imgHeight='250px' />
-                  <Button
-                    variant='contained'
-                    color='warning'
-                    fullWidth
-                    onClick={(event) => handleReturnBook(event, book)}
-                  >
-                    Return Book
-                  </Button>
-                </Grid>
-              ))}
-            </Grid>
-          </Box>
-        )}
-      </Box>
-
-      <Box>
-        <Box>
-          <Typography sx={{ fontSize: '25px', fontWeight: 'bold' }}> Book in Cart</Typography>
-        </Box>
-        <Box>
-          <Typography sx={{ fontWeight: 'bold' }}> Books to borrow</Typography>
-
-          {booksToBorrow.length === 0 ? (
-            <Box>You have no books to borrow in cart.</Box>
-          ) : (
-            <Box>
-              <Grid container columns={5}>
-                {booksToBorrow.map((book) => (
-                  <Grid key={book._id} item xs={1} sx={{ padding: '10px' }}>
-                    <BookPreview book={book} imgHeight='250px' />
-                    <Button
-                      variant='contained'
-                      color='error'
-                      fullWidth
-                      onClick={(event) => handleNoBorrow(event, book)}
-                    >
-                      No, I don't want to borrow it now
-                    </Button>
-                  </Grid>
-                ))}
-              </Grid>
-            </Box>
-          )}
-        </Box>
-
-        <Box>
-          <Typography sx={{ fontWeight: 'bold' }}>Books to Return</Typography>
-
-          {booksToReturn.length === 0 ? (
-            <Box>You have no books to return in cart.</Box>
-          ) : (
-            <Box>
-              <Grid container columns={5}>
-                {booksToReturn.map((book) => (
-                  <Grid key={book._id} item xs={1} sx={{ padding: '10px' }}>
-                    <BookPreview book={book} imgHeight='250px' />
-                    <Button
-                      variant='contained'
-                      color='error'
-                      fullWidth
-                      onClick={(event) => handleNoReturn(event, book)}
-                    >
-                      No, I don't want to return it now
-                    </Button>
-                  </Grid>
-                ))}
-              </Grid>
-            </Box>
-          )}
-        </Box>
-
-        <Box sx={{ display: 'flex', justifyContent: 'center' }}>
-          {booksToBorrow.length !== 0 || booksToReturn.length !== 0 ? (
-            <Button variant='contained' sx={{ width: '50%' }} onClick={handleCheckout}>
-              Checkout
-            </Button>
-          ) : (
-            <Button variant='contained' disabled sx={{ width: '50%' }}>
-              Checkout
-            </Button>
-          )}
-        </Box>
-      </Box>
+      <Checkout
+        booksToBorrow={booksToBorrow}
+        booksToReturn={booksToReturn}
+        handleCheckout={handleCheckout}
+      />
     </Box>
   );
 };

@@ -1,11 +1,11 @@
+import { useState, ChangeEvent, useEffect } from 'react';
 import { Box, Checkbox, Grid, Typography, Pagination, Stack, Button } from '@mui/material';
 
-import { IDLE, LOADING } from '../types/status';
 import { useAppDispatch, useAppSelector } from '../redux/hooks';
-import { useState, ChangeEvent, useEffect } from 'react';
 import { getBooks } from '../services/booksService';
 import { getGenres, getAndPushGenres } from '../services/genresService';
 
+import { IDLE, LOADING } from '../types/status';
 import BookPreview from '../components/BookPreview';
 import BookPreviewButton from '../components/BookPreviewButton';
 

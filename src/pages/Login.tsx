@@ -1,11 +1,12 @@
-import { Box } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
+import { Box } from '@mui/material';
 
-import LoginForm from '../components/LoginForm';
 import { useAppDispatch } from '../redux/hooks';
 import { getProfile, login } from '../services/accountService';
+
 import { LoginRequest } from '../types/account';
 import { saveTokenToLocalStorage } from '../utils/localStorage';
+import LoginForm from '../components/LoginForm';
 
 const Login = () => {
   const navigate = useNavigate();

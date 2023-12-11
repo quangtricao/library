@@ -1,10 +1,11 @@
-import { Box } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
+import { Box } from '@mui/material';
 
-import SignUpForm from '../components/SignupForm';
 import { useAppDispatch } from '../redux/hooks';
 import { signup } from '../services/accountService';
+
 import { SignupRequest } from '../types/account';
+import SignUpForm from '../components/SignupForm';
 
 const Signup = () => {
   const navigate = useNavigate();

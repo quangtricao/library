@@ -1,19 +1,19 @@
-import { Box } from '@mui/material';
 import { useEffect } from 'react';
+import { Box } from '@mui/material';
 
-import Introduction from '../components/Introduction';
-import BooksTrending from '../components/BooksTrending';
-import Service from '../components/Service';
-import Statistics from '../components/Statistics';
-import Subscribe from '../components/Subscribe';
-
-import { IDLE } from '../types/status';
 import { useAppDispatch, useAppSelector } from '../redux/hooks';
 import { getProfile } from '../services/accountService';
 import { getGenres } from '../services/genresService';
 import { getBooks } from '../services/booksService';
 import { getAuthors } from '../services/authorsService';
+
+import { IDLE } from '../types/status';
 import { getTokenFromLocalStorage } from '../utils/localStorage';
+import Introduction from '../components/Introduction';
+import BooksTrending from '../components/BooksTrending';
+import Service from '../components/Service';
+import Statistics from '../components/Statistics';
+import Subscribe from '../components/Subscribe';
 
 const Home = () => {
   const dispatch = useAppDispatch();

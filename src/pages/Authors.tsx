@@ -1,10 +1,11 @@
-import { Box, Button, Grid, Pagination, Stack } from '@mui/material';
-import { useAppDispatch, useAppSelector } from '../redux/hooks';
 import { useEffect, useState } from 'react';
+import { Box, Button, Grid, Pagination, Stack } from '@mui/material';
 
-import { IDLE } from '../types/status';
+import { useAppDispatch, useAppSelector } from '../redux/hooks';
 import { getAuthors } from '../services/authorsService';
 import { getBooksAuthors } from '../services/booksAuthorsService';
+
+import { IDLE } from '../types/status';
 
 const Authors = () => {
   const dispatch = useAppDispatch();

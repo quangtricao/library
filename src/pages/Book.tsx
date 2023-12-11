@@ -1,8 +1,10 @@
-import { Box, Button, Typography } from '@mui/material';
 import { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
+import { Box, Button, Typography } from '@mui/material';
+
 import { useAppDispatch, useAppSelector } from '../redux/hooks';
 import { getSingleBook } from '../services/booksService';
+
 import { BookType } from '../types/book';
 
 const Book = () => {
