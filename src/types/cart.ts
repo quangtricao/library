@@ -1,6 +1,7 @@
 import { BookType } from './book';
 
 export type CartState = {
-  bookInCart: BookType[];
+  booksToBorrow: BookType[];
+  booksToReturn: BookType[];
   error: string | null;
 };

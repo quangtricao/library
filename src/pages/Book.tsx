@@ -44,7 +44,7 @@ const Book = () => {
       <Box
         sx={{
           marginX: '5%',
-          minHeight: '400px',
+          height: '650px',
           display: 'flex',
           justifyContent: 'space-between',
         }}
@@ -57,10 +57,14 @@ const Book = () => {
             padding: '30px',
           }}
         >
-          <Box>
+          <Box sx={{ display: 'flex', gap: '10px' }}>
             {book.genres.length !== 0 ? (
               book.genres.map((genres) => {
-                return <Box key={genres._id}>{genres.title}</Box>;
+                return (
+                  <Button disabled variant='contained' key={genres._id}>
+                    {genres.title}
+                  </Button>
+                );
               })
             ) : (
               <Button disabled variant='contained'>
@@ -109,7 +113,9 @@ const Book = () => {
               >
                 <Box>
                   {book.authors.length !== 0 ? (
-                    book.authors.map((author) => <Typography>{author.name}</Typography>)
+                    book.authors.map((author) => (
+                      <Typography key={author._id}>{author.name}</Typography>
+                    ))
                   ) : (
                     <Typography>No Authors</Typography>
                   )}
@@ -155,7 +161,7 @@ const Book = () => {
         <img
           src={book.image}
           alt={`This is the book ${book.title}`}
-          style={{ height: '100%', borderRadius: '40px' }}
+          style={{ height: '100%', borderRadius: '40px', objectFit: 'cover' }}
         />
       </Box>
 

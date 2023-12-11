@@ -12,15 +12,13 @@ import {
   Button,
   Tooltip,
   MenuItem,
-  Badge,
 } from '@mui/material';
-import { ShoppingCartOutlined } from '@mui/icons-material';
 import MenuIcon from '@mui/icons-material/Menu';
 import LightModeIcon from '@mui/icons-material/LightMode';
 import DarkModeIcon from '@mui/icons-material/DarkMode';
 
 import { useAppDispatch, useAppSelector } from '../redux/hooks';
-import { clearUser } from '../redux/slices/accountSlice';
+import { clearAccount } from '../redux/slices/accountSlice';
 import { clearAccountFromLocalStorage, clearTokenFromLocalStorage } from '../utils/localStorage';
 
 const settings = [
@@ -53,7 +51,6 @@ const NotLoggedIn = () => {
 const LoggedIn = () => {
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
-  const cart = useAppSelector((state) => state.cart.bookInCart);
   const [anchorElUser, setAnchorElUser] = useState<null | HTMLElement>(null);
 
   const handleOpenUserMenu = (event: React.MouseEvent<HTMLElement>) => {
@@ -70,7 +67,7 @@ const LoggedIn = () => {
       return;
     }
     if (settingName === 'Logout') {
-      dispatch(clearUser());
+      dispatch(clearAccount());
       clearTokenFromLocalStorage();
       clearAccountFromLocalStorage();
       navigate('/account/login');
@@ -81,15 +78,6 @@ const LoggedIn = () => {
 
   return (
     <Box sx={{ display: 'flex', gap: '15px' }}>
-      <Button>
-        <Tooltip title='Cart'>
-          <Link to={'/account'}>
-            <Badge badgeContent={cart.length}>
-              <ShoppingCartOutlined sx={{ color: 'white' }} />
-            </Badge>
-          </Link>
-        </Tooltip>
-      </Button>
 
       <Tooltip title='Open settings'>
         <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>

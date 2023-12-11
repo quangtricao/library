@@ -1,4 +1,5 @@
 import { StatusType } from './status';
+import { BookType } from './book';
 
 export type AccountType = {
   _id: string;
@@ -8,7 +9,7 @@ export type AccountType = {
   email: string;
   image: string;
   __v: number;
-  borrowedBooks: string[];
+  borrowedBooks: BookType[];
 };
 
 export type AccountResponse = {
@@ -50,4 +51,10 @@ export type AccountState = {
   account: AccountType | null;
   status: StatusType;
   error: string | null;
+};
+
+export type BorrowOrReturnBooksRequest = {
+  accountId: string;
+  token: string;
+  booksId: string[];
 };

@@ -1,4 +1,4 @@
-import { createSlice } from '@reduxjs/toolkit';
+import { PayloadAction, createSlice } from '@reduxjs/toolkit';
 
 import { BooksState } from '../../types/book';
 import { ERROR, IDLE, LOADING } from '../../types/status';
@@ -17,7 +17,18 @@ const initialState: BooksState = {
 const booksSlice = createSlice({
   name: 'books',
   initialState,
-  reducers: {},
+  reducers: {
+    changeBookStatusToBorrowed(state, action: PayloadAction<string>) {
+      state.books = state.books.map((book) =>
+        book._id === action.payload ? { ...book, status: 'borrowed' } : book
+      );
+    },
+    changeBookStatusToAvailable(state, action: PayloadAction<string>) {
+      state.books = state.books.map((book) =>
+        book._id === action.payload ? { ...book, status: 'available' } : book
+      );
+    },
+  },
   extraReducers: (builder) => {
     builder.addCase(getBooks.pending, (state) => {
       state.status = LOADING;
@@ -36,4 +47,5 @@ const booksSlice = createSlice({
   },
 });
 
+export const { changeBookStatusToBorrowed, changeBookStatusToAvailable } = booksSlice.actions;
 export default booksSlice.reducer;

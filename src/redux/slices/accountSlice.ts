@@ -1,8 +1,9 @@
-import { createSlice } from '@reduxjs/toolkit';
+import { PayloadAction, createSlice } from '@reduxjs/toolkit';
 
 import { AccountState } from '../../types/account';
 import { ERROR, IDLE, LOADING } from '../../types/status';
 import { getProfile } from '../../services/accountService';
+import { BookType } from '../../types/book';
 
 const initialState: AccountState = {
   account: null,
@@ -14,7 +15,19 @@ const accountSlice = createSlice({
   name: 'account',
   initialState,
   reducers: {
-    clearUser(state) {
+    addBookToAccountSlice(state, action: PayloadAction<BookType>) {
+      if (state.account?.borrowedBooks) {
+        state.account.borrowedBooks.push(action.payload);
+      }
+    },
+    removeBookFromAccountSlice(state, action: PayloadAction<string>) {
+      if (state.account?.borrowedBooks) {
+        state.account.borrowedBooks = state.account.borrowedBooks.filter(
+          (book) => book._id !== action.payload
+        );
+      }
+    },
+    clearAccount(state) {
       state.account = null;
     },
   },
@@ -35,5 +48,6 @@ const accountSlice = createSlice({
   },
 });
 
-export const { clearUser } = accountSlice.actions;
+export const { addBookToAccountSlice, removeBookFromAccountSlice, clearAccount } =
+  accountSlice.actions;
 export default accountSlice.reducer;
