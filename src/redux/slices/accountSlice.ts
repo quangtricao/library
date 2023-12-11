@@ -13,7 +13,11 @@ const initialState: AccountState = {
 const accountSlice = createSlice({
   name: 'account',
   initialState,
-  reducers: {},
+  reducers: {
+    clearUser(state) {
+      state.account = null;
+    },
+  },
   extraReducers: (builder) => {
     builder.addCase(getProfile.pending, (state) => {
       state.status = LOADING;
@@ -31,4 +35,5 @@ const accountSlice = createSlice({
   },
 });
 
+export const { clearUser } = accountSlice.actions;
 export default accountSlice.reducer;

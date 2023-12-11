@@ -83,14 +83,14 @@ const Books = () => {
                     style={{
                       width: '100%',
                       height: '400px',
-                      objectFit: 'contain',
+                      objectFit: 'cover',
                     }}
                   />
                 </Link>
                 <Box sx={{ display: 'flex', flexDirection: 'column', gap: '5px' }}>
                   <Link to={`/books/${book.isbn}`} style={{ textDecoration: 'none' }}>
                     <Box sx={{ fontWeight: 'bold', color: 'primary.main' }}>
-                      {book.title.length < 28 ? book.title : book.title.slice(0, 28) + '...'}
+                      {book.title.length < 20 ? book.title : book.title.slice(0, 20) + '...'}
                     </Box>
                   </Link>
 

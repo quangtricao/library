@@ -12,10 +12,16 @@ const SignUpForm = ({ handleSetForm, handleSignup }: LoginFormProps) => {
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
-    console.log({
-      email: data.get('email'),
-      password: data.get('password'),
-    });
+
+    const firstName = data.get('firstName')?.toString();
+    const lastName = data.get('lastName')?.toString();
+    const email = data.get('email')?.toString();
+    const password = data.get('password')?.toString();
+    const image = data.get('image')?.toString();
+
+    if (firstName && lastName && email && password && image) {
+      handleSignup({ email, password, image, firstName, lastName });
+    }
   };
 
   return (
@@ -39,34 +45,19 @@ const SignUpForm = ({ handleSetForm, handleSignup }: LoginFormProps) => {
         <Grid container spacing={2}>
           <Grid item xs={12} sm={6}>
             <TextField
-              autoComplete='given-name'
-              name='firstName'
+              autoFocus
               required
               fullWidth
               id='firstName'
               label='First Name'
-              autoFocus
+              name='firstName'
             />
           </Grid>
           <Grid item xs={12} sm={6}>
-            <TextField
-              required
-              fullWidth
-              id='lastName'
-              label='Last Name'
-              name='lastName'
-              autoComplete='family-name'
-            />
+            <TextField required fullWidth id='lastName' label='Last Name' name='lastName' />
           </Grid>
           <Grid item xs={12}>
-            <TextField
-              required
-              fullWidth
-              id='email'
-              label='Email Address'
-              name='email'
-              autoComplete='email'
-            />
+            <TextField required fullWidth id='email' label='Email Address' name='email' />
           </Grid>
           <Grid item xs={12}>
             <TextField
@@ -76,8 +67,10 @@ const SignUpForm = ({ handleSetForm, handleSignup }: LoginFormProps) => {
               label='Password'
               type='password'
               id='password'
-              autoComplete='new-password'
             />
+          </Grid>
+          <Grid item xs={12}>
+            <TextField required fullWidth name='image' label='image' id='image' />
           </Grid>
         </Grid>
         <Grid container spacing={2} columns={4} sx={{ marginY: '10px' }}>

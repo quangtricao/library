@@ -1,3 +1,5 @@
+import { useState } from 'react';
+import { Link, useNavigate } from 'react-router-dom';
 import {
   AppBar,
   Box,
@@ -10,17 +12,20 @@ import {
   Button,
   Tooltip,
   MenuItem,
+  Badge,
 } from '@mui/material';
+import { ShoppingCartOutlined } from '@mui/icons-material';
 import MenuIcon from '@mui/icons-material/Menu';
 import LightModeIcon from '@mui/icons-material/LightMode';
 import DarkModeIcon from '@mui/icons-material/DarkMode';
-import { useState } from 'react';
-import { Link } from 'react-router-dom';
-import { useAppSelector } from '../redux/hooks';
+
+import { useAppDispatch, useAppSelector } from '../redux/hooks';
+import { clearUser } from '../redux/slices/accountSlice';
+import { clearAccountFromLocalStorage, clearTokenFromLocalStorage } from '../utils/localStorage';
 
 const settings = [
   { name: 'Profile', path: '/account' },
-  { name: 'Logout', path: '/' },
+  { name: 'Logout', path: '/account/login' },
 ];
 
 const pages = [
@@ -30,29 +35,62 @@ const pages = [
   { name: 'Genres', path: '/genres' },
 ];
 
-const NotLogin = () => {
+const NotLoggedIn = () => {
   return (
     <Box>
-      <Link to='/account/'>
+      <Link to='/account/login'>
         <Button variant='text' sx={{ color: 'white' }}>
           Log In
         </Button>
+      </Link>
+      <Link to='/account/signup'>
+        <Button variant='contained'>Sign Up</Button>
       </Link>
     </Box>
   );
 };
 
-const Login = () => {
+const LoggedIn = () => {
+  const navigate = useNavigate();
+  const dispatch = useAppDispatch();
+  const cart = useAppSelector((state) => state.cart.bookInCart);
   const [anchorElUser, setAnchorElUser] = useState<null | HTMLElement>(null);
+
   const handleOpenUserMenu = (event: React.MouseEvent<HTMLElement>) => {
     setAnchorElUser(event.currentTarget);
   };
+
   const handleCloseUserMenu = () => {
     setAnchorElUser(null);
   };
 
+  const handleSetting = (event: React.MouseEvent<HTMLElement>, settingName: string) => {
+    if (settingName === 'Profile') {
+      navigate('/account');
+      return;
+    }
+    if (settingName === 'Logout') {
+      dispatch(clearUser());
+      clearTokenFromLocalStorage();
+      clearAccountFromLocalStorage();
+      navigate('/account/login');
+      return;
+    }
+    return;
+  };
+
   return (
-    <Box sx={{ flexGrow: 0 }}>
+    <Box sx={{ display: 'flex', gap: '15px' }}>
+      <Button>
+        <Tooltip title='Cart'>
+          <Link to={'/account'}>
+            <Badge badgeContent={cart.length}>
+              <ShoppingCartOutlined sx={{ color: 'white' }} />
+            </Badge>
+          </Link>
+        </Tooltip>
+      </Button>
+
       <Tooltip title='Open settings'>
         <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
           <Avatar alt='Remy Sharp' src='/static/images/avatar/2.jpg' />
@@ -76,9 +114,9 @@ const Login = () => {
       >
         {settings.map((setting) => (
           <MenuItem key={setting.name} onClick={handleCloseUserMenu}>
-            <Link to={setting.path}>
-              <Button size='small'>{setting.name}</Button>
-            </Link>
+            <Button size='small' onClick={(event) => handleSetting(event, setting.name)}>
+              {setting.name}
+            </Button>
           </MenuItem>
         ))}
       </Menu>
@@ -202,10 +240,11 @@ const Header = () => {
               </IconButton>
             </Tooltip>
           )}
-          {account ? <Login /> : <NotLogin />}
+          {account ? <LoggedIn /> : <NotLoggedIn />}
         </Toolbar>
       </Container>
     </AppBar>
   );
 };
+
 export default Header;

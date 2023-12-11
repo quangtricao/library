@@ -2,12 +2,13 @@ import { createBrowserRouter } from 'react-router-dom';
 
 import Layout from '../components/Layout';
 import Home from '../pages/Home';
-import Book from '../pages/Book'
+import Book from '../pages/Book';
 import Books from '../pages/Books';
 import Authors from '../pages/Authors';
 import Genres from '../pages/Genres';
 import Account from '../pages/Account';
-import ProtectedRoute from '../components/ProtectedRoute';
+import Login from '../pages/Login';
+import Signup from '../pages/Signup';
 
 const router = createBrowserRouter([
   {
@@ -36,11 +37,15 @@ const router = createBrowserRouter([
       },
       {
         path: '/account',
-        element: (
-          <ProtectedRoute>
-            <Account />
-          </ProtectedRoute>
-        ),
+        element: <Account />,
+      },
+      {
+        path: '/account/login',
+        element: <Login />,
+      },
+      {
+        path: '/account/signup',
+        element: <Signup />,
       },
     ],
   },
