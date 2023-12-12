@@ -22,9 +22,7 @@ const accountSlice = createSlice({
     },
     removeBookFromAccountSlice(state, action: PayloadAction<string>) {
       if (state.account?.borrowedBooks) {
-        state.account.borrowedBooks = state.account.borrowedBooks.filter(
-          (book) => book._id !== action.payload
-        );
+        state.account.borrowedBooks = state.account.borrowedBooks.filter((book) => book._id !== action.payload);
       }
     },
     clearAccount(state) {
@@ -48,6 +46,5 @@ const accountSlice = createSlice({
   },
 });
 
-export const { addBookToAccountSlice, removeBookFromAccountSlice, clearAccount } =
-  accountSlice.actions;
+export const { addBookToAccountSlice, removeBookFromAccountSlice, clearAccount } = accountSlice.actions;
 export default accountSlice.reducer;

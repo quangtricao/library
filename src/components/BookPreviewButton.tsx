@@ -4,6 +4,7 @@ import { ChangeEvent } from 'react';
 import { useAppDispatch } from '../redux/hooks';
 import { addBookToBorrow } from '../redux/slices/cartSlice';
 import { changeBookStatusToBorrowed } from '../redux/slices/booksSlice';
+import { getBorrowBookInCartFromLocalStorage } from '../utils/localStorage';
 
 type BookPreviewButtonType = {
   book: BookType;
@@ -11,10 +12,11 @@ type BookPreviewButtonType = {
 };
 
 const BookPreviewButton = ({ book, isLogin }: BookPreviewButtonType) => {
-  // book.borrowerId === user._id
   const dispatch = useAppDispatch();
+  const booksToBorrowInCart = getBorrowBookInCartFromLocalStorage();
+  const borrowed = booksToBorrowInCart.map((book) => book._id).includes(book._id) || book.status === 'borrowed';
 
-  const handleAddBookToReturnCart = (_event: ChangeEvent<unknown>, book: BookType) => {
+  const handleAddBookToCart = (_event: ChangeEvent<unknown>, book: BookType) => {
     dispatch(changeBookStatusToBorrowed(book._id));
     dispatch(addBookToBorrow(book));
   };
@@ -22,21 +24,14 @@ const BookPreviewButton = ({ book, isLogin }: BookPreviewButtonType) => {
   return (
     <Box>
       {isLogin ? (
-        <>
-          {book.status === 'available' ? (
-            <Button
-              variant='contained'
-              fullWidth
-              onClick={(event) => handleAddBookToReturnCart(event, book)}
-            >
-              Borrow
-            </Button>
-          ) : (
-            <Button variant='contained' disabled fullWidth>
-              Borrowed
-            </Button>
-          )}
-        </>
+        <Button
+          variant='contained'
+          disabled={borrowed ? true : false}
+          fullWidth
+          onClick={(event) => handleAddBookToCart(event, book)}
+        >
+          {borrowed ? 'Borrowed' : 'Borrow'}
+        </Button>
       ) : (
         <Button variant='contained' disabled fullWidth>
           Login to borrow

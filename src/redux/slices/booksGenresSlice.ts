@@ -1,6 +1,6 @@
 import { createSlice } from '@reduxjs/toolkit';
 
-import { BooksGenresState } from '../../types/book';
+import { BooksGenresState } from '../../types/booksGenres';
 import { ERROR, IDLE, LOADING } from '../../types/status';
 import { getBooksGenres } from '../../services/booksGenresSlice';
 

@@ -3,19 +3,14 @@ import { Navigate } from 'react-router-dom';
 import { Box, Typography } from '@mui/material';
 
 import { useAppDispatch, useAppSelector } from '../redux/hooks';
-import {
-  addBookToReturn,
-  clearCart,
-  removeBookToBorrow,
-  removeBookToReturn,
-} from '../redux/slices/cartSlice';
+import { addBookToReturn, clearCart, removeBookToBorrow, removeBookToReturn } from '../redux/slices/cartSlice';
 import { changeBookStatusToAvailable } from '../redux/slices/booksSlice';
 import { addBookToAccountSlice, removeBookFromAccountSlice } from '../redux/slices/accountSlice';
 import { getBooks } from '../services/booksService';
 import { borrowBooks, getProfile, returnBooks } from '../services/accountService';
 
 import { BookType } from '../types/book';
-import { getTokenFromLocalStorage } from '../utils/localStorage';
+import { clearCartFromLocalStorage, getTokenFromLocalStorage } from '../utils/localStorage';
 import Checkout from '../components/Checkout';
 import BookBorrowed from '../components/BookBorrowed';
 import BookInCartPreviewType from '../components/BookInCartPreview';
@@ -59,10 +54,23 @@ const Account = () => {
       return;
     }
 
-    await dispatch(borrowBooks({ accountId: account._id, token, booksId: booksToBorrowIdList }));
-    await dispatch(returnBooks({ accountId: account._id, token, booksId: booksToReturnIdList }));
+    await dispatch(
+      borrowBooks({
+        accountId: account._id,
+        token,
+        booksId: booksToBorrowIdList,
+      })
+    );
+    await dispatch(
+      returnBooks({
+        accountId: account._id,
+        token,
+        booksId: booksToReturnIdList,
+      })
+    );
     await dispatch(getProfile(token));
     await dispatch(getBooks({ limit: 8 }));
+    clearCartFromLocalStorage();
     dispatch(clearCart());
   };
 
@@ -83,7 +91,7 @@ const Account = () => {
       <AccountInformation account={account} />
       <BookBorrowed account={account} handleReturnBook={handleReturnBook} />
       <Box>
-        <Typography sx={{ fontSize: '25px', fontWeight: 'bold' }}> Book in Cart</Typography>
+        <Typography sx={{ fontSize: '25px', fontWeight: 'bold' }}>Book in Cart</Typography>
         <BookInCartPreviewType
           status='BooksToBorrow'
           booksInCart={booksToBorrow}
@@ -97,11 +105,7 @@ const Account = () => {
           handleNoReturn={handleNoReturn}
         />
       </Box>
-      <Checkout
-        booksToBorrow={booksToBorrow}
-        booksToReturn={booksToReturn}
-        handleCheckout={handleCheckout}
-      />
+      <Checkout booksToBorrow={booksToBorrow} booksToReturn={booksToReturn} handleCheckout={handleCheckout} />
     </Box>
   );
 };

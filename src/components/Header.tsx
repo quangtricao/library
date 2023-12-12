@@ -19,7 +19,7 @@ import DarkModeIcon from '@mui/icons-material/DarkMode';
 
 import { useAppDispatch, useAppSelector } from '../redux/hooks';
 import { clearAccount } from '../redux/slices/accountSlice';
-import { clearAccountFromLocalStorage, clearTokenFromLocalStorage } from '../utils/localStorage';
+import { clearCartFromLocalStorage, clearTokenAndAccountFromLocalStorage } from '../utils/localStorage';
 
 const settings = [
   { name: 'Profile', path: '/account' },
@@ -30,7 +30,6 @@ const pages = [
   { name: 'Home', path: '/' },
   { name: 'Books', path: '/books' },
   { name: 'Authors', path: '/authors' },
-  { name: 'Genres', path: '/genres' },
 ];
 
 const NotLoggedIn = () => {
@@ -68,8 +67,8 @@ const LoggedIn = () => {
     }
     if (settingName === 'Logout') {
       dispatch(clearAccount());
-      clearTokenFromLocalStorage();
-      clearAccountFromLocalStorage();
+      clearTokenAndAccountFromLocalStorage();
+      clearCartFromLocalStorage();
       navigate('/account/login');
       return;
     }
@@ -78,7 +77,6 @@ const LoggedIn = () => {
 
   return (
     <Box sx={{ display: 'flex', gap: '15px' }}>
-
       <Tooltip title='Open settings'>
         <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
           <Avatar alt='Remy Sharp' src='/static/images/avatar/2.jpg' />
@@ -206,10 +204,7 @@ const Header = () => {
           <Box sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex' } }}>
             {pages.map((page) => (
               <Link to={page.path} key={page.name} style={{ textDecoration: 'none' }}>
-                <Button
-                  onClick={handleCloseNavMenu}
-                  sx={{ my: 2, color: 'white', display: 'block' }}
-                >
+                <Button onClick={handleCloseNavMenu} sx={{ my: 2, color: 'white', display: 'block' }}>
                   {page.name}
                 </Button>
               </Link>

@@ -19,6 +19,13 @@ export type BookType = {
   _id: string;
 };
 
+export type BooksState = {
+  books: BookType[];
+  pagination: PaginationResponse;
+  status: StatusType;
+  error: string | null;
+};
+
 export type BooksResponse = {
   data: {
     books: BookType[];
@@ -40,27 +47,6 @@ export type BooksAuthorsRequest = {
 };
 
 export type BooksGenresRequest = {
-  authorId: string;
+  genreId: string;
   pagination: PaginationRequestParams;
-};
-
-export type BooksState = {
-  books: BookType[];
-  pagination: PaginationResponse;
-  status: StatusType;
-  error: string | null;
-};
-
-export type BooksAuthorsState = {
-  books: BookType[];
-  pagination: PaginationResponse;
-  status: StatusType;
-  error: string | null;
-};
-
-export type BooksGenresState = {
-  books: BookType[];
-  pagination: PaginationResponse;
-  status: StatusType;
-  error: string | null;
 };

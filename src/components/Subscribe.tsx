@@ -5,8 +5,8 @@ const Subscribe = () => {
     <Box
       sx={{
         width: '100%',
-        height: '300px',
-        backgroundColor: '#58db7b',
+        height: '200px',
+        backgroundColor: 'primary.dark',
         color: 'white',
         display: 'flex',
         alignItems: 'center',
@@ -22,12 +22,10 @@ const Subscribe = () => {
           alignItems: 'center',
         }}
       >
-        <Typography sx={{ fontSize: '35px', maxWidth: '500px' }}>
-          Subcribe our newsletter for newest books updates
-        </Typography>
+        <Typography sx={{ fontSize: '30px', maxWidth: '500px' }}>Subcribe our newsletter</Typography>
         <Box sx={{ display: 'flex', alignItems: 'centers', gap: '10px' }}>
-          <TextField id='outlined-basic' label='Type your email here' sx={{ color: 'white' }} />
-          <Button variant='contained' sx={{ fontSize: '20px', color: 'white' }}>
+          <TextField id='outlined-basic' label='Type your email here' sx={{ width: '400px' }} />
+          <Button variant='contained' sx={{ fontSize: '18px' }}>
             Subscribe
           </Button>
         </Box>

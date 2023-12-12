@@ -5,19 +5,18 @@ import { API_URL } from '../config/api';
 import { BooksResponse, SingleBookResponse, BookType } from '../types/book';
 import { PaginationRequestParams } from '../types/pagination';
 
-export const getBooks = createAsyncThunk<
-  BooksResponse,
-  PaginationRequestParams,
-  { rejectValue: string }
->('books/getBooks', async ({ page = 1, limit = 6 }, { rejectWithValue }) => {
-  try {
-    const response = await axios.get(`${API_URL}/books?page=${page}&limit=${limit}`);
-    return response.data;
-  } catch (err) {
-    const error = err as Error | AxiosError;
-    return rejectWithValue(error.message);
+export const getBooks = createAsyncThunk<BooksResponse, PaginationRequestParams, { rejectValue: string }>(
+  'books/getBooks',
+  async ({ page = 1, limit = 6 }, { rejectWithValue }) => {
+    try {
+      const response = await axios.get(`${API_URL}/books?page=${page}&limit=${limit}`);
+      return response.data;
+    } catch (err) {
+      const error = err as Error | AxiosError;
+      return rejectWithValue(error.message);
+    }
   }
-});
+);
 
 export const getSingleBook = createAsyncThunk<SingleBookResponse, string, { rejectValue: string }>(
   'books/getSingleBook',
@@ -32,7 +31,7 @@ export const getSingleBook = createAsyncThunk<SingleBookResponse, string, { reje
   }
 );
 
-export const updateBook = createAsyncThunk<SingleBookResponse, BookType, { rejectValue: string }>(
+export const updateSingleBook = createAsyncThunk<SingleBookResponse, BookType, { rejectValue: string }>(
   'books/updateBooks',
   async (newBook, { rejectWithValue }) => {
     try {
@@ -45,7 +44,7 @@ export const updateBook = createAsyncThunk<SingleBookResponse, BookType, { rejec
   }
 );
 
-export const deleteBook = createAsyncThunk<void, string, { rejectValue: string }>(
+export const deleteSingleBook = createAsyncThunk<void, string, { rejectValue: string }>(
   'books/deleteBook',
   async (isbn, { rejectWithValue }) => {
     try {

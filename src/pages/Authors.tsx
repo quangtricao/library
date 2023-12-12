@@ -6,6 +6,7 @@ import { getAuthors } from '../services/authorsService';
 import { getBooksAuthors } from '../services/booksAuthorsService';
 
 import { IDLE } from '../types/status';
+import BookPreview from '../components/BookPreview';
 
 const Authors = () => {
   const dispatch = useAppDispatch();
@@ -32,64 +33,56 @@ const Authors = () => {
   };
 
   const handleBooksAuthorsFetch = (_event: React.ChangeEvent<unknown>, authorId: string) => {
-    console.log(authorId);
-
     dispatch(getBooksAuthors({ authorId, pagination: {} }));
   };
 
-  const handleBooksAuthorsLocalPageChange = (_event: React.ChangeEvent<unknown>, value: number) => {
-    dispatch(getBooksAuthors({ authorId: '123', pagination: { page: value, limit: 6 } }));
+  const handleBooksAuthorsLocalPageChange = (_event: React.ChangeEvent<unknown>, value: number, authorId: string) => {
+    dispatch(getBooksAuthors({ authorId, pagination: { page: value, limit: 6 } }));
     setBooksAuthorsLocalPage(value);
   };
 
   return (
-    <Box sx={{ maxWidth: '80%', marginX: 'auto' }}>
+    <Box sx={{ maxWidth: '80%', marginX: 'auto', marginY: '100px' }}>
       <Box>
-        <Grid container spacing={5} columns={5} sx={{ marginTop: '30px' }}>
+        <Grid container spacing={5} columns={5}>
           {authors.map((author) => (
             <Grid key={author._id} item xs={1}>
-              <Box
-                sx={{
-                  borderRadius: '75px',
-                  height: '150px',
-                  width: '150px',
-                  backgroundColor: 'red',
-                  backgroundImage: `url("https://picsum.photos/150")`,
-                }}
-              ></Box>
-              <Button onClick={(event) => handleBooksAuthorsFetch(event, author._id)}>
-                {author.name}
-              </Button>
+              <img
+                src={author.image}
+                alt={`Author ${author.name}`}
+                style={{ height: '200px', width: '200px', objectFit: 'cover', borderRadius: '100px' }}
+              />
+              <Button onClick={(event) => handleBooksAuthorsFetch(event, author._id)}>{author.name}</Button>
             </Grid>
           ))}
         </Grid>
         <Stack spacing={2}>
-          <Pagination
-            count={authorTotalPage}
-            page={booksLocalPage}
-            onChange={handleBooksLocalPageChange}
-          />
+          <Pagination count={authorTotalPage} page={booksLocalPage} onChange={handleBooksLocalPageChange} />
         </Stack>
       </Box>
 
-      <Box sx={{ marginTop: '30px' }}>
-        <Grid container spacing={5} columns={5} sx={{ marginTop: '30px' }}>
-          {booksAuthors.length === 0
-            ? 'No Book'
-            : booksAuthors.map((book) => (
-                <Grid key={book._id} item xs={1}>
-                  {book.title}
-                </Grid>
-              ))}
-        </Grid>
-        <Stack spacing={2}>
-          <Pagination
-            count={booksAuthorsTotalPage}
-            page={booksAuthorsLocalPage}
-            onChange={handleBooksAuthorsLocalPageChange}
-          />
-        </Stack>
-      </Box>
+      {booksAuthors.length === 0 ? (
+        <Box sx={{ marginTop: '50px', minHeight: '500px' }}></Box>
+      ) : (
+        <Box sx={{ marginTop: '50px' }}>
+          <Grid container columns={4} sx={{ marginTop: '30px' }}>
+            {booksAuthors.map((book) => (
+              <Grid key={book._id} item xs={1} sx={{ padding: '50px' }}>
+                <BookPreview book={book} imgHeight='400px' />
+              </Grid>
+            ))}
+          </Grid>
+          <Stack spacing={2}>
+            <Pagination
+              count={booksAuthorsTotalPage}
+              page={booksAuthorsLocalPage}
+              onChange={(event) =>
+                handleBooksAuthorsLocalPageChange(event, booksAuthorsLocalPage, booksAuthors[0].authors[0]._id)
+              }
+            />
+          </Stack>
+        </Box>
+      )}
     </Box>
   );
 };

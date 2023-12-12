@@ -23,7 +23,7 @@ const BookPreview = ({ book, imgHeight }: BookPreviewType) => {
       </Link>
       <Link to={`/books/${book.isbn}`} style={{ textDecoration: 'none' }}>
         <Box sx={{ fontWeight: 'bold', color: 'primary.main' }}>
-          {book.title.length < 20 ? book.title : book.title.slice(0, 20) + '...'}
+          {book.title.length < 30 ? book.title : book.title.slice(0, 30) + '...'}
         </Box>
       </Link>
     </Box>

@@ -31,7 +31,7 @@ const BookInCartPreview = ({
           <Grid container columns={5}>
             {booksInCart.map((book) => (
               <Grid key={book._id} item xs={1} sx={{ padding: '10px' }}>
-                <BookPreview book={book} imgHeight='250px' />
+                <BookPreview book={book} imgHeight='350px' />
 
                 {status === 'BooksToBorrow' ? (
                   <Button

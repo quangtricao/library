@@ -6,7 +6,6 @@ import { CartState } from '../../types/cart';
 const initialState: CartState = {
   booksToBorrow: [],
   booksToReturn: [],
-  error: null,
 };
 
 const cartSlice = createSlice({
@@ -32,11 +31,6 @@ const cartSlice = createSlice({
   },
 });
 
-export const {
-  addBookToBorrow,
-  addBookToReturn,
-  removeBookToBorrow,
-  removeBookToReturn,
-  clearCart,
-} = cartSlice.actions;
+export const { addBookToBorrow, addBookToReturn, removeBookToBorrow, removeBookToReturn, clearCart } =
+  cartSlice.actions;
 export default cartSlice.reducer;

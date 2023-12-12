@@ -2,7 +2,7 @@ import { PayloadAction, createSlice } from '@reduxjs/toolkit';
 
 import { BooksState } from '../../types/book';
 import { ERROR, IDLE, LOADING } from '../../types/status';
-import { getBooks } from '../../services/booksService';
+import { getBooks, updateSingleBook } from '../../services/booksService';
 
 const initialState: BooksState = {
   books: [],
@@ -19,14 +19,10 @@ const booksSlice = createSlice({
   initialState,
   reducers: {
     changeBookStatusToBorrowed(state, action: PayloadAction<string>) {
-      state.books = state.books.map((book) =>
-        book._id === action.payload ? { ...book, status: 'borrowed' } : book
-      );
+      state.books = state.books.map((book) => (book._id === action.payload ? { ...book, status: 'borrowed' } : book));
     },
     changeBookStatusToAvailable(state, action: PayloadAction<string>) {
-      state.books = state.books.map((book) =>
-        book._id === action.payload ? { ...book, status: 'available' } : book
-      );
+      state.books = state.books.map((book) => (book._id === action.payload ? { ...book, status: 'available' } : book));
     },
   },
   extraReducers: (builder) => {
@@ -39,6 +35,19 @@ const booksSlice = createSlice({
       state.status = payload.status;
     });
     builder.addCase(getBooks.rejected, (state, action) => {
+      if (action.payload) {
+        state.status = ERROR;
+        state.error = action.payload;
+      }
+    });
+    builder.addCase(updateSingleBook.pending, (state) => {
+      state.status = LOADING;
+    });
+    builder.addCase(updateSingleBook.fulfilled, (state, { payload }) => {
+      state.books = state.books.map((book) => (book._id === payload.data._id ? payload.data : book));
+      state.status = payload.status;
+    });
+    builder.addCase(updateSingleBook.rejected, (state, action) => {
       if (action.payload) {
         state.status = ERROR;
         state.error = action.payload;

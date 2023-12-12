@@ -1,6 +1,6 @@
 import { createSlice } from '@reduxjs/toolkit';
 
-import { BooksAuthorsState } from '../../types/book';
+import { BooksAuthorsState } from '../../types/booksAuthors';
 import { ERROR, IDLE, LOADING } from '../../types/status';
 import { getBooksAuthors } from '../../services/booksAuthorsService';
 

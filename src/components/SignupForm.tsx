@@ -44,14 +44,7 @@ const SignUpForm = ({ handleSetForm, handleSignup }: LoginFormProps) => {
       <Box component='form' noValidate onSubmit={handleSubmit} sx={{ mt: 3 }}>
         <Grid container spacing={2}>
           <Grid item xs={12} sm={6}>
-            <TextField
-              autoFocus
-              required
-              fullWidth
-              id='firstName'
-              label='First Name'
-              name='firstName'
-            />
+            <TextField autoFocus required fullWidth id='firstName' label='First Name' name='firstName' />
           </Grid>
           <Grid item xs={12} sm={6}>
             <TextField required fullWidth id='lastName' label='Last Name' name='lastName' />
@@ -60,14 +53,7 @@ const SignUpForm = ({ handleSetForm, handleSignup }: LoginFormProps) => {
             <TextField required fullWidth id='email' label='Email Address' name='email' />
           </Grid>
           <Grid item xs={12}>
-            <TextField
-              required
-              fullWidth
-              name='password'
-              label='Password'
-              type='password'
-              id='password'
-            />
+            <TextField required fullWidth name='password' label='Password' type='password' id='password' />
           </Grid>
           <Grid item xs={12}>
             <TextField required fullWidth name='image' label='image' id='image' />

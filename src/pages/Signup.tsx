@@ -18,9 +18,7 @@ const Signup = () => {
   const handleSignup = async ({ email, password, image, firstName, lastName }: SignupRequest) => {
     console.log({ email, password, image, firstName, lastName });
 
-    const response = await dispatch(
-      signup({ email, password, image, firstName, lastName })
-    ).unwrap();
+    const response = await dispatch(signup({ email, password, image, firstName, lastName })).unwrap();
     if (typeof response === 'string') {
       console.log(response);
       return;

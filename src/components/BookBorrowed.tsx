@@ -24,7 +24,7 @@ const BookBorrowed = ({ account, handleReturnBook }: BookBorrowedType) => {
           <Grid container columns={5}>
             {account.borrowedBooks.map((book) => (
               <Grid key={book._id} item xs={1} sx={{ padding: '10px' }}>
-                <BookPreview book={book} imgHeight='250px' />
+                <BookPreview book={book} imgHeight='350px' />
                 <Button
                   variant='contained'
                   color='warning'

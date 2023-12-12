@@ -10,7 +10,15 @@ import booksGenresReducer from './slices/booksGenresSlice';
 
 import { IDLE } from '../types/status';
 import { AccountState } from '../types/account';
-import { getAccountFromLocalStorage, saveAccountToLocalStorage } from '../utils/localStorage';
+import {
+  getAccountFromLocalStorage,
+  getBorrowBookInCartFromLocalStorage,
+  getReturnBookInCartFromLocalStorage,
+  saveAccountToLocalStorage,
+  saveBorrowBookInCartToLocalStorage,
+  saveReturnBookInCartToLocalStorage,
+} from '../utils/localStorage';
+import { CartState } from '../types/cart';
 
 const preLoadedAccountReducer: AccountState = {
   account: getAccountFromLocalStorage(),
@@ -18,8 +26,17 @@ const preLoadedAccountReducer: AccountState = {
   error: null,
 };
 
+const preLoadedCartReducer: CartState = {
+  booksToBorrow: getBorrowBookInCartFromLocalStorage(),
+  booksToReturn: getReturnBookInCartFromLocalStorage(),
+};
+
 const updateLocalStorage = () => {
   const updatedAccount = store.getState().account.account;
+  const updatedBorrowBooksInCart = store.getState().cart.booksToBorrow;
+  const updatedReturnBooksInCart = store.getState().cart.booksToReturn;
+  saveBorrowBookInCartToLocalStorage(updatedBorrowBooksInCart);
+  saveReturnBookInCartToLocalStorage(updatedReturnBooksInCart);
   saveAccountToLocalStorage(updatedAccount);
 };
 
@@ -36,6 +53,7 @@ export const createStore = () =>
     },
     preloadedState: {
       account: preLoadedAccountReducer,
+      cart: preLoadedCartReducer,
     },
   });
 

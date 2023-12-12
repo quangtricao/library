@@ -1,5 +1,5 @@
 import { useState, ChangeEvent, useEffect } from 'react';
-import { Box, Checkbox, Grid, Typography, Pagination, Stack, Button } from '@mui/material';
+import { Box, Checkbox, Grid, Typography, Pagination, Stack, Button, TextField } from '@mui/material';
 
 import { useAppDispatch, useAppSelector } from '../redux/hooks';
 import { getBooks } from '../services/booksService';
@@ -50,13 +50,13 @@ const Books = () => {
   return (
     <Box sx={{ maxWidth: '80%', marginX: 'auto', marginY: '50px' }}>
       <Box sx={{ display: 'flex' }}>
-        <Box sx={{ width: '20%', display: 'flex', flexDirection: 'column', gap: '10px' }}>
+        <Box sx={{ width: '20%', display: 'flex', flexDirection: 'column', gap: '15px' }}>
           <Typography sx={{ fontSize: '30px' }}>Filter</Typography>
-
+          <TextField label='Book title' size='small' sx={{ width: '80%' }} variant='outlined'></TextField>
           <Box>
-            <Typography>Genres</Typography>
+            <Typography sx={{ fontWeight: 'bold' }}>Genres</Typography>
             {genres.map((genre) => (
-              <Box key={genre._id}>
+              <Box key={genre._id} sx={{ fontSize: '15px' }}>
                 <Checkbox /> {genre.title}
               </Box>
             ))}
@@ -66,10 +66,10 @@ const Books = () => {
           </Box>
           <Box>
             <Typography>Book Status</Typography>
-            <Box>
+            <Box sx={{ fontSize: '15px' }}>
               <Checkbox /> Borrowed
             </Box>
-            <Box>
+            <Box sx={{ fontSize: '15px' }}>
               <Checkbox /> Available
             </Box>
           </Box>
