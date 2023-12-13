@@ -2,12 +2,13 @@ import { useEffect, useState } from 'react';
 import { Box, Button, Grid, Pagination, Stack } from '@mui/material';
 
 import { useAppDispatch, useAppSelector } from '../redux/hooks';
-import { getAuthors } from '../services/authorsService';
+import { getAuthors, getSingleAuthor } from '../services/authorsService';
 import { getBooksAuthors } from '../services/booksAuthorsService';
 
 import { IDLE, LOADING } from '../types/status';
 import BookPreview from '../components/BookPreview';
 import Loading from '../components/Loading';
+import { AuthorType } from '../types/author';
 
 const Authors = () => {
   const dispatch = useAppDispatch();
@@ -18,6 +19,7 @@ const Authors = () => {
   const booksAuthors = useAppSelector((state) => state.booksAuthors.books);
   const booksAuthorsTotalPage = useAppSelector((state) => state.booksAuthors.pagination.totalPages);
 
+  const [singleAuthor, setSingleAuthor] = useState<AuthorType | null>(null);
   const [authorsLocalPage, setBooksLocalPage] = useState<number>(1);
   const [booksAuthorsLocalPage, setBooksAuthorsLocalPage] = useState<number>(1);
 
@@ -35,6 +37,9 @@ const Authors = () => {
 
   const handleBooksAuthorsFetch = (_event: React.ChangeEvent<unknown>, authorId: string) => {
     dispatch(getBooksAuthors({ authorId, pagination: { limit: 4 } }));
+    dispatch(getSingleAuthor(authorId))
+      .unwrap()
+      .then((response) => setSingleAuthor(response.data));
   };
 
   const handleBooksAuthorsLocalPageChange = (_event: React.ChangeEvent<unknown>, value: number) => {
@@ -65,6 +70,12 @@ const Authors = () => {
           <Pagination count={authorTotalPage} page={authorsLocalPage} onChange={handleBooksLocalPageChange} />
         </Stack>
       </Box>
+
+      {singleAuthor ? (
+        <Box sx={{ maxWidth: '50%', marginX: 'auto' }}>
+          {singleAuthor.bio} <Box sx={{ marginTop: '20px' }}>Some featured books of {singleAuthor.name} are:</Box>
+        </Box>
+      ) : null}
 
       {booksAuthors.length === 0 ? (
         <Box sx={{ marginTop: '50px', minHeight: '500px' }}></Box>

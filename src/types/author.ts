@@ -18,6 +18,12 @@ export type AuthorsResponse = {
   status: StatusType;
 };
 
+export type SingleAuthorResponse = {
+  data: AuthorType;
+} & {
+  status: StatusType;
+};
+
 export type AuthorsState = {
   authors: AuthorType[];
   pagination: PaginationResponse;
