@@ -1,53 +1,120 @@
-# Front-end Project for Full-stack
-
 ![React](https://img.shields.io/badge/React-v.18-blue)
 ![Redux toolkit](https://img.shields.io/badge/RTK-v.1-purple)
-![TypeScript](https://img.shields.io/badge/TypeScript-v.4-green)
-![SASS](https://img.shields.io/badge/SASS-v.1-hotpink)
+![MUI](https://img.shields.io/badge/MUI-v.5-blue)
+![TypeScript](https://img.shields.io/badge/TypeScript-v.4-blue)
 
-This project requires implementation of TypeScript and SASS.
+# Introduction
 
-## Requirement
+Frontend of an online library platform. Visit the website [here](https://cqtri-fsproject.netlify.app/).
 
-1. Use the API endpoint from your backend project to create an e-commerce website.
-2. Create at lease 4 pages (can be more if you want): Page for all products, product page,
-   profile page (only available if user logins), and cart page (cart page could be a page or a modal)
-3. Create Redux store for following features:
-   - product reducer: get all products, find a single products, filter products by
-     categories, sort products by price. Create, update and delete a product (enable update & delete features only for admin of the webapp)
-   - user reducer: register and login
-   - cart reducer: add product to cart, remove products, update products's quantity in cart
-4. When adding routers to your application, programatically set certain routes to be private. For example, route to user profile page should not be accessible if user has not logged in.
-5. Implement unit testing for the reducers
-6. Deploy the application and rewrite README file.
+## Table of contents
 
-## Bonus
+- [Architecture](#architecture)
+- [Technologies](#technologies)
+- [Getting started](#getting-started)
+- [Project structure](#project-structure)
 
-1. Use context API to switch theme
-2. Use pagination when fetching/displaying all the products
-3. Implement performance optimization where applicable
+## Architecture
 
-## Instruction to start the project
 
-In the project directory, you can run:
 
-### `npm install`
+## Technologies
 
-Install all the dependencies
+- Typescript
+- React
+- Redux (Redux Toolkit)
+- React Router
+- Material UI
 
-### `npm start`
+## Getting started
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+1. Clone the repository: `git clone https://github.com/quangtricao/fs16-front-end-FS.git`
+2. Install project dependencies: `npm install`
+3. Run in development environment: `npm start`
 
-The page will reload if you make edits.\
-You will also see any lint errors in the console.
+Or visit the deployed [website](https://cqtri-fsproject.netlify.app/).
 
-### `npm test`
+## Project structure
 
-Launches the test runner in the interactive watch mode
+```console
+.
+├── README.md
+├── package-lock.json
+├── package.json
+├── public
+│   ├── _redirects
+│   ├── index.html
+│   └── library.ico
+├── src
+│   ├── App.tsx
+│   ├── assets
+│   │   └── images
+│   │       └── library.jpg
+│   ├── components
+│   │   ├── AccountInformation.tsx
+│   │   ├── BookBorrowed.tsx
+│   │   ├── BookInCartPreview.tsx
+│   │   ├── BookPreview.tsx
+│   │   ├── BookPreviewButton.tsx
+│   │   ├── BooksTrending.tsx
+│   │   ├── Checkout.tsx
+│   │   ├── Footer.tsx
+│   │   ├── Header.tsx
+│   │   ├── Introduction.tsx
+│   │   ├── Layout.tsx
+│   │   ├── Loading.tsx
+│   │   ├── LoginForm.tsx
+│   │   ├── Service.tsx
+│   │   ├── SignupForm.tsx
+│   │   └── Subscribe.tsx
+│   ├── config
+│   │   ├── api.ts
+│   │   ├── router.tsx
+│   │   └── theme.ts
+│   ├── index.tsx
+│   ├── pages
+│   │   ├── Account.tsx
+│   │   ├── AccountEdit.tsx
+│   │   ├── Authors.tsx
+│   │   ├── Book.tsx
+│   │   ├── BookEdit.tsx
+│   │   ├── Books.tsx
+│   │   ├── Home.tsx
+│   │   ├── Login.tsx
+│   │   └── Signup.tsx
+│   ├── react-app-env.d.ts
+│   ├── redux
+│   │   ├── hooks.ts
+│   │   ├── slices
+│   │   │   ├── accountSlice.ts
+│   │   │   ├── authorsSlice.ts
+│   │   │   ├── booksAuthorsSlice.ts
+│   │   │   ├── booksGenresSlice.ts
+│   │   │   ├── booksSlice.ts
+│   │   │   ├── cartSlice.ts
+│   │   │   └── genresSlice.ts
+│   │   └── store.ts
+│   ├── services
+│   │   ├── accountService.ts
+│   │   ├── authorsService.ts
+│   │   ├── booksAuthorsService.ts
+│   │   ├── booksGenresSlice.ts
+│   │   ├── booksService.ts
+│   │   └── genresService.ts
+│   ├── setupTests.ts
+│   ├── types
+│   │   ├── account.ts
+│   │   ├── author.ts
+│   │   ├── book.ts
+│   │   ├── booksAuthors.ts
+│   │   ├── booksGenres.ts
+│   │   ├── cart.ts
+│   │   ├── genre.ts
+│   │   ├── pagination.ts
+│   │   └── status.ts
+│   └── utils
+│       └── localStorage.ts
+└── tsconfig.json
 
-### `npm run build`
-
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+12 directories, 65 files
+```
