@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useContext, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import {
   AppBar,
@@ -20,6 +20,7 @@ import DarkModeIcon from '@mui/icons-material/DarkMode';
 import { useAppDispatch, useAppSelector } from '../redux/hooks';
 import { clearAccount } from '../redux/slices/accountSlice';
 import { clearCartFromLocalStorage, clearTokenAndAccountFromLocalStorage } from '../utils/localStorage';
+import { AppContext } from '../App';
 
 const settings = [
   { name: 'Profile', path: '/account' },
@@ -112,9 +113,9 @@ const LoggedIn = () => {
 
 const Header = () => {
   const account = useAppSelector((state) => state.account.account);
+  const { theme, setTheme } = useContext(AppContext);
 
   const [anchorElNav, setAnchorElNav] = useState<null | HTMLElement>(null);
-  const [theme, changeTheme] = useState<boolean>(true);
 
   const handleOpenNavMenu = (event: React.MouseEvent<HTMLElement>) => {
     setAnchorElNav(event.currentTarget);
@@ -212,7 +213,7 @@ const Header = () => {
           </Box>
 
           <Tooltip title={theme ? 'Dark theme' : 'Light theme'} sx={{ marginX: '10px' }}>
-            <IconButton onClick={() => changeTheme(!theme)}>{theme ? <DarkModeIcon /> : <LightModeIcon />}</IconButton>
+            <IconButton onClick={() => setTheme(!theme)}>{theme ? <DarkModeIcon /> : <LightModeIcon />}</IconButton>
           </Tooltip>
           {account ? <LoggedIn /> : <NotLoggedIn />}
         </Toolbar>

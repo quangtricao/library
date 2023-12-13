@@ -1,12 +1,16 @@
 import { Box, TextField, Button, Typography } from '@mui/material';
+import { AppContext } from '../App';
+import { useContext } from 'react';
 
 const Subscribe = () => {
+  const { theme } = useContext(AppContext);
+
   return (
     <Box
       sx={{
         width: '100%',
         height: '200px',
-        backgroundColor: 'primary.dark',
+        backgroundColor: `${theme ? '#4ff07a' : '#174223'}`,
         color: 'white',
         display: 'flex',
         alignItems: 'center',

@@ -3,8 +3,12 @@ import WatchLaterRoundedIcon from '@mui/icons-material/WatchLaterRounded';
 import CreditScoreIcon from '@mui/icons-material/CreditScore';
 import EmojiEventsIcon from '@mui/icons-material/EmojiEvents';
 import SecurityIcon from '@mui/icons-material/Security';
+import { useContext } from 'react';
+import { AppContext } from '../App';
 
 const Service = () => {
+  const { theme } = useContext(AppContext);
+
   const aboutList = [
     {
       name: 'Quick Delivery',
@@ -30,7 +34,7 @@ const Service = () => {
         width: '100%',
         height: '200px',
         marginTop: '50px',
-        backgroundColor: '#edfff2',
+        backgroundColor: `${theme ? '#edfff2' : '#105e25'}`,
         display: 'flex',
         paddingX: '10%',
         justifyContent: 'space-between',

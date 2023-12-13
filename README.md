@@ -57,6 +57,8 @@ Or visit the deployed [website](https://cqtri-fsproject.netlify.app/).
 │   │   ├── BookPreview.tsx
 │   │   ├── BookPreviewButton.tsx
 │   │   ├── BooksTrending.tsx
+│   │   ├── CheckAdmin.tsx
+│   │   ├── CheckLogin.tsx
 │   │   ├── Checkout.tsx
 │   │   ├── Footer.tsx
 │   │   ├── Header.tsx
@@ -69,8 +71,7 @@ Or visit the deployed [website](https://cqtri-fsproject.netlify.app/).
 │   │   └── Subscribe.tsx
 │   ├── config
 │   │   ├── api.ts
-│   │   ├── router.tsx
-│   │   └── theme.ts
+│   │   └── router.tsx
 │   ├── index.tsx
 │   ├── pages
 │   │   ├── Account.tsx
@@ -116,5 +117,5 @@ Or visit the deployed [website](https://cqtri-fsproject.netlify.app/).
 │       └── localStorage.ts
 └── tsconfig.json
 
-12 directories, 65 files
+12 directories, 66 files
 ```
