@@ -10,6 +10,8 @@ import Login from '../pages/Login';
 import Signup from '../pages/Signup';
 import BookEdit from '../pages/BookEdit';
 import AccountEdit from '../pages/AccountEdit';
+import ProtectedRoute from '../components/CheckLogin';
+import CheckAdmin from '../components/CheckAdmin';
 
 const router = createBrowserRouter([
   {
@@ -30,7 +32,13 @@ const router = createBrowserRouter([
       },
       {
         path: '/books/:isbn/edit',
-        element: <BookEdit />,
+        element: (
+          <ProtectedRoute>
+            <CheckAdmin>
+              <BookEdit />
+            </CheckAdmin>
+          </ProtectedRoute>
+        ),
       },
       {
         path: '/authors',
@@ -38,11 +46,21 @@ const router = createBrowserRouter([
       },
       {
         path: '/account',
-        element: <Account />,
+        element: (
+          <ProtectedRoute>
+            <Account />
+          </ProtectedRoute>
+        ),
       },
       {
         path: '/account/:id/edit',
-        element: <AccountEdit />,
+        element: (
+          <ProtectedRoute>
+            <CheckAdmin>
+              <AccountEdit />
+            </CheckAdmin>
+          </ProtectedRoute>
+        ),
       },
       {
         path: '/account/login',
