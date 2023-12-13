@@ -14,10 +14,14 @@ const initialState: BooksAuthorsState = {
   error: null,
 };
 
-const booksSlice = createSlice({
+const booksAuthorsSlice = createSlice({
   name: 'booksAuthors',
   initialState,
-  reducers: {},
+  reducers: {
+    clearBooksAuthors(state) {
+      state.books = [];
+    },
+  },
   extraReducers: (builder) => {
     builder.addCase(getBooksAuthors.pending, (state) => {
       state.status = LOADING;
@@ -36,4 +40,5 @@ const booksSlice = createSlice({
   },
 });
 
-export default booksSlice.reducer;
+export const { clearBooksAuthors } = booksAuthorsSlice.actions;
+export default booksAuthorsSlice.reducer;

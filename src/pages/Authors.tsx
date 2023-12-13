@@ -9,6 +9,7 @@ import { IDLE, LOADING } from '../types/status';
 import BookPreview from '../components/BookPreview';
 import Loading from '../components/Loading';
 import { AuthorType } from '../types/author';
+import { clearBooksAuthors } from '../redux/slices/booksAuthorsSlice';
 
 const Authors = () => {
   const dispatch = useAppDispatch();
@@ -24,6 +25,7 @@ const Authors = () => {
   const [booksAuthorsLocalPage, setBooksAuthorsLocalPage] = useState<number>(1);
 
   useEffect(() => {
+    dispatch(clearBooksAuthors());
     if (authorStatus === IDLE) {
       dispatch(getAuthors({ limit: 5 }));
     }

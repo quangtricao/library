@@ -14,7 +14,7 @@ const initialState: BooksGenresState = {
   error: null,
 };
 
-const booksSlice = createSlice({
+const booksGenresSlice = createSlice({
   name: 'booksGenres',
   initialState,
   reducers: {},
@@ -36,4 +36,4 @@ const booksSlice = createSlice({
   },
 });
 
-export default booksSlice.reducer;
+export default booksGenresSlice.reducer;
