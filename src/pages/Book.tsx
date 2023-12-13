@@ -1,5 +1,5 @@
 import { ChangeEvent, useEffect, useState } from 'react';
-import { useParams } from 'react-router-dom';
+import { Link, useParams } from 'react-router-dom';
 import { Box, Button, Typography } from '@mui/material';
 
 import { useAppDispatch, useAppSelector } from '../redux/hooks';
@@ -9,6 +9,7 @@ import { BookType } from '../types/book';
 import { getBorrowBookInCartFromLocalStorage } from '../utils/localStorage';
 import { changeBookStatusToBorrowed } from '../redux/slices/booksSlice';
 import { addBookToBorrow } from '../redux/slices/cartSlice';
+import Loading from '../components/Loading';
 
 const Book = () => {
   const dispatch = useAppDispatch();
@@ -36,7 +37,7 @@ const Book = () => {
   };
 
   if (!book) {
-    return null;
+    return <Loading />;
   }
 
   return (
@@ -128,7 +129,7 @@ const Book = () => {
           <Button
             variant='contained'
             disabled={
-              booksToBorrowInCart.map((book) => book._id).includes(book._id) || book.status === 'borrowed'
+              booksToBorrowInCart.map((book) => book._id).includes(book._id) || book.status === 'borrowed' || !account
                 ? true
                 : false
             }
@@ -138,9 +139,12 @@ const Book = () => {
               ? 'Borrowed'
               : 'Borrow'}
           </Button>
-          <Button variant='contained' color='warning' disabled={account?.role === 'ADMIN' ? false : true}>
-            Edit
-          </Button>
+          <Link to={`/books/${book.isbn}/edit`}>
+            <Button variant='contained' color='warning' disabled={account?.role === 'ADMIN' ? false : true}>
+              Edit
+            </Button>
+          </Link>
+
           <Button variant='contained' color='error' disabled={account?.role === 'ADMIN' ? false : true}>
             Delete
           </Button>

@@ -1,5 +1,6 @@
-import { Box } from '@mui/material';
+import { Box, Button } from '@mui/material';
 import { AccountType } from '../types/account';
+import { Link } from 'react-router-dom';
 
 type AccountInformationType = {
   account: AccountType;
@@ -7,18 +8,21 @@ type AccountInformationType = {
 
 const AccountInformation = ({ account }: AccountInformationType) => {
   return (
-    <Box sx={{ display: 'flex', justifyContent: 'center' }}>
+    <Box sx={{ display: 'flex', flexDirection: 'column', width: 'fit-content', marginX: 'auto' }}>
       <img
         src={account.image}
         alt={`Avatar of ${account.firstName}`}
-        style={{ width: '300px', borderRadius: '30px' }}
+        style={{ width: '200px', borderRadius: '100px' }}
       />
-      <Box sx={{ display: 'flex', flexDirection: 'column' }}>
-        <Box>{account.firstName}</Box>
-        <Box>{account.lastName}</Box>
-        <Box>{account.email}</Box>
-        <Box>{account.role}</Box>
+      <Box>
+        {account.firstName.toUpperCase()} {account.lastName.toUpperCase()}
       </Box>
+      <Box></Box>
+      <Box>Email: {account.email}</Box>
+      <Box>Role: {account.role.toLowerCase()}</Box>
+      <Link to={`/account/${account._id}/edit`}>
+        <Button>Update account</Button>
+      </Link>
     </Box>
   );
 };

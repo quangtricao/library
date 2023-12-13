@@ -19,6 +19,17 @@ export type BookType = {
   _id: string;
 };
 
+export type BookDTO = {
+  isbn: string;
+  title: string;
+  image: string;
+  publisher: string;
+  publishedYear: number;
+  status: 'available' | 'borrowed';
+  authors: AuthorType[];
+  genres: GenreType[];
+};
+
 export type BooksState = {
   books: BookType[];
   pagination: PaginationResponse;
@@ -50,3 +61,8 @@ export type BooksGenresRequest = {
   genreId: string;
   pagination: PaginationRequestParams;
 };
+
+export type SingleBookRequest = {
+  token: string,
+  book: BookDTO
+}

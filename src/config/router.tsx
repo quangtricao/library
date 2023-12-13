@@ -8,6 +8,8 @@ import Authors from '../pages/Authors';
 import Account from '../pages/Account';
 import Login from '../pages/Login';
 import Signup from '../pages/Signup';
+import BookEdit from '../pages/BookEdit';
+import AccountEdit from '../pages/AccountEdit';
 
 const router = createBrowserRouter([
   {
@@ -27,12 +29,20 @@ const router = createBrowserRouter([
         element: <Book />,
       },
       {
+        path: '/books/:isbn/edit',
+        element: <BookEdit />,
+      },
+      {
         path: '/authors',
         element: <Authors />,
       },
       {
         path: '/account',
         element: <Account />,
+      },
+      {
+        path: '/account/:id/edit',
+        element: <AccountEdit />,
       },
       {
         path: '/account/login',

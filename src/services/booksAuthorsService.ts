@@ -6,7 +6,7 @@ import { BooksAuthorsRequest, BooksResponse } from '../types/book';
 
 export const getBooksAuthors = createAsyncThunk<BooksResponse, BooksAuthorsRequest, { rejectValue: string }>(
   'booksAuthors/getBooksAuthors',
-  async ({ authorId, pagination: { page = 1, limit = 6 } }, { rejectWithValue }) => {
+  async ({ authorId, pagination: { page = 1, limit = 8 } }, { rejectWithValue }) => {
     try {
       const response = await axios.get(`${API_URL}/authors/${authorId}/books?page=${page}&limit=${limit}`);
       return response.data;

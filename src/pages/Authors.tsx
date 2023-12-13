@@ -5,8 +5,9 @@ import { useAppDispatch, useAppSelector } from '../redux/hooks';
 import { getAuthors } from '../services/authorsService';
 import { getBooksAuthors } from '../services/booksAuthorsService';
 
-import { IDLE } from '../types/status';
+import { IDLE, LOADING } from '../types/status';
 import BookPreview from '../components/BookPreview';
+import Loading from '../components/Loading';
 
 const Authors = () => {
   const dispatch = useAppDispatch();
@@ -17,7 +18,7 @@ const Authors = () => {
   const booksAuthors = useAppSelector((state) => state.booksAuthors.books);
   const booksAuthorsTotalPage = useAppSelector((state) => state.booksAuthors.pagination.totalPages);
 
-  const [booksLocalPage, setBooksLocalPage] = useState<number>(1);
+  const [authorsLocalPage, setBooksLocalPage] = useState<number>(1);
   const [booksAuthorsLocalPage, setBooksAuthorsLocalPage] = useState<number>(1);
 
   useEffect(() => {
@@ -36,10 +37,14 @@ const Authors = () => {
     dispatch(getBooksAuthors({ authorId, pagination: {} }));
   };
 
-  const handleBooksAuthorsLocalPageChange = (_event: React.ChangeEvent<unknown>, value: number, authorId: string) => {
-    dispatch(getBooksAuthors({ authorId, pagination: { page: value, limit: 6 } }));
+  const handleBooksAuthorsLocalPageChange = (_event: React.ChangeEvent<unknown>, value: number) => {
+    dispatch(getBooksAuthors({ authorId: booksAuthors[0].authors[0]._id, pagination: { page: value } }));
     setBooksAuthorsLocalPage(value);
   };
+
+  if (authorStatus === LOADING) {
+    return <Loading />;
+  }
 
   return (
     <Box sx={{ maxWidth: '80%', marginX: 'auto', marginY: '100px' }}>
@@ -57,7 +62,7 @@ const Authors = () => {
           ))}
         </Grid>
         <Stack spacing={2}>
-          <Pagination count={authorTotalPage} page={booksLocalPage} onChange={handleBooksLocalPageChange} />
+          <Pagination count={authorTotalPage} page={authorsLocalPage} onChange={handleBooksLocalPageChange} />
         </Stack>
       </Box>
 
@@ -76,9 +81,7 @@ const Authors = () => {
             <Pagination
               count={booksAuthorsTotalPage}
               page={booksAuthorsLocalPage}
-              onChange={(event) =>
-                handleBooksAuthorsLocalPageChange(event, booksAuthorsLocalPage, booksAuthors[0].authors[0]._id)
-              }
+              onChange={handleBooksAuthorsLocalPageChange}
             />
           </Stack>
         </Box>

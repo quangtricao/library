@@ -8,6 +8,7 @@ import { getGenres, getAndPushGenres } from '../services/genresService';
 import { IDLE, LOADING } from '../types/status';
 import BookPreview from '../components/BookPreview';
 import BookPreviewButton from '../components/BookPreviewButton';
+import Loading from '../components/Loading';
 
 const Books = () => {
   const dispatch = useAppDispatch();
@@ -44,7 +45,7 @@ const Books = () => {
   };
 
   if (bookStatus === LOADING) {
-    return <Box sx={{ minHeight: '80vh' }}>The first time loading might be slow</Box>;
+    return <Loading />;
   }
 
   return (

@@ -2,7 +2,7 @@ import axios, { AxiosError } from 'axios';
 import { createAsyncThunk } from '@reduxjs/toolkit';
 
 import { API_URL } from '../config/api';
-import { BooksResponse, SingleBookResponse, BookType } from '../types/book';
+import { BooksResponse, SingleBookResponse, SingleBookRequest } from '../types/book';
 import { PaginationRequestParams } from '../types/pagination';
 
 export const getBooks = createAsyncThunk<BooksResponse, PaginationRequestParams, { rejectValue: string }>(
@@ -31,11 +31,19 @@ export const getSingleBook = createAsyncThunk<SingleBookResponse, string, { reje
   }
 );
 
-export const updateSingleBook = createAsyncThunk<SingleBookResponse, BookType, { rejectValue: string }>(
+export const updateSingleBook = createAsyncThunk<SingleBookResponse, SingleBookRequest, { rejectValue: string }>(
   'books/updateBooks',
-  async (newBook, { rejectWithValue }) => {
+  async (obj, { rejectWithValue }) => {
     try {
-      const response = await axios.put(`${API_URL}/books`, newBook);
+      const authors = obj.book.authors.map((author) => author._id);
+      const genres = obj.book.genres.map((genre) => genre._id);
+      const updatedBook = { ...obj.book, authors, genres };
+
+      const response = await axios.put(`${API_URL}/books/${obj.book.isbn}`, updatedBook, {
+        headers: {
+          Authorization: `bearer ${obj.token}`,
+        },
+      });
       return response.data;
     } catch (err) {
       const error = err as Error | AxiosError;
@@ -44,11 +52,15 @@ export const updateSingleBook = createAsyncThunk<SingleBookResponse, BookType, {
   }
 );
 
-export const deleteSingleBook = createAsyncThunk<void, string, { rejectValue: string }>(
+export const deleteSingleBook = createAsyncThunk<void, SingleBookRequest, { rejectValue: string }>(
   'books/deleteBook',
-  async (isbn, { rejectWithValue }) => {
+  async (obj, { rejectWithValue }) => {
     try {
-      await axios.delete(`${API_URL}/books/${isbn}`);
+      await axios.delete(`${API_URL}/books/${obj.book.isbn}`, {
+        headers: {
+          Authorization: `bearer ${obj.token}`,
+        },
+      });
     } catch (err) {
       const error = err as Error | AxiosError;
       return rejectWithValue(error.message);

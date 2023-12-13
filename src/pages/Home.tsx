@@ -5,12 +5,13 @@ import { useAppDispatch, useAppSelector } from '../redux/hooks';
 import { getProfile } from '../services/accountService';
 import { getBooks } from '../services/booksService';
 
-import { IDLE } from '../types/status';
+import { IDLE, LOADING } from '../types/status';
 import { getTokenFromLocalStorage } from '../utils/localStorage';
 import Introduction from '../components/Introduction';
 import BooksTrending from '../components/BooksTrending';
 import Service from '../components/Service';
 import Subscribe from '../components/Subscribe';
+import Loading from '../components/Loading';
 
 const Home = () => {
   const dispatch = useAppDispatch();
@@ -27,6 +28,10 @@ const Home = () => {
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
+
+  if (booksStatus === LOADING) {
+    return <Loading />;
+  }
 
   return (
     <Box>

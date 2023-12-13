@@ -210,19 +210,10 @@ const Header = () => {
               </Link>
             ))}
           </Box>
-          {theme ? (
-            <Tooltip title='Dark theme'>
-              <IconButton onClick={() => changeTheme(!theme)}>
-                <DarkModeIcon />
-              </IconButton>
-            </Tooltip>
-          ) : (
-            <Tooltip title='Light theme'>
-              <IconButton onClick={() => changeTheme(!theme)}>
-                <LightModeIcon />
-              </IconButton>
-            </Tooltip>
-          )}
+
+          <Tooltip title={theme ? 'Dark theme' : 'Light theme'} sx={{ marginX: '10px' }}>
+            <IconButton onClick={() => changeTheme(!theme)}>{theme ? <DarkModeIcon /> : <LightModeIcon />}</IconButton>
+          </Tooltip>
           {account ? <LoggedIn /> : <NotLoggedIn />}
         </Toolbar>
       </Container>
