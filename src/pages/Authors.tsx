@@ -23,22 +23,22 @@ const Authors = () => {
 
   useEffect(() => {
     if (authorStatus === IDLE) {
-      dispatch(getAuthors({}));
+      dispatch(getAuthors({ limit: 5 }));
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const handleBooksLocalPageChange = (_event: React.ChangeEvent<unknown>, value: number) => {
-    dispatch(getAuthors({ page: value }));
+    dispatch(getAuthors({ page: value, limit: 5 }));
     setBooksLocalPage(value);
   };
 
   const handleBooksAuthorsFetch = (_event: React.ChangeEvent<unknown>, authorId: string) => {
-    dispatch(getBooksAuthors({ authorId, pagination: {} }));
+    dispatch(getBooksAuthors({ authorId, pagination: { limit: 4 } }));
   };
 
   const handleBooksAuthorsLocalPageChange = (_event: React.ChangeEvent<unknown>, value: number) => {
-    dispatch(getBooksAuthors({ authorId: booksAuthors[0].authors[0]._id, pagination: { page: value } }));
+    dispatch(getBooksAuthors({ authorId: booksAuthors[0].authors[0]._id, pagination: { page: value, limit: 4 } }));
     setBooksAuthorsLocalPage(value);
   };
 

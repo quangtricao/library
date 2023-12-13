@@ -7,7 +7,7 @@ import { PaginationRequestParams } from '../types/pagination';
 
 export const getAuthors = createAsyncThunk<AuthorsResponse, PaginationRequestParams, { rejectValue: string }>(
   'authors/getAuthors',
-  async ({ page = 1, limit = 10 }, { rejectWithValue }) => {
+  async ({ page = 1, limit }, { rejectWithValue }) => {
     try {
       const response = await axios.get(`${API_URL}/authors?page=${page}&limit=${limit}`);
       return response.data;

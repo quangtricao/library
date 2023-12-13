@@ -2,14 +2,17 @@ import axios, { AxiosError } from 'axios';
 import { createAsyncThunk } from '@reduxjs/toolkit';
 
 import { API_URL } from '../config/api';
-import { BooksResponse, SingleBookResponse, SingleBookRequest } from '../types/book';
-import { PaginationRequestParams } from '../types/pagination';
+import { BooksResponse, SingleBookResponse, AdminRequiredBookRequest, BookFilterRequest } from '../types/book';
 
-export const getBooks = createAsyncThunk<BooksResponse, PaginationRequestParams, { rejectValue: string }>(
+export const getBooks = createAsyncThunk<BooksResponse, BookFilterRequest, { rejectValue: string }>(
   'books/getBooks',
-  async ({ page = 1, limit = 6 }, { rejectWithValue }) => {
+  async ({ title, borrowed, available, pagination: { page = 1, limit } }, { rejectWithValue }) => {
     try {
-      const response = await axios.get(`${API_URL}/books?page=${page}&limit=${limit}`);
+      const response = await axios.get(
+        `${API_URL}/books?page=${page}&limit=${limit}${title ? `&title=${title}` : ''}${
+          borrowed ? `&status=borrowed` : ''
+        }${available ? `&status=available` : ''}`
+      );
       return response.data;
     } catch (err) {
       const error = err as Error | AxiosError;
@@ -31,7 +34,7 @@ export const getSingleBook = createAsyncThunk<SingleBookResponse, string, { reje
   }
 );
 
-export const updateSingleBook = createAsyncThunk<SingleBookResponse, SingleBookRequest, { rejectValue: string }>(
+export const updateSingleBook = createAsyncThunk<SingleBookResponse, AdminRequiredBookRequest, { rejectValue: string }>(
   'books/updateBooks',
   async (obj, { rejectWithValue }) => {
     try {
@@ -52,7 +55,7 @@ export const updateSingleBook = createAsyncThunk<SingleBookResponse, SingleBookR
   }
 );
 
-export const deleteSingleBook = createAsyncThunk<void, SingleBookRequest, { rejectValue: string }>(
+export const deleteSingleBook = createAsyncThunk<void, AdminRequiredBookRequest, { rejectValue: string }>(
   'books/deleteBook',
   async (obj, { rejectWithValue }) => {
     try {

@@ -5,5 +5,5 @@ export type PaginationResponse = {
 
 export type PaginationRequestParams = {
   page?: number;
-  limit?: number;
+  limit: number;
 };

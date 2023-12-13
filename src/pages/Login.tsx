@@ -5,7 +5,7 @@ import { useAppDispatch } from '../redux/hooks';
 import { getProfile, login } from '../services/accountService';
 
 import { LoginRequest } from '../types/account';
-import { saveTokenToLocalStorage } from '../utils/localStorage';
+import { clearCartFromLocalStorage, saveTokenToLocalStorage } from '../utils/localStorage';
 import LoginForm from '../components/LoginForm';
 
 const Login = () => {
@@ -23,6 +23,7 @@ const Login = () => {
     } else {
       const token = response.data.accessToken;
       saveTokenToLocalStorage(token);
+      clearCartFromLocalStorage();
       await dispatch(getProfile(token));
       navigate('/');
     }

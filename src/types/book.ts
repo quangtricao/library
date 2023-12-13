@@ -62,7 +62,15 @@ export type BooksGenresRequest = {
   pagination: PaginationRequestParams;
 };
 
-export type SingleBookRequest = {
-  token: string,
-  book: BookDTO
-}
+export type AdminRequiredBookRequest = {
+  token: string;
+  book: BookDTO;
+};
+
+export type BookFilterRequest = {
+  title?: string;
+  borrowed?: boolean;
+  available?: boolean;
+} & {
+  pagination: PaginationRequestParams;
+};

@@ -25,23 +25,41 @@ const Books = () => {
 
   const [localPage, setLocalPage] = useState<number>(1);
 
+  const [filter, setFilter] = useState({
+    title: '',
+    borrowed: false,
+    available: false,
+  });
+
   useEffect(() => {
     if (bookStatus === IDLE) {
-      dispatch(getBooks({ limit: 8 }));
+      dispatch(getBooks({ pagination: { limit: 8 } }));
     }
     if (genreStatus === IDLE) {
-      dispatch(getGenres({}));
+      dispatch(getGenres({ limit: 3 }));
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const handleLocalPageChange = (_event: ChangeEvent<unknown>, value: number) => {
-    dispatch(getBooks({ page: value, limit: 8 }));
+    dispatch(getBooks({ pagination: { page: value, limit: 8 } }));
     setLocalPage(value);
   };
 
   const handleLoadMoreGenres = () => {
-    dispatch(getAndPushGenres({ page: genrePage + 1 }));
+    dispatch(getAndPushGenres({ page: genrePage + 1, limit: 3 }));
+  };
+
+  const handleFilter = () => {
+    setFilter({ title: '', borrowed: false, available: false });
+    dispatch(
+      getBooks({
+        title: filter.title,
+        borrowed: filter.borrowed,
+        available: filter.available,
+        pagination: { limit: 8 },
+      })
+    );
   };
 
   if (bookStatus === LOADING) {
@@ -50,10 +68,17 @@ const Books = () => {
 
   return (
     <Box sx={{ maxWidth: '80%', marginX: 'auto', marginY: '50px' }}>
-      <Box sx={{ display: 'flex' }}>
-        <Box sx={{ width: '20%', display: 'flex', flexDirection: 'column', gap: '15px' }}>
+      <Box sx={{ display: 'flex', gap: '30px' }}>
+        <Box sx={{ width: '25%', display: 'flex', flexDirection: 'column', gap: '35px' }}>
           <Typography sx={{ fontSize: '30px' }}>Filter</Typography>
-          <TextField label='Book title' size='small' sx={{ width: '80%' }} variant='outlined'></TextField>
+          <TextField
+            fullWidth
+            label='Book title'
+            size='small'
+            variant='outlined'
+            onChange={(event) => setFilter({ ...filter, title: event.target.value })}
+          />
+
           <Box>
             <Typography sx={{ fontWeight: 'bold' }}>Genres</Typography>
             {genres.map((genre) => (
@@ -61,22 +86,33 @@ const Books = () => {
                 <Checkbox /> {genre.title}
               </Box>
             ))}
-            <Button sx={{ fontSize: '12px' }} variant='contained' onClick={handleLoadMoreGenres}>
+            <Button sx={{ fontSize: '12px' }} size='small' variant='contained' onClick={handleLoadMoreGenres}>
               Load more
             </Button>
           </Box>
           <Box>
-            <Typography>Book Status</Typography>
+            <Typography sx={{ fontWeight: 'bold' }}>Book Status</Typography>
             <Box sx={{ fontSize: '15px' }}>
-              <Checkbox /> Borrowed
+              <Checkbox
+                onClick={() => setFilter({ ...filter, borrowed: !filter.borrowed })}
+                disabled={filter.available ? true : false}
+              />
+              Borrowed
             </Box>
             <Box sx={{ fontSize: '15px' }}>
-              <Checkbox /> Available
+              <Checkbox
+                onClick={() => setFilter({ ...filter, available: !filter.available })}
+                disabled={filter.borrowed ? true : false}
+              />
+              Available
             </Box>
           </Box>
+          <Button variant='contained' onClick={handleFilter}>
+            Filter
+          </Button>
         </Box>
 
-        <Box sx={{ width: '80%' }}>
+        <Box sx={{ width: '100%' }}>
           <Typography sx={{ fontSize: '30px' }}>Books</Typography>
           <Grid container columns={4}>
             {books.map((book) => (

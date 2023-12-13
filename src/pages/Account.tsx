@@ -69,7 +69,7 @@ const Account = () => {
       })
     );
     await dispatch(getProfile(token));
-    await dispatch(getBooks({ limit: 8 }));
+    await dispatch(getBooks({ pagination: { limit: 8 } }));
     clearCartFromLocalStorage();
     dispatch(clearCart());
   };
