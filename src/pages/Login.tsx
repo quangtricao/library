@@ -7,6 +7,7 @@ import { getProfile, login } from '../services/accountService';
 import { LoginRequest } from '../types/account';
 import { clearCartFromLocalStorage, saveTokenToLocalStorage } from '../utils/localStorage';
 import LoginForm from '../components/LoginForm';
+import { clearCart } from '../redux/slices/cartSlice';
 
 const Login = () => {
   const navigate = useNavigate();
@@ -23,6 +24,7 @@ const Login = () => {
     } else {
       const token = response.data.accessToken;
       saveTokenToLocalStorage(token);
+      dispatch(clearCart());
       clearCartFromLocalStorage();
       await dispatch(getProfile(token));
       navigate('/');

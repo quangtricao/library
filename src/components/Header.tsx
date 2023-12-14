@@ -21,9 +21,11 @@ import { useAppDispatch, useAppSelector } from '../redux/hooks';
 import { clearAccount } from '../redux/slices/accountSlice';
 import { clearCartFromLocalStorage, clearTokenAndAccountFromLocalStorage } from '../utils/localStorage';
 import { AppContext } from '../App';
+import { clearCart } from '../redux/slices/cartSlice';
 
 const settings = [
   { name: 'Profile', path: '/account' },
+  { name: 'Switch account', path: '/account/login' },
   { name: 'Logout', path: '/account/login' },
 ];
 
@@ -66,8 +68,9 @@ const LoggedIn = () => {
       navigate('/account');
       return;
     }
-    if (settingName === 'Logout') {
+    if (settingName === 'Logout' || settingName === 'Switch account') {
       dispatch(clearAccount());
+      dispatch(clearCart());
       clearTokenAndAccountFromLocalStorage();
       clearCartFromLocalStorage();
       navigate('/account/login');
