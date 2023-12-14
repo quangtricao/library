@@ -12,6 +12,7 @@ import BookEdit from '../pages/BookEdit';
 import AccountEdit from '../pages/AccountEdit';
 import ProtectedRoute from '../components/CheckLogin';
 import CheckAdmin from '../components/CheckAdmin';
+import AccountPassword from '../pages/AccountPassword';
 
 const router = createBrowserRouter([
   {
@@ -56,9 +57,15 @@ const router = createBrowserRouter([
         path: '/account/:id/edit',
         element: (
           <ProtectedRoute>
-            <CheckAdmin>
-              <AccountEdit />
-            </CheckAdmin>
+            <AccountEdit />
+          </ProtectedRoute>
+        ),
+      },
+      {
+        path: '/account/:id/password',
+        element: (
+          <ProtectedRoute>
+            <AccountPassword />
           </ProtectedRoute>
         ),
       },

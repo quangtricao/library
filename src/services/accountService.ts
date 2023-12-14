@@ -9,6 +9,7 @@ import {
   SignupRequest,
   SignupResponse,
   BorrowOrReturnBooksRequest,
+  ChangePasswordRequest,
 } from '../types/account';
 
 export const login = createAsyncThunk('account/login', async (obj: LoginRequest): Promise<LoginResponse | string> => {
@@ -47,6 +48,26 @@ export const getProfile = createAsyncThunk<AccountResponse, string, { rejectValu
     } catch (err) {
       const error = err as Error | AxiosError;
       return rejectWithValue(error.message);
+    }
+  }
+);
+
+export const changePassword = createAsyncThunk(
+  'account/changePassword',
+  async ({ token, oldPassword, newPassword }: ChangePasswordRequest) => {
+    try {
+      await axios.put(
+        `${API_URL}/auth/change-password`,
+        { oldPassword, newPassword },
+        {
+          headers: {
+            Authorization: `bearer ${token}`,
+          },
+        }
+      );
+    } catch (err) {
+      const error = err as Error | AxiosError;
+      return error.message;
     }
   }
 );

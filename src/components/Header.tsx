@@ -63,7 +63,7 @@ const LoggedIn = () => {
     setAnchorElUser(null);
   };
 
-  const handleSetting = (event: React.MouseEvent<HTMLElement>, settingName: string) => {
+  const handleSetting = (_event: React.MouseEvent<HTMLElement>, settingName: string) => {
     if (settingName === 'Profile') {
       navigate('/account');
       return;

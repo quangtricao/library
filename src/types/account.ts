@@ -54,7 +54,13 @@ export type AccountState = {
 };
 
 export type BorrowOrReturnBooksRequest = {
-  accountId: string;
   token: string;
+  accountId: string;
   booksId: string[];
+};
+
+export type ChangePasswordRequest = {
+  token: string;
+  oldPassword: string;
+  newPassword: string;
 };

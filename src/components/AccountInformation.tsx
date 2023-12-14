@@ -20,9 +20,18 @@ const AccountInformation = ({ account }: AccountInformationType) => {
       <Box></Box>
       <Box>Email: {account.email}</Box>
       <Box>Role: {account.role.toLowerCase()}</Box>
-      <Link to={`/account/${account._id}/edit`}>
-        <Button>Update account</Button>
-      </Link>
+      <Box sx={{ display: 'flex', gap: '10px' }}>
+        <Link to={`/account/${account._id}/edit`}>
+          <Button size='small' variant='contained'>
+            Update account
+          </Button>
+        </Link>
+        <Link to={`/account/${account._id}/password`}>
+          <Button size='small' variant='contained' color='warning'>
+            Change password
+          </Button>
+        </Link>
+      </Box>
     </Box>
   );
 };
