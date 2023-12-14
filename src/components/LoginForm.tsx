@@ -1,4 +1,5 @@
-import { FormEvent } from 'react';
+import * as Yup from 'yup';
+import { useFormik } from 'formik';
 import { Link } from 'react-router-dom';
 import { Avatar, Button, TextField, Box, Typography } from '@mui/material';
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
@@ -11,16 +12,19 @@ type LoginFormProps = {
 };
 
 const LoginForm = ({ handleSetForm, handleLogin }: LoginFormProps) => {
-  const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
-    event.preventDefault();
-    const data = new FormData(event.currentTarget);
-    const email = data.get('email')?.toString();
-    const password = data.get('password')?.toString();
-
-    if (email && password) {
-      handleLogin({ email, password });
-    }
-  };
+  const loginCredential = useFormik({
+    initialValues: {
+      email: '',
+      password: '',
+    },
+    validationSchema: Yup.object({
+      email: Yup.string().email('Invalid email address').required('Email required'),
+      password: Yup.string().min(6, 'Must be at least 6 characters or more').required('Password required'),
+    }),
+    onSubmit: (value) => {
+      handleLogin({ email: value.email, password: value.password });
+    },
+  });
 
   return (
     <Box
@@ -39,7 +43,7 @@ const LoginForm = ({ handleSetForm, handleLogin }: LoginFormProps) => {
       <Typography component='h1' variant='h5'>
         Sign in
       </Typography>
-      <Box component='form' onSubmit={handleSubmit} noValidate sx={{ mt: 1 }}>
+      <Box component='form' onSubmit={loginCredential.handleSubmit} sx={{ mt: 1, width: '100%' }}>
         <TextField
           margin='normal'
           required
@@ -49,7 +53,12 @@ const LoginForm = ({ handleSetForm, handleLogin }: LoginFormProps) => {
           name='email'
           autoComplete='email'
           autoFocus
+          onChange={loginCredential.handleChange}
+          value={loginCredential.values.email}
         />
+        {loginCredential.touched.email && loginCredential.errors.email ? (
+          <Typography sx={{ color: 'red', fontWeight: 'bold' }}>{loginCredential.errors.email}</Typography>
+        ) : null}
         <TextField
           margin='normal'
           required
@@ -59,7 +68,12 @@ const LoginForm = ({ handleSetForm, handleLogin }: LoginFormProps) => {
           type='password'
           id='password'
           autoComplete='current-password'
+          onChange={loginCredential.handleChange}
+          value={loginCredential.values.password}
         />
+        {loginCredential.touched.password && loginCredential.errors.password ? (
+          <Typography sx={{ color: 'red', fontWeight: 'bold' }}>{loginCredential.errors.password}</Typography>
+        ) : null}
         <Button type='submit' fullWidth variant='contained' sx={{ mt: 3, mb: 2 }}>
           Sign In
         </Button>
