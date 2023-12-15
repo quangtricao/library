@@ -1,15 +1,15 @@
 import { useState, ChangeEvent, useEffect } from 'react';
-import { Box, Checkbox, Grid, Typography, Pagination, Stack, Button, TextField } from '@mui/material';
+import { Box, Grid, Typography, Pagination, Stack } from '@mui/material';
 
 import { useAppDispatch, useAppSelector } from '../redux/hooks';
 import { getBooks } from '../services/booksService';
-import { getGenres, getAndPushGenres } from '../services/genresService';
+import { getGenres } from '../services/genresService';
 
 import { IDLE, LOADING } from '../types/status';
 import BookPreview from '../components/BookPreview';
 import BookPreviewButton from '../components/BookPreviewButton';
 import Loading from '../components/Loading';
-import { setNotification } from '../redux/slices/notificationSlice';
+import Filter from '../components/Filter';
 
 const Books = () => {
   const dispatch = useAppDispatch();
@@ -17,20 +17,9 @@ const Books = () => {
   const bookPage = useAppSelector((state) => state.books.pagination.page);
   const bookTotalPage = useAppSelector((state) => state.books.pagination.totalPages);
   const bookStatus = useAppSelector((state) => state.books.status);
-
-  const genres = useAppSelector((state) => state.genres.genres);
-  const genrePage = useAppSelector((state) => state.genres.pagination.page);
-  const genreStatus = useAppSelector((state) => state.genres.status);
-
   const account = useAppSelector((state) => state.account.account);
-
+  const genreStatus = useAppSelector((state) => state.genres.status);
   const [localPage, setLocalPage] = useState<number>(1);
-
-  const [filter, setFilter] = useState({
-    title: '',
-    borrowed: false,
-    available: false,
-  });
 
   useEffect(() => {
     if (bookStatus === IDLE) {
@@ -47,24 +36,6 @@ const Books = () => {
     setLocalPage(value);
   };
 
-  const handleLoadMoreGenres = () => {
-    dispatch(getAndPushGenres({ page: genrePage + 1, limit: 3 }));
-  };
-
-  const handleFilter = () => {
-    setFilter({ title: '', borrowed: false, available: false });
-    dispatch(
-      getBooks({
-        title: filter.title,
-        borrowed: filter.borrowed,
-        available: filter.available,
-        pagination: { limit: 8 },
-      })
-    ).then(() => {
-      dispatch(setNotification({ message: 'Filter books successfully', type: 'success' }));
-    });
-  };
-
   if (bookStatus === LOADING) {
     return <Loading />;
   }
@@ -72,48 +43,7 @@ const Books = () => {
   return (
     <Box sx={{ maxWidth: '80%', marginX: 'auto', marginY: '50px' }}>
       <Box sx={{ display: 'flex', gap: '30px' }}>
-        <Box sx={{ width: '25%', display: 'flex', flexDirection: 'column', gap: '35px' }}>
-          <Typography sx={{ fontSize: '30px' }}>Filter</Typography>
-          <TextField
-            fullWidth
-            label='Book title'
-            size='small'
-            variant='outlined'
-            onChange={(event) => setFilter({ ...filter, title: event.target.value })}
-          />
-
-          <Box>
-            <Typography sx={{ fontWeight: 'bold' }}>Genres</Typography>
-            {genres.map((genre) => (
-              <Box key={genre._id} sx={{ fontSize: '15px' }}>
-                <Checkbox /> {genre.title}
-              </Box>
-            ))}
-            <Button sx={{ fontSize: '12px' }} size='small' variant='contained' onClick={handleLoadMoreGenres}>
-              Load more
-            </Button>
-          </Box>
-          <Box>
-            <Typography sx={{ fontWeight: 'bold' }}>Book Status</Typography>
-            <Box sx={{ fontSize: '15px' }}>
-              <Checkbox
-                onClick={() => setFilter({ ...filter, borrowed: !filter.borrowed })}
-                disabled={filter.available ? true : false}
-              />
-              Borrowed
-            </Box>
-            <Box sx={{ fontSize: '15px' }}>
-              <Checkbox
-                onClick={() => setFilter({ ...filter, available: !filter.available })}
-                disabled={filter.borrowed ? true : false}
-              />
-              Available
-            </Box>
-          </Box>
-          <Button variant='contained' onClick={handleFilter}>
-            Filter
-          </Button>
-        </Box>
+        <Filter />
 
         <Box sx={{ width: '100%' }}>
           <Typography sx={{ fontSize: '30px' }}>Books</Typography>
