@@ -10,7 +10,7 @@ const Subscribe = () => {
       sx={{
         width: '100%',
         height: '200px',
-        backgroundColor: `${theme ? '#4ff07a' : '#174223'}`,
+        backgroundColor: `${theme ? 'primary.main' : '#174223'}`,
         color: 'white',
         display: 'flex',
         alignItems: 'center',
