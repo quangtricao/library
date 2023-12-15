@@ -9,6 +9,7 @@ import { IDLE, LOADING } from '../types/status';
 import BookPreview from '../components/BookPreview';
 import BookPreviewButton from '../components/BookPreviewButton';
 import Loading from '../components/Loading';
+import { setNotification } from '../redux/slices/notificationSlice';
 
 const Books = () => {
   const dispatch = useAppDispatch();
@@ -59,7 +60,9 @@ const Books = () => {
         available: filter.available,
         pagination: { limit: 8 },
       })
-    );
+    ).then(() => {
+      dispatch(setNotification({ message: 'Filter books successfully', type: 'success' }));
+    });
   };
 
   if (bookStatus === LOADING) {

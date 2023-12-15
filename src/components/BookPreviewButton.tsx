@@ -5,6 +5,7 @@ import { useAppDispatch } from '../redux/hooks';
 import { addBookToBorrow } from '../redux/slices/cartSlice';
 import { changeBookStatusToBorrowed } from '../redux/slices/booksSlice';
 import { getBorrowBookInCartFromLocalStorage } from '../utils/localStorage';
+import { setNotification } from '../redux/slices/notificationSlice';
 
 type BookPreviewButtonType = {
   book: BookType;
@@ -19,6 +20,7 @@ const BookPreviewButton = ({ book, isLogin }: BookPreviewButtonType) => {
   const handleAddBookToCart = (_event: ChangeEvent<unknown>, book: BookType) => {
     dispatch(changeBookStatusToBorrowed(book._id));
     dispatch(addBookToBorrow(book));
+    dispatch(setNotification({ message: `Add ${book.title} to cart`, type: 'success' }));
   };
 
   return (

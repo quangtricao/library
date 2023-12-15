@@ -10,6 +10,7 @@ import { getBorrowBookInCartFromLocalStorage } from '../utils/localStorage';
 import { changeBookStatusToBorrowed } from '../redux/slices/booksSlice';
 import { addBookToBorrow } from '../redux/slices/cartSlice';
 import Loading from '../components/Loading';
+import { setNotification } from '../redux/slices/notificationSlice';
 
 const Book = () => {
   const dispatch = useAppDispatch();
@@ -33,6 +34,7 @@ const Book = () => {
   const handleAddBookToCart = (_event: ChangeEvent<unknown>, book: BookType) => {
     dispatch(changeBookStatusToBorrowed(book._id));
     dispatch(addBookToBorrow(book));
+    dispatch(setNotification({ message: `Add ${book.title} to cart`, type: 'success' }));
     setRefetch(!refetch);
   };
 

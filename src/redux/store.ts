@@ -7,6 +7,7 @@ import authorsReducer from './slices/authorsSlice';
 import accountReducer from './slices/accountSlice';
 import booksAuthorsReducer from './slices/booksAuthorsSlice';
 import booksGenresReducer from './slices/booksGenresSlice';
+import notificationReducer from './slices/notificationSlice';
 
 import { IDLE } from '../types/status';
 import { AccountState } from '../types/account';
@@ -50,6 +51,7 @@ export const createStore = () =>
       cart: cartReducer,
       authors: authorsReducer,
       account: accountReducer,
+      notification: notificationReducer,
     },
     preloadedState: {
       account: preLoadedAccountReducer,

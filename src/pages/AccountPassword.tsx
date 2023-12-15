@@ -7,6 +7,7 @@ import ArrowLeftIcon from '@mui/icons-material/ArrowLeft';
 import { useAppDispatch } from '../redux/hooks';
 import { getTokenFromLocalStorage } from '../utils/localStorage';
 import { changePassword } from '../services/accountService';
+import { setNotification } from '../redux/slices/notificationSlice';
 
 const AccountPassword = () => {
   const navigate = useNavigate();
@@ -27,22 +28,29 @@ const AccountPassword = () => {
       if (token) {
         const response = await dispatch(
           changePassword({ token, oldPassword: value.oldPassword, newPassword: value.newPassword })
-        );
-
+        ).unwrap();
         if (typeof response === 'string') {
-          console.log(response);
+          dispatch(
+            setNotification({
+              message: 'Fail to update password. Please check if everything is correct.',
+              type: 'error',
+            })
+          );
           return;
         }
-
+        dispatch(setNotification({ message: 'Update password successfully', type: 'success' }));
         navigate('/account');
+        return;
       }
+
+      dispatch(setNotification({ message: 'Token is missing', type: 'error' }));
       return;
     },
   });
 
   return (
     <Box sx={{ maxWidth: '50%', marginX: 'auto', marginY: '100px', minHeight: '600px' }}>
-      <Link to={`/account`} style={{ textDecoration: 'none' }}>
+      <Link to={'/account'} style={{ textDecoration: 'none' }}>
         <Button startIcon={<ArrowLeftIcon />} variant='text' sx={{ marginY: '30px', color: 'primary.main' }}>
           Back to profile
         </Button>

@@ -15,6 +15,7 @@ import Checkout from '../components/Checkout';
 import BookBorrowed from '../components/BookBorrowed';
 import BookInCartPreviewType from '../components/BookInCartPreview';
 import AccountInformation from '../components/AccountInformation';
+import { setNotification } from '../redux/slices/notificationSlice';
 
 const Account = () => {
   const dispatch = useAppDispatch();
@@ -33,16 +34,19 @@ const Account = () => {
   const handleReturnBook = (_event: ChangeEvent<unknown>, book: BookType) => {
     dispatch(removeBookFromAccountSlice(book._id));
     dispatch(addBookToReturn(book));
+    dispatch(setNotification({ message: `Add ${book.title} to return`, type: 'success' }));
   };
 
   const handleNoBorrow = (_event: ChangeEvent<unknown>, book: BookType) => {
     dispatch(changeBookStatusToAvailable(book._id));
     dispatch(removeBookToBorrow(book._id));
+    dispatch(setNotification({ message: `Remove ${book.title} from borrow`, type: 'success' }));
   };
 
   const handleNoReturn = (_event: ChangeEvent<unknown>, book: BookType) => {
     dispatch(addBookToAccountSlice(book));
     dispatch(removeBookToReturn(book._id));
+    dispatch(setNotification({ message: `Remove ${book.title} from return`, type: 'success' }));
   };
 
   const handleCheckout = async () => {
@@ -72,6 +76,7 @@ const Account = () => {
     await dispatch(getBooks({ pagination: { limit: 8 } }));
     clearCartFromLocalStorage();
     dispatch(clearCart());
+    dispatch(setNotification({ message: 'Your order is success', type: 'success' }));
   };
 
   if (!account) {

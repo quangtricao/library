@@ -22,6 +22,7 @@ import { clearAccount } from '../redux/slices/accountSlice';
 import { clearCartFromLocalStorage, clearTokenAndAccountFromLocalStorage } from '../utils/localStorage';
 import { AppContext } from '../App';
 import { clearCart } from '../redux/slices/cartSlice';
+import { setNotification } from '../redux/slices/notificationSlice';
 
 const settings = [
   { name: 'Profile', path: '/account' },
@@ -73,10 +74,10 @@ const LoggedIn = () => {
       dispatch(clearCart());
       clearTokenAndAccountFromLocalStorage();
       clearCartFromLocalStorage();
+      dispatch(setNotification({ message: 'Logout successfully', type: 'success' }));
       navigate('/account/login');
       return;
     }
-    return;
   };
 
   return (

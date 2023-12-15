@@ -10,6 +10,7 @@ import BookPreview from '../components/BookPreview';
 import Loading from '../components/Loading';
 import { AuthorType } from '../types/author';
 import { clearBooksAuthors } from '../redux/slices/booksAuthorsSlice';
+import { setNotification } from '../redux/slices/notificationSlice';
 
 const Authors = () => {
   const dispatch = useAppDispatch();
@@ -37,11 +38,11 @@ const Authors = () => {
     setBooksLocalPage(value);
   };
 
-  const handleBooksAuthorsFetch = (_event: React.ChangeEvent<unknown>, authorId: string) => {
-    dispatch(getBooksAuthors({ authorId, pagination: { limit: 4 } }));
-    dispatch(getSingleAuthor(authorId))
-      .unwrap()
-      .then((response) => setSingleAuthor(response.data));
+  const handleBooksAuthorsFetch = async (_event: React.ChangeEvent<unknown>, authorId: string) => {
+    await dispatch(getBooksAuthors({ authorId, pagination: { limit: 4 } }));
+    const response = await dispatch(getSingleAuthor(authorId)).unwrap();
+    setSingleAuthor(response.data);
+    dispatch(setNotification({ message: `Choose ${response.data.name} books`, type: 'success' }));
   };
 
   const handleBooksAuthorsLocalPageChange = (_event: React.ChangeEvent<unknown>, value: number) => {

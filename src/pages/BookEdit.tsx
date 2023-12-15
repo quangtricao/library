@@ -8,6 +8,7 @@ import DeleteIcon from '@mui/icons-material/Delete';
 import ArrowLeftIcon from '@mui/icons-material/ArrowLeft';
 import { BookDTO } from '../types/book';
 import { getTokenFromLocalStorage } from '../utils/localStorage';
+import { setNotification } from '../redux/slices/notificationSlice';
 
 const EditModal = () => {
   const { isbn } = useParams();
@@ -49,10 +50,11 @@ const EditModal = () => {
 
   const handleConfirmUpdate = async () => {
     if (!token) {
-      console.log('You do not have the permit');
+      dispatch(setNotification({ message: 'You do not have the permit', type: 'error' }));
       return;
     }
     await dispatch(updateSingleBook({ token, book: updateBook }));
+    dispatch(setNotification({ message: `Update book successfully`, type: 'success' }));
     navigate(`/books/${isbn}`);
   };
 
