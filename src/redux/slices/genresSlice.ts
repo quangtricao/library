@@ -2,7 +2,7 @@ import { createSlice } from '@reduxjs/toolkit';
 
 import { GenresState } from '../../types/genre';
 import { ERROR, IDLE, LOADING } from '../../types/status';
-import { getAndPushGenres, getGenres } from '../../services/genresService';
+import { getGenres } from '../../services/genresService';
 
 const initialState: GenresState = {
   genres: [],
@@ -28,20 +28,6 @@ const genresSlice = createSlice({
       state.status = payload.status;
     });
     builder.addCase(getGenres.rejected, (state, action) => {
-      if (action.payload) {
-        state.status = ERROR;
-        state.error = action.payload;
-      }
-    });
-    builder.addCase(getAndPushGenres.pending, (state) => {
-      state.status = LOADING;
-    });
-    builder.addCase(getAndPushGenres.fulfilled, (state, { payload }) => {
-      state.genres.push(...payload.data.genres);
-      state.pagination = payload.data.pagination;
-      state.status = payload.status;
-    });
-    builder.addCase(getAndPushGenres.rejected, (state, action) => {
       if (action.payload) {
         state.status = ERROR;
         state.error = action.payload;

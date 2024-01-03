@@ -1,77 +1,67 @@
-import { useState } from 'react';
-import { setNotification } from '../redux/slices/notificationSlice';
+import { useContext } from 'react';
+import { Box, Button, Grid, TextField, ToggleButton, ToggleButtonGroup, Typography } from '@mui/material';
+
+import { AppContext } from '../App';
 import { useAppDispatch, useAppSelector } from '../redux/hooks';
-import { getAndPushGenres } from '../services/genresService';
+import { setNotification } from '../redux/slices/notificationSlice';
 import { getBooks } from '../services/booksService';
-import { Box, Button, Checkbox, TextField, Typography } from '@mui/material';
+import AutoCompleteGenres from './AutoCompleteGenres';
+import AutoCompleteAuthors from './AutoCompleteAuthors';
+import { updateFilter } from '../redux/slices/filterSlice';
 
 const Filter = () => {
+  const { theme } = useContext(AppContext);
   const dispatch = useAppDispatch();
-  const genres = useAppSelector((state) => state.genres.genres);
-  const genrePage = useAppSelector((state) => state.genres.pagination.page);
-  const [filter, setFilter] = useState({
-    title: '',
-    borrowed: false,
-    available: false,
-  });
-
-  const handleLoadMoreGenres = async () => {
-    await dispatch(getAndPushGenres({ page: genrePage + 1, limit: 3 }));
-  };
+  const filter = useAppSelector((state) => state.filter);
 
   const handleFilter = async () => {
-    await dispatch(
-      getBooks({
-        title: filter.title,
-        borrowed: filter.borrowed,
-        available: filter.available,
-        pagination: { limit: 8 },
-      })
-    );
-    setFilter({ title: '', borrowed: false, available: false });
+    await dispatch(getBooks({ ...filter, pagination: { page: 1, limit: 8 } }));
     dispatch(setNotification({ message: 'Filter books successfully', type: 'success' }));
   };
 
-  return (
-    <Box sx={{ width: '25%', display: 'flex', flexDirection: 'column', gap: '35px' }}>
-      <Typography sx={{ fontSize: '30px' }}>Filter</Typography>
-      <TextField
-        fullWidth
-        label='Book title'
-        size='small'
-        variant='outlined'
-        onChange={(event) => setFilter({ ...filter, title: event.target.value })}
-      />
+  const handleAlignment = (_event: React.MouseEvent<HTMLElement>, newAlignment: string | null) => {
+    if (!newAlignment) {
+      dispatch(updateFilter({ ...filter, status: '' }));
+      return;
+    }
+    dispatch(updateFilter({ ...filter, status: newAlignment }));
+  };
 
-      <Box>
-        <Typography sx={{ fontWeight: 'bold' }}>Genres</Typography>
-        {genres.map((genre) => (
-          <Box key={genre._id} sx={{ fontSize: '15px' }}>
-            <Checkbox /> {genre.title}
-          </Box>
-        ))}
-        <Button sx={{ fontSize: '12px' }} size='small' variant='contained' onClick={handleLoadMoreGenres}>
-          Load more
-        </Button>
-      </Box>
-      <Box>
-        <Typography sx={{ fontWeight: 'bold' }}>Book Status</Typography>
-        <Box sx={{ fontSize: '15px' }}>
-          <Checkbox
-            onClick={() => setFilter({ ...filter, borrowed: !filter.borrowed })}
-            disabled={filter.available ? true : false}
+  return (
+    <Box
+      sx={{
+        maxWidth: '80%',
+        marginX: 'auto',
+        marginY: '20px',
+        backgroundColor: `${theme ? '#edfff2' : '#105e25'}`,
+        borderRadius: '25px',
+        padding: 2,
+      }}
+    >
+      <Typography sx={{ fontSize: '30px' }}>Filter</Typography>
+      <Grid container spacing={2} sx={{ my: 2 }}>
+        <Grid item xs={12} sm={4}>
+          <TextField
+            fullWidth
+            label='Title'
+            onChange={(event) => dispatch(updateFilter({ ...filter, title: event.target.value }))}
           />
-          Borrowed
-        </Box>
-        <Box sx={{ fontSize: '15px' }}>
-          <Checkbox
-            onClick={() => setFilter({ ...filter, available: !filter.available })}
-            disabled={filter.borrowed ? true : false}
-          />
-          Available
-        </Box>
-      </Box>
-      <Button variant='contained' onClick={handleFilter}>
+        </Grid>
+        <Grid item xs={12} sm={4}>
+          <AutoCompleteGenres />
+        </Grid>
+        <Grid item xs={12} sm={4}>
+          <AutoCompleteAuthors />
+        </Grid>
+        <Grid item xs={12} sm={12}>
+          <ToggleButtonGroup fullWidth value={filter.status} exclusive color='error' onChange={handleAlignment}>
+            <ToggleButton value=''>All</ToggleButton>
+            <ToggleButton value='available'>Available</ToggleButton>
+            <ToggleButton value='borrowed'>Borrowed</ToggleButton>
+          </ToggleButtonGroup>
+        </Grid>
+      </Grid>
+      <Button variant='contained' color='primary' onClick={handleFilter} sx={{ width: '20%' }}>
         Filter
       </Button>
     </Box>

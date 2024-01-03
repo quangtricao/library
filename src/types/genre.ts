@@ -3,7 +3,6 @@ import { StatusType } from './status';
 
 export type GenreType = {
   title: string;
-  booksCount: number;
   __v: number;
   _id: string;
 };

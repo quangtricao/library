@@ -32,8 +32,9 @@ const settings = [
 
 const pages = [
   { name: 'Home', path: '/' },
-  { name: 'Books', path: '/books' },
   { name: 'Authors', path: '/authors' },
+  { name: 'Genres', path: '/genres' },
+  { name: 'Create', path: '/' },
 ];
 
 const NotLoggedIn = () => {

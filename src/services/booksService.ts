@@ -6,12 +6,12 @@ import { BooksResponse, SingleBookResponse, AdminRequiredBookRequest, BookFilter
 
 export const getBooks = createAsyncThunk<BooksResponse, BookFilterRequest, { rejectValue: string }>(
   'books/getBooks',
-  async ({ title, borrowed, available, pagination: { page = 1, limit } }, { rejectWithValue }) => {
+  async ({ title, status = '', genre, author, pagination: { page = 1, limit } }, { rejectWithValue }) => {
     try {
       const response = await axios.get(
-        `${API_URL}/books?page=${page}&limit=${limit}${title ? `&title=${title}` : ''}${
-          borrowed ? `&status=borrowed` : ''
-        }${available ? `&status=available` : ''}`
+        `${API_URL}/books?page=${page}&limit=${limit}${title ? `&title=${title}` : ''}${`&status=${status}`}${`&genre=${
+          genre ? genre.genreId : ''
+        }`}${`&author=${author ? author.authorId : ''}`}`
       );
       return response.data;
     } catch (err) {

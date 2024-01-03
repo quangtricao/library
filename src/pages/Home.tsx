@@ -9,14 +9,16 @@ import Introduction from '../components/Introduction';
 import BooksTrending from '../components/BooksTrending';
 import Service from '../components/Service';
 import Subscribe from '../components/Subscribe';
-import { IDLE } from '../types/status';
+import { IDLE, LOADING } from '../types/status';
 import { getBooks } from '../services/booksService';
+
 import Loading from '../components/Loading';
+import Books from '../components/Books';
+import Filter from '../components/Filter';
 
 const Home = () => {
   const dispatch = useAppDispatch();
   const account = useAppSelector((state) => state.account.account);
-  const books = useAppSelector((state) => state.books.books);
   const bookStatus = useAppSelector((state) => state.books.status);
 
   useEffect(() => {
@@ -27,18 +29,28 @@ const Home = () => {
     if (bookStatus === IDLE) {
       dispatch(getBooks({ pagination: { limit: 8 } }));
     }
-    dispatch(getBooks({ pagination: { limit: 8 } }));
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  if (books.length === 0) {
-    return <Loading />;
+  if (bookStatus === LOADING) {
+    return (
+      <Box>
+        <Introduction />
+        <BooksTrending />
+        <Filter />
+        <Loading />
+        <Service />
+        <Subscribe />
+      </Box>
+    );
   }
 
   return (
     <Box>
       <Introduction />
-      <BooksTrending books={books} />
+      <BooksTrending />
+      <Filter />
+      <Books />
       <Service />
       <Subscribe />
     </Box>

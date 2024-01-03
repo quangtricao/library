@@ -3,6 +3,7 @@ import { configureStore } from '@reduxjs/toolkit';
 import booksReducer from './slices/booksSlice';
 import genresReducer from './slices/genresSlice';
 import cartReducer from './slices/cartSlice';
+import filterReducer from './slices/filterSlice'
 import authorsReducer from './slices/authorsSlice';
 import accountReducer from './slices/accountSlice';
 import booksAuthorsReducer from './slices/booksAuthorsSlice';
@@ -49,6 +50,7 @@ export const createStore = () =>
       booksGenres: booksGenresReducer,
       genres: genresReducer,
       cart: cartReducer,
+      filter: filterReducer,
       authors: authorsReducer,
       account: accountReducer,
       notification: notificationReducer,

@@ -69,8 +69,15 @@ export type AdminRequiredBookRequest = {
 
 export type BookFilterRequest = {
   title?: string;
-  borrowed?: boolean;
-  available?: boolean;
+  status?: boolean | string;
+  genre?: {
+    title: string;
+    genreId: string;
+  };
+  author?: {
+    name: string;
+    authorId: string;
+  };
 } & {
   pagination: PaginationRequestParams;
 };

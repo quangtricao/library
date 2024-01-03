@@ -17,16 +17,3 @@ export const getGenres = createAsyncThunk<GenresResponse, PaginationRequestParam
     }
   }
 );
-
-export const getAndPushGenres = createAsyncThunk<GenresResponse, PaginationRequestParams, { rejectValue: string }>(
-  'genres/getAndPushGenres',
-  async ({ page, limit = 3 }, { rejectWithValue }) => {
-    try {
-      const response = await axios.get(`${API_URL}/genres?page=${page}&limit=${limit}`);
-      return response.data;
-    } catch (err) {
-      const error = err as Error | AxiosError;
-      return rejectWithValue(error.message);
-    }
-  }
-);
