@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { Box, Button, Grid, Pagination, Stack } from '@mui/material';
+import { Box, Button, Container, Grid, Pagination, Stack } from '@mui/material';
 
 import { useAppDispatch, useAppSelector } from '../redux/hooks';
 import { getAuthors, getSingleAuthor } from '../services/authorsService';
@@ -55,24 +55,22 @@ const Authors = () => {
   }
 
   return (
-    <Box sx={{ maxWidth: '80%', marginX: 'auto', marginY: '100px' }}>
-      <Box>
-        <Grid container spacing={5} columns={5}>
-          {authors.map((author) => (
-            <Grid key={author._id} item xs={1}>
-              <img
-                src={author.image}
-                alt={`Author ${author.name}`}
-                style={{ height: '200px', width: '200px', objectFit: 'cover', borderRadius: '100px' }}
-              />
-              <Button onClick={(event) => handleBooksAuthorsFetch(event, author._id)}>{author.name}</Button>
-            </Grid>
-          ))}
-        </Grid>
-        <Stack spacing={2}>
-          <Pagination count={authorTotalPage} page={authorsLocalPage} onChange={handleBooksLocalPageChange} />
-        </Stack>
-      </Box>
+    <Container maxWidth='lg' sx={{ marginY: '50px' }}>
+      <Grid container columns={5} sx={{ padding: '10px' }}>
+        {authors.map((author) => (
+          <Grid key={author._id} item xs={1}>
+            <img
+              src={author.image}
+              alt={`Author ${author.name}`}
+              style={{ height: '200px', width: '200px', objectFit: 'cover', borderRadius: '100px' }}
+            />
+            <Button onClick={(event) => handleBooksAuthorsFetch(event, author._id)}>{author.name}</Button>
+          </Grid>
+        ))}
+      </Grid>
+      <Stack spacing={2}>
+        <Pagination count={authorTotalPage} page={authorsLocalPage} onChange={handleBooksLocalPageChange} />
+      </Stack>
 
       {singleAuthor ? (
         <Box sx={{ maxWidth: '50%', marginX: 'auto' }}>
@@ -81,13 +79,13 @@ const Authors = () => {
       ) : null}
 
       {booksAuthors.length === 0 ? (
-        <Box sx={{ marginTop: '50px', minHeight: '500px' }}></Box>
+        <Box sx={{ marginTop: '50px', height: '300px' }}></Box>
       ) : (
-        <Box sx={{ marginTop: '50px' }}>
-          <Grid container columns={4} sx={{ marginTop: '30px' }}>
+        <Box sx={{ marginTop: '30px' }}>
+          <Grid container columns={4}>
             {booksAuthors.map((book) => (
-              <Grid key={book._id} item xs={1} sx={{ padding: '50px' }}>
-                <BookPreview book={book} imgHeight='400px' />
+              <Grid key={book._id} item xs={1} sx={{ padding: '10px' }}>
+                <BookPreview book={book} />
               </Grid>
             ))}
           </Grid>
@@ -100,7 +98,7 @@ const Authors = () => {
           </Stack>
         </Box>
       )}
-    </Box>
+    </Container>
   );
 };
 

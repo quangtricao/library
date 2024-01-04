@@ -30,15 +30,13 @@ const Filter = () => {
   return (
     <Box
       sx={{
-        maxWidth: '80%',
-        marginX: 'auto',
-        marginY: '20px',
+        marginY: '50px',
         backgroundColor: `${theme ? '#edfff2' : '#105e25'}`,
         borderRadius: '25px',
-        padding: 2,
+        padding: '30px',
       }}
     >
-      <Typography sx={{ fontSize: '30px' }}>Filter</Typography>
+      <Typography sx={{ fontSize: '25px' }}>Filter</Typography>
       <Grid container spacing={2} sx={{ my: 2 }}>
         <Grid item xs={12} sm={4}>
           <TextField

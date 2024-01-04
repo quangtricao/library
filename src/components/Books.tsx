@@ -5,7 +5,6 @@ import { useAppDispatch, useAppSelector } from '../redux/hooks';
 import { getBooks } from '../services/booksService';
 
 import BookPreview from './BookPreview';
-import BookPreviewButton from './BookPreviewButton';
 
 const Books = () => {
   const dispatch = useAppDispatch();
@@ -13,7 +12,6 @@ const Books = () => {
   const books = useAppSelector((state) => state.books.books);
   const bookPage = useAppSelector((state) => state.books.pagination.page);
   const bookTotalPage = useAppSelector((state) => state.books.pagination.totalPages);
-  const account = useAppSelector((state) => state.account.account);
   const [localPage, setLocalPage] = useState<number>(1);
 
   const handleLocalPageChange = (_event: ChangeEvent<unknown>, value: number) => {
@@ -22,12 +20,11 @@ const Books = () => {
   };
 
   return (
-    <Box sx={{ maxWidth: '80%', marginX: 'auto', marginY: '50px' }}>
+    <Box sx={{ marginY: '50px' }}>
       <Grid container columns={4}>
         {books.map((book) => (
           <Grid key={book._id} item xs={1} sx={{ padding: '10px' }}>
-            <BookPreview book={book} imgHeight='400px' />
-            <BookPreviewButton book={book} isLogin={account ? true : false} />
+            <BookPreview book={book} />
           </Grid>
         ))}
       </Grid>

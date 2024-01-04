@@ -1,11 +1,11 @@
-import { Box, Typography, TextField, Button, Link } from '@mui/material/';
+import { Box, Typography, TextField, Button, Link, Container } from '@mui/material/';
 import FacebookIcon from '@mui/icons-material/Facebook';
 import InstagramIcon from '@mui/icons-material/Instagram';
 import YouTubeIcon from '@mui/icons-material/YouTube';
 
 const Footer = () => {
   return (
-    <Box component='footer' sx={{ py: 3, maxWidth: '80%', marginX: 'auto' }}>
+    <Container maxWidth='lg' sx={{ marginTop: '30px' }}>
       <Box sx={{ display: 'flex', justifyContent: 'space-between' }}>
         <Box sx={{ display: 'flex', flexDirection: 'column', gap: '10px', width: '350px' }}>
           <Typography sx={{ fontSize: '20px', fontWeight: 'bold' }}>FIN-16-Library</Typography>
@@ -45,14 +45,14 @@ const Footer = () => {
         <Box>
           <Typography sx={{ fontSize: '18px', fontWeight: 'bold' }}>Don't miss our newest books</Typography>
           <Box sx={{ display: 'flex', gap: '15px', marginY: '20px' }}>
-            <TextField id='outlined-basic' label='Type your email here' sx={{ width: '300px' }} size='small' />
+            <TextField id='outlined-basic' label='Type your email here' sx={{ width: '250px' }} size='small' />
             <Button variant='contained' sx={{ color: 'white' }}>
               Subscribe
             </Button>
           </Box>
         </Box>
       </Box>
-    </Box>
+    </Container>
   );
 };
 

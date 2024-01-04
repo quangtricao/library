@@ -131,7 +131,7 @@ const Header = () => {
 
   return (
     <AppBar position='static'>
-      <Container maxWidth='xl'>
+      <Container maxWidth='lg'>
         <Toolbar disableGutters>
           {/* Display when wide */}
           <Typography

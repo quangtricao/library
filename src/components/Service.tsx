@@ -43,7 +43,7 @@ const Service = () => {
       {aboutList.map((about) => (
         <Box key={about.name} sx={{ display: 'flex', flexDirection: 'column', justifyContent: 'center' }}>
           {about.element}
-          <Typography sx={{ textAlign: 'center', fontSize: '25px' }}>{about.name}</Typography>
+          <Typography sx={{ textAlign: 'center', fontSize: '20px' }}>{about.name}</Typography>
         </Box>
       ))}
     </Box>

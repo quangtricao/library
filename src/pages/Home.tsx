@@ -1,5 +1,5 @@
 import { useEffect } from 'react';
-import { Box } from '@mui/material';
+import { Box, Container } from '@mui/material';
 
 import { useAppDispatch, useAppSelector } from '../redux/hooks';
 import { getProfile } from '../services/accountService';
@@ -8,8 +8,7 @@ import { getTokenFromLocalStorage } from '../utils/localStorage';
 import Introduction from '../components/Introduction';
 import BooksTrending from '../components/BooksTrending';
 import Service from '../components/Service';
-import Subscribe from '../components/Subscribe';
-import { IDLE, LOADING } from '../types/status';
+import { IDLE } from '../types/status';
 import { getBooks } from '../services/booksService';
 
 import Loading from '../components/Loading';
@@ -32,28 +31,14 @@ const Home = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  if (bookStatus === LOADING) {
-    return (
-      <Box>
-        <Introduction />
-        <BooksTrending />
-        <Filter />
-        <Loading />
-        <Service />
-        <Subscribe />
-      </Box>
-    );
-  }
-
   return (
-    <Box>
+    <Container maxWidth='lg'>
       <Introduction />
       <BooksTrending />
       <Filter />
-      <Books />
+      {bookStatus === 'LOADING'.toLocaleLowerCase() ? <Loading /> : <Books />}
       <Service />
-      <Subscribe />
-    </Box>
+    </Container>
   );
 };
 
