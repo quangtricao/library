@@ -1,9 +1,16 @@
 import { useContext } from 'react';
-import { Box, Card, CardContent, Typography } from '@mui/material';
+import { Box, Card, CardContent, Typography, Button } from '@mui/material';
 import { BookType } from '../types/book';
 import { Link } from 'react-router-dom';
 
 import { AppContext } from '../App';
+
+import { ChangeEvent } from 'react';
+import { useAppDispatch, useAppSelector } from '../redux/hooks';
+import { addBookToBorrow } from '../redux/slices/cartSlice';
+import { changeBookStatusToBorrowed } from '../redux/slices/booksSlice';
+import { getBorrowBookInCartFromLocalStorage } from '../utils/localStorage';
+import { setNotification } from '../redux/slices/notificationSlice';
 
 type BookPreviewType = {
   book: BookType;
@@ -12,11 +19,24 @@ type BookPreviewType = {
 
 const BookPreview = ({ book }: BookPreviewType) => {
   const { theme } = useContext(AppContext);
+  const dispatch = useAppDispatch();
+  const account = useAppSelector((state) => state.account.account);
+
+  // Check both in localStorage and in Database
+  const booksToBorrowInCart = getBorrowBookInCartFromLocalStorage();
+  const borrowed = booksToBorrowInCart.map((book) => book._id).includes(book._id) || book.status === 'borrowed';
+  const bookStatus = borrowed ? 'Borrowed' : 'Available';
+
+  const handleAddBookToCart = (_event: ChangeEvent<unknown>, book: BookType) => {
+    dispatch(changeBookStatusToBorrowed(book._id));
+    dispatch(addBookToBorrow(book));
+    dispatch(setNotification({ message: `Add ${book.title} to cart`, type: 'success' }));
+  };
 
   return (
     <Card sx={{ backgroundColor: `${theme ? 'rgb(238, 238, 238)' : 'rgb(66, 66, 66)'}`, borderRadius: '15px' }}>
-      <Link to={`/books/${book.isbn}`} style={{ textDecoration: 'none' }}>
-        <CardContent sx={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
+      <CardContent>
+        <Link to={`/books/${book.isbn}`} style={{ textDecoration: 'none' }}>
           <Box>
             <img
               src={book.image}
@@ -33,13 +53,13 @@ const BookPreview = ({ book }: BookPreviewType) => {
                 paddingX: '6px',
                 borderStyle: 'solid',
                 borderWidth: '1px',
-                borderColor: `${book.status === 'available' ? 'primary.main' : 'red'}`,
-                color: `${book.status === 'available' ? 'primary.main' : 'red'}`,
+                borderColor: `${borrowed ? 'red' : 'primary.main'}`,
+                color: `${borrowed ? 'red' : 'primary.main'}`,
                 borderRadius: '15px',
                 fontSize: '12px',
               }}
             >
-              {book.status}
+              {bookStatus}
             </Box>
           </Box>
           <Box>
@@ -69,8 +89,24 @@ const BookPreview = ({ book }: BookPreviewType) => {
               </Typography>
             ))}
           </Box>
-        </CardContent>
-      </Link>
+        </Link>
+
+        {account ? (
+          <Button
+            variant='contained'
+            fullWidth
+            size='small'
+            onClick={(event) => handleAddBookToCart(event, book)}
+            sx={{ display: `${borrowed ? 'none' : ''}` }}
+          >
+            Borrow
+          </Button>
+        ) : (
+          <Button variant='contained' size='small' disabled fullWidth>
+            Login to borrow
+          </Button>
+        )}
+      </CardContent>
     </Card>
   );
 };

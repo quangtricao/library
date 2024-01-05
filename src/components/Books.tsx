@@ -1,9 +1,10 @@
 import { useState, ChangeEvent } from 'react';
-import { Box, Grid, Pagination, Stack } from '@mui/material';
+import { Box, Grid, Pagination, Stack, Typography } from '@mui/material';
 
 import { useAppDispatch, useAppSelector } from '../redux/hooks';
 import { getBooks } from '../services/booksService';
 
+import sadpepe from '../assets/img/sadpepe.png';
 import BookPreview from './BookPreview';
 
 const Books = () => {
@@ -19,11 +20,20 @@ const Books = () => {
     setLocalPage(value);
   };
 
+  if (books.length === 0) {
+    return (
+      <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center', height: '450px' }}>
+        <img src={sadpepe} alt='a sad pepe' style={{ height: '150px' }} />
+        <Typography>Sorry, no matching books are found</Typography>
+      </Box>
+    );
+  }
+
   return (
-    <Box sx={{ marginY: '50px' }}>
-      <Grid container columns={4}>
+    <Box sx={{ marginY: 3 }}>
+      <Grid container columns={{ sm: 2, md: 4 }} spacing={4}>
         {books.map((book) => (
-          <Grid key={book._id} item xs={1} sx={{ padding: '10px' }}>
+          <Grid key={book._id} item xs={1}>
             <BookPreview book={book} />
           </Grid>
         ))}

@@ -3,7 +3,6 @@ import { Box, Button, Grid, Typography } from '@mui/material';
 
 import { BookType } from '../types/book';
 import { AccountType } from '../types/account';
-import BookPreview from './BookPreview';
 
 type BookBorrowedType = {
   account: AccountType;
@@ -24,7 +23,6 @@ const BookBorrowed = ({ account, handleReturnBook }: BookBorrowedType) => {
           <Grid container columns={5}>
             {account.borrowedBooks.map((book) => (
               <Grid key={book._id} item xs={1} sx={{ padding: '10px' }}>
-                <BookPreview book={book} imgHeight='350px' />
                 <Button
                   variant='contained'
                   color='warning'

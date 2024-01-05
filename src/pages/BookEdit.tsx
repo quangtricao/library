@@ -1,7 +1,8 @@
 import { useEffect, useState } from 'react';
-import { Box, Button } from '@mui/material';
-import { Link, useNavigate, useParams } from 'react-router-dom';
-import ArrowLeftIcon from '@mui/icons-material/ArrowLeft';
+import { Box, Button, Container } from '@mui/material';
+import { useNavigate, useParams } from 'react-router-dom';
+
+import KeyboardArrowLeftIcon from '@mui/icons-material/KeyboardArrowLeft';
 
 import { useAppDispatch } from '../redux/hooks';
 import { getSingleBook, updateSingleBook } from '../services/booksService';
@@ -64,14 +65,19 @@ const EditModal = () => {
   }
 
   return (
-    <Box sx={{ maxWidth: '50%', marginX: 'auto', marginY: '100px', minHeight: '600px' }}>
-      <Link to={`/books/${isbn}`} style={{ textDecoration: 'none' }}>
-        <Button startIcon={<ArrowLeftIcon />} variant='text' sx={{ marginY: '30px', color: 'primary.main' }}>
+    <Container maxWidth='lg' sx={{ marginY: '30px', minHeight: '750px' }}>
+      <Box sx={{ maxWidth: '80%', marginX: 'auto' }}>
+        <Button
+          startIcon={<KeyboardArrowLeftIcon />}
+          variant='text'
+          sx={{ marginY: '30px', color: 'primary.main' }}
+          onClick={() => navigate(`/books/${isbn}`)}
+        >
           Back to the book
         </Button>
-      </Link>
-      <BookEditForm updateBook={updateBook} setUpdateBook={setUpdateBook} handleConfirmUpdate={handleConfirmUpdate} />
-    </Box>
+        <BookEditForm updateBook={updateBook} setUpdateBook={setUpdateBook} handleConfirmUpdate={handleConfirmUpdate} />
+      </Box>
+    </Container>
   );
 };
 

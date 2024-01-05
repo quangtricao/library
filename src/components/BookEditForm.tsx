@@ -26,7 +26,7 @@ const BookEditForm = ({ updateBook, setUpdateBook, handleConfirmUpdate }: BookEd
             width: 'fit-content',
           }}
         >
-          Basic details
+          Basic details:
         </Typography>
         <Box sx={{ display: 'flex', gap: '30px' }}>
           <TextField
@@ -181,7 +181,7 @@ const BookEditForm = ({ updateBook, setUpdateBook, handleConfirmUpdate }: BookEd
           style={{ height: '150px', width: '150px', objectFit: 'contain' }}
         />
       </Box>
-      <Button size='large' variant='contained' onClick={handleConfirmUpdate}>
+      <Button sx={{ marginTop: '20px' }} size='large' variant='contained' onClick={handleConfirmUpdate}>
         Confirm
       </Button>
     </Box>

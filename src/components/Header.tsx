@@ -69,14 +69,15 @@ const LoggedIn = () => {
     if (settingName === 'Profile') {
       navigate('/account');
       return;
-    }
-    if (settingName === 'Logout' || settingName === 'Switch account') {
+    } else if (settingName === 'Logout' || settingName === 'Switch account') {
       dispatch(clearAccount());
       dispatch(clearCart());
       clearTokenAndAccountFromLocalStorage();
       clearCartFromLocalStorage();
       dispatch(setNotification({ message: 'Logout successfully', type: 'success' }));
       navigate('/account/login');
+      return;
+    } else {
       return;
     }
   };

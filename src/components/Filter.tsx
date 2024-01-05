@@ -28,40 +28,62 @@ const Filter = () => {
   };
 
   return (
-    <Box
-      sx={{
-        marginY: '50px',
-        backgroundColor: `${theme ? '#edfff2' : '#105e25'}`,
-        borderRadius: '25px',
-        padding: '30px',
-      }}
-    >
-      <Typography sx={{ fontSize: '25px' }}>Filter</Typography>
-      <Grid container spacing={2} sx={{ my: 2 }}>
-        <Grid item xs={12} sm={4}>
-          <TextField
-            fullWidth
-            label='Title'
-            onChange={(event) => dispatch(updateFilter({ ...filter, title: event.target.value }))}
-          />
+    <Box sx={{ marginTop: '50px' }}>
+      <Box sx={{ display: 'flex', gap: '10px' }}>
+        <Typography sx={{ fontSize: '30px', fontWeight: 'bold' }}>All </Typography>
+        <Typography
+          sx={{
+            fontSize: '30px',
+            color: 'primary.main',
+            fontWeight: 'bold',
+            borderTop: '0px',
+            borderRight: '0px',
+            borderLeft: '0px',
+            borderBottom: '4px',
+            borderStyle: 'solid',
+            borderColor: 'primary.light',
+          }}
+        >
+          Books
+        </Typography>
+      </Box>
+
+      <Box
+        sx={{
+          backgroundColor: `${theme ? 'rgb(238, 238, 238)' : 'rgb(66, 66, 66)'}`,
+          borderRadius: '15px',
+          padding: '20px',
+          marginTop: '10px',
+        }}
+      >
+        <Grid container spacing={2}>
+          <Grid item xs={12} sm={6}>
+            <TextField
+              fullWidth
+              label='Title'
+              onChange={(event) => dispatch(updateFilter({ ...filter, title: event.target.value }))}
+            />
+          </Grid>
+          <Grid item xs={12} sm={3}>
+            <AutoCompleteGenres />
+          </Grid>
+          <Grid item xs={12} sm={3}>
+            <AutoCompleteAuthors />
+          </Grid>
+          <Grid item xs={12} sm={4}>
+            <Button fullWidth sx={{ height: '100%' }} variant='contained' color='primary' onClick={handleFilter}>
+              Filter
+            </Button>
+          </Grid>
+          <Grid item xs={12} sm={8}>
+            <ToggleButtonGroup fullWidth value={filter.status} exclusive color='error' onChange={handleAlignment}>
+              <ToggleButton value=''>All</ToggleButton>
+              <ToggleButton value='available'>Available</ToggleButton>
+              <ToggleButton value='borrowed'>Borrowed</ToggleButton>
+            </ToggleButtonGroup>
+          </Grid>
         </Grid>
-        <Grid item xs={12} sm={4}>
-          <AutoCompleteGenres />
-        </Grid>
-        <Grid item xs={12} sm={4}>
-          <AutoCompleteAuthors />
-        </Grid>
-        <Grid item xs={12} sm={12}>
-          <ToggleButtonGroup fullWidth value={filter.status} exclusive color='error' onChange={handleAlignment}>
-            <ToggleButton value=''>All</ToggleButton>
-            <ToggleButton value='available'>Available</ToggleButton>
-            <ToggleButton value='borrowed'>Borrowed</ToggleButton>
-          </ToggleButtonGroup>
-        </Grid>
-      </Grid>
-      <Button variant='contained' color='primary' onClick={handleFilter} sx={{ width: '20%' }}>
-        Filter
-      </Button>
+      </Box>
     </Box>
   );
 };

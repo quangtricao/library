@@ -1,16 +1,14 @@
 import { useEffect } from 'react';
-import { Box, Container } from '@mui/material';
+import { Container } from '@mui/material';
 
 import { useAppDispatch, useAppSelector } from '../redux/hooks';
+import { getBooks } from '../services/booksService';
 import { getProfile } from '../services/accountService';
 
 import { getTokenFromLocalStorage } from '../utils/localStorage';
-import Introduction from '../components/Introduction';
-import BooksTrending from '../components/BooksTrending';
-import Service from '../components/Service';
 import { IDLE } from '../types/status';
-import { getBooks } from '../services/booksService';
 
+import Introduction from '../components/Introduction';
 import Loading from '../components/Loading';
 import Books from '../components/Books';
 import Filter from '../components/Filter';
@@ -34,10 +32,8 @@ const Home = () => {
   return (
     <Container maxWidth='lg'>
       <Introduction />
-      <BooksTrending />
       <Filter />
       {bookStatus === 'LOADING'.toLocaleLowerCase() ? <Loading /> : <Books />}
-      <Service />
     </Container>
   );
 };

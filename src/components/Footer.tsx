@@ -1,56 +1,43 @@
-import { Box, Typography, TextField, Button, Link, Container } from '@mui/material/';
+import { Box, Typography, Link, Container } from '@mui/material/';
 import FacebookIcon from '@mui/icons-material/Facebook';
 import InstagramIcon from '@mui/icons-material/Instagram';
 import YouTubeIcon from '@mui/icons-material/YouTube';
 
 const Footer = () => {
   return (
-    <Container maxWidth='lg' sx={{ marginTop: '30px' }}>
-      <Box sx={{ display: 'flex', justifyContent: 'space-between' }}>
-        <Box sx={{ display: 'flex', flexDirection: 'column', gap: '10px', width: '350px' }}>
-          <Typography sx={{ fontSize: '20px', fontWeight: 'bold' }}>FIN-16-Library</Typography>
-          <Typography>An online bookstore that loans all genres of books all over the world.</Typography>
-          <Box sx={{ display: 'flex', gap: '5px' }}>
-            <Typography sx={{ paddingRight: '5px' }}>Follow Us</Typography>
-            <Link href=''>
-              <FacebookIcon />
-            </Link>
-            <Link href=''>
-              <InstagramIcon />
-            </Link>
-            <Link href=''>
-              <YouTubeIcon />
-            </Link>
-          </Box>
-
-          <Typography variant='body2'>
-            FIN-16-Library {'© '} {new Date().getFullYear()} All Rights Reserved
-          </Typography>
+    <Container
+      maxWidth='lg'
+      sx={{
+        marginTop: '50px',
+        marginBottom: '15px',
+        fontWeight: 'bold',
+        borderTop: '2px',
+        borderRight: '0px',
+        borderLeft: '0px',
+        borderBottom: '0px',
+        borderStyle: 'solid',
+        borderColor: 'primary.main',
+      }}
+    >
+      <Box sx={{ display: 'flex', justifyContent: 'space-between', marginTop: '10px' }}>
+        <Box sx={{ display: 'flex', gap: '5px' }}>
+          <Typography>Follow Us:</Typography>
+          <Link href='https://youtu.be/xvFZjo5PgG0?si=q0_qJg2_kvWbzBV3' target='_blank' rel='noreferrer'>
+            <FacebookIcon />
+          </Link>
+          <Link href='https://youtu.be/xvFZjo5PgG0?si=q0_qJg2_kvWbzBV3' target='_blank' rel='noreferrer'>
+            <InstagramIcon />
+          </Link>
+          <Link href='https://youtu.be/xvFZjo5PgG0?si=q0_qJg2_kvWbzBV3' target='_blank' rel='noreferrer'>
+            <YouTubeIcon />
+          </Link>
         </Box>
-
-        <Box sx={{ width: '150px' }}>
-          <Typography sx={{ fontSize: '18px', fontWeight: 'bold' }}>Quick Links</Typography>
-          <Typography>About Us</Typography>
-          <Typography>Contact Us</Typography>
-          <Typography>Books</Typography>
-        </Box>
-
-        <Box sx={{ width: '150px' }}>
-          <Typography sx={{ fontSize: '18px', fontWeight: 'bold' }}>Customer Area</Typography>
-          <Typography>My Account</Typography>
-          <Typography>Login</Typography>
-          <Typography>Sign Up</Typography>
-        </Box>
-
-        <Box>
-          <Typography sx={{ fontSize: '18px', fontWeight: 'bold' }}>Don't miss our newest books</Typography>
-          <Box sx={{ display: 'flex', gap: '15px', marginY: '20px' }}>
-            <TextField id='outlined-basic' label='Type your email here' sx={{ width: '250px' }} size='small' />
-            <Button variant='contained' sx={{ color: 'white' }}>
-              Subscribe
-            </Button>
-          </Box>
-        </Box>
+        <Typography>
+          Project is inspired by{' '}
+          <a href='https://openlibrary.org/' target='_blank' rel='noreferrer'>
+            OpenLibrary
+          </a>
+        </Typography>
       </Box>
     </Container>
   );

@@ -1,6 +1,6 @@
 import axios from 'axios';
 import { SyntheticEvent, useState } from 'react';
-import { TextField, Autocomplete } from '@mui/material';
+import { TextField, Autocomplete, Chip } from '@mui/material';
 import { GenreType } from '../types/genre';
 import { useAppDispatch, useAppSelector } from '../redux/hooks';
 import { updateFilter } from '../redux/slices/filterSlice';
@@ -49,7 +49,14 @@ const AutoCompleteGenres = () => {
       inputValue={inputValue}
       onInputChange={handleInpuOnChange}
       options={genres.map((ele) => ele.title)}
-      renderInput={(params) => <TextField {...params} label='Genres' />}
+      renderTags={(value: string[], getTagProps) => (
+        <div style={{ width: '100%' }}>
+          {value.map((option: string, index: number) => (
+            <Chip variant='outlined' label={option} {...getTagProps({ index })} />
+          ))}
+        </div>
+      )}
+      renderInput={(params) => <TextField {...params} label='Genres' placeholder='Please type something' />}
     />
   );
 };

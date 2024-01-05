@@ -1,6 +1,6 @@
 import axios from 'axios';
 import { SyntheticEvent, useState } from 'react';
-import { TextField, Autocomplete } from '@mui/material';
+import { TextField, Autocomplete, Chip } from '@mui/material';
 import { AuthorType } from '../types/author';
 import { useAppDispatch, useAppSelector } from '../redux/hooks';
 import { updateFilter } from '../redux/slices/filterSlice';
@@ -49,7 +49,14 @@ const AutoCompleteAuthors = () => {
       inputValue={inputValue}
       onInputChange={handleInpuOnChange}
       options={authors.map((ele) => ele.name)}
-      renderInput={(params) => <TextField {...params} label='Authors' />}
+      renderTags={(value: string[], getTagProps) => (
+        <div style={{ width: '100%' }}>
+          {value.map((option: string, index: number) => (
+            <Chip variant='outlined' label={option} {...getTagProps({ index })} />
+          ))}
+        </div>
+      )}
+      renderInput={(params) => <TextField {...params} label='Authors' placeholder='Please type something' />}
     />
   );
 };
