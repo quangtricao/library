@@ -4,6 +4,7 @@ import { TextField, Autocomplete, Chip } from '@mui/material';
 import { AuthorType } from '../types/author';
 import { useAppDispatch, useAppSelector } from '../redux/hooks';
 import { updateFilter } from '../redux/slices/filterSlice';
+import { API_URL } from '../config/api';
 
 const AutoCompleteAuthors = () => {
   const dispatch = useAppDispatch();
@@ -13,12 +14,10 @@ const AutoCompleteAuthors = () => {
   const [authors, setAuthors] = useState<AuthorType[]>([]);
 
   const fetchGenres = async (name: string | null) => {
-    await axios
-      .get(`https://cqtri-library.onrender.com/api/v1/authors/?name=${name ? name : ''}&limit=5`)
-      .then((response) => {
-        const data = response.data.data.authors;
-        setAuthors(data);
-      });
+    await axios.get(`${API_URL}/authors/?name=${name ? name : ''}&limit=5`).then((response) => {
+      const data = response.data.data.authors;
+      setAuthors(data);
+    });
   };
 
   const handleValueOnChange = (_event: SyntheticEvent<Element, Event>, newValue: string | null) => {

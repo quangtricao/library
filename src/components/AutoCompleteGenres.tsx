@@ -4,6 +4,7 @@ import { TextField, Autocomplete, Chip } from '@mui/material';
 import { GenreType } from '../types/genre';
 import { useAppDispatch, useAppSelector } from '../redux/hooks';
 import { updateFilter } from '../redux/slices/filterSlice';
+import { API_URL } from '../config/api';
 
 const AutoCompleteGenres = () => {
   const dispatch = useAppDispatch();
@@ -13,12 +14,10 @@ const AutoCompleteGenres = () => {
   const [genres, setGenres] = useState<GenreType[]>([]);
 
   const fetchGenres = async (title: string | null) => {
-    await axios
-      .get(`https://cqtri-library.onrender.com/api/v1/genres/?title=${title ? title : ''}&limit=5`)
-      .then((response) => {
-        const data = response.data.data.genres;
-        setGenres(data);
-      });
+    await axios.get(`${API_URL}/genres/?title=${title ? title : ''}&limit=5`).then((response) => {
+      const data = response.data.data.genres;
+      setGenres(data);
+    });
   };
 
   const handleValueOnChange = (_event: SyntheticEvent<Element, Event>, newValue: string | null) => {

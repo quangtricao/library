@@ -62,7 +62,13 @@ const Authors = () => {
             <img
               src={author.image}
               alt={`Author ${author.name}`}
-              style={{ height: '200px', width: '200px', objectFit: 'cover', borderRadius: '100px' }}
+              style={{
+                height: '200px',
+                width: '200px',
+                objectFit: 'cover',
+                borderRadius: '100px',
+                filter: 'grayscale(100%)',
+              }}
             />
             <Button onClick={(event) => handleBooksAuthorsFetch(event, author._id)}>{author.name}</Button>
           </Grid>
