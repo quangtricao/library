@@ -1,8 +1,10 @@
+import { useState } from 'react';
 import * as Yup from 'yup';
 import { useFormik } from 'formik';
-import { Link } from 'react-router-dom';
-import { Avatar, Button, TextField, Box, Typography } from '@mui/material';
+import { Avatar, Button, TextField, Box, Typography, InputAdornment } from '@mui/material';
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
+import VisibilityIcon from '@mui/icons-material/Visibility';
+import VisibilityOffIcon from '@mui/icons-material/VisibilityOff';
 
 import { LoginRequest } from '../types/account';
 
@@ -12,6 +14,8 @@ type LoginFormProps = {
 };
 
 const LoginForm = ({ handleSetForm, handleLogin }: LoginFormProps) => {
+  const [passVisibility, setPassVisibility] = useState<boolean>(false);
+
   const loginCredential = useFormik({
     initialValues: {
       email: '',
@@ -65,21 +69,30 @@ const LoginForm = ({ handleSetForm, handleLogin }: LoginFormProps) => {
           fullWidth
           name='password'
           label='Password'
-          type='password'
+          type={passVisibility ? 'text' : 'password'}
           id='password'
           autoComplete='current-password'
           onChange={loginCredential.handleChange}
           value={loginCredential.values.password}
+          InputProps={{
+            endAdornment: (
+              <InputAdornment position='end'>
+                {passVisibility ? (
+                  <VisibilityOffIcon onClick={() => setPassVisibility(!passVisibility)} sx={{ cursor: 'pointer' }} />
+                ) : (
+                  <VisibilityIcon onClick={() => setPassVisibility(!passVisibility)} sx={{ cursor: 'pointer' }} />
+                )}
+              </InputAdornment>
+            ),
+          }}
         />
+
         {loginCredential.touched.password && loginCredential.errors.password ? (
           <Typography sx={{ color: 'red', fontWeight: 'bold' }}>{loginCredential.errors.password}</Typography>
         ) : null}
         <Button type='submit' fullWidth variant='contained' sx={{ mt: 3, mb: 2 }}>
           Sign In
         </Button>
-        <Box sx={{ fontSize: '12px', marginTop: '10px' }}>
-          <Link to='#'>Forgot your Password?</Link>
-        </Box>
         <Box sx={{ fontSize: '12px', marginTop: '5px' }}>
           Not a member?{' '}
           <Button onClick={handleSetForm} sx={{ fontSize: '12px' }}>

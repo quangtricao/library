@@ -1,8 +1,11 @@
+import { useState } from 'react';
 import * as Yup from 'yup';
 import { useFormik } from 'formik';
 import { Link, useNavigate } from 'react-router-dom';
-import { Box, Button, TextField, Typography } from '@mui/material';
+import { Box, Button, InputAdornment, TextField, Typography } from '@mui/material';
 import ArrowLeftIcon from '@mui/icons-material/ArrowLeft';
+import VisibilityIcon from '@mui/icons-material/Visibility';
+import VisibilityOffIcon from '@mui/icons-material/VisibilityOff';
 
 import { useAppDispatch } from '../redux/hooks';
 import { getTokenFromLocalStorage } from '../utils/localStorage';
@@ -13,6 +16,10 @@ const AccountPassword = () => {
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
   const token = getTokenFromLocalStorage();
+  const [oldPassVisibility, setOldPassVisibility] = useState<boolean>(false);
+  const [newPassVisibility, setNewPassVisibility] = useState<boolean>(false);
+  const [confirmPassVisibility, setConfirmPassVisibility] = useState<boolean>(false);
+
   const updatePassword = useFormik({
     initialValues: {
       oldPassword: '',
@@ -64,11 +71,29 @@ const AccountPassword = () => {
           Old password:
           <TextField
             id='oldPassword'
+            type={oldPassVisibility ? 'text' : 'password'}
             size='small'
             variant='standard'
             sx={{ paddingX: '10px' }}
             onChange={updatePassword.handleChange}
             value={updatePassword.values.oldPassword}
+            InputProps={{
+              endAdornment: (
+                <InputAdornment position='end'>
+                  {oldPassVisibility ? (
+                    <VisibilityOffIcon
+                      onClick={() => setOldPassVisibility(!oldPassVisibility)}
+                      sx={{ cursor: 'pointer' }}
+                    />
+                  ) : (
+                    <VisibilityIcon
+                      onClick={() => setOldPassVisibility(!oldPassVisibility)}
+                      sx={{ cursor: 'pointer' }}
+                    />
+                  )}
+                </InputAdornment>
+              ),
+            }}
           />
         </Box>
         {updatePassword.touched.oldPassword && updatePassword.errors.oldPassword ? (
@@ -78,11 +103,29 @@ const AccountPassword = () => {
           New password:{' '}
           <TextField
             id='newPassword'
+            type={newPassVisibility ? 'text' : 'password'}
             size='small'
             variant='standard'
             sx={{ paddingX: '10px' }}
             onChange={updatePassword.handleChange}
             value={updatePassword.values.newPassword}
+            InputProps={{
+              endAdornment: (
+                <InputAdornment position='end'>
+                  {newPassVisibility ? (
+                    <VisibilityOffIcon
+                      onClick={() => setNewPassVisibility(!newPassVisibility)}
+                      sx={{ cursor: 'pointer' }}
+                    />
+                  ) : (
+                    <VisibilityIcon
+                      onClick={() => setNewPassVisibility(!newPassVisibility)}
+                      sx={{ cursor: 'pointer' }}
+                    />
+                  )}
+                </InputAdornment>
+              ),
+            }}
           />
         </Box>
         {updatePassword.touched.newPassword && updatePassword.errors.newPassword ? (
@@ -92,11 +135,29 @@ const AccountPassword = () => {
           Confirm new password:{' '}
           <TextField
             id='confirmNewPassword'
+            type={confirmPassVisibility ? 'text' : 'password'}
             size='small'
             variant='standard'
             sx={{ paddingX: '10px' }}
             onChange={updatePassword.handleChange}
             value={updatePassword.values.confirmNewPassword}
+            InputProps={{
+              endAdornment: (
+                <InputAdornment position='end'>
+                  {confirmPassVisibility ? (
+                    <VisibilityOffIcon
+                      onClick={() => setConfirmPassVisibility(!confirmPassVisibility)}
+                      sx={{ cursor: 'pointer' }}
+                    />
+                  ) : (
+                    <VisibilityIcon
+                      onClick={() => setConfirmPassVisibility(!confirmPassVisibility)}
+                      sx={{ cursor: 'pointer' }}
+                    />
+                  )}
+                </InputAdornment>
+              ),
+            }}
           />
         </Box>
         {updatePassword.touched.confirmNewPassword && updatePassword.errors.confirmNewPassword ? (
