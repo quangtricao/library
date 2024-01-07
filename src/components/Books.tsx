@@ -38,9 +38,8 @@ const Books = () => {
           </Grid>
         ))}
       </Grid>
-      <Stack spacing={1} sx={{ marginTop: '50px' }}>
+      <Stack spacing={1} sx={{ marginTop: '50px', display: 'flex', alignItems: 'center' }}>
         <Pagination
-          size='large'
           count={bookTotalPage}
           page={bookPage ? bookPage : localPage}
           onChange={handleLocalPageChange}

@@ -34,19 +34,30 @@ const BookPreview = ({ book }: BookPreviewType) => {
   };
 
   return (
-    <Card sx={{ backgroundColor: `${theme ? 'rgb(238, 238, 238)' : 'rgb(66, 66, 66)'}`, borderRadius: '15px' }}>
+    <Card
+      sx={{
+        backgroundColor: `${theme ? 'rgb(238, 238, 238)' : 'rgb(66, 66, 66)'}`,
+        borderRadius: '15px',
+        '&:hover': {
+          transition: '0.5s',
+          transform: 'scale(0.9)',
+        },
+      }}
+    >
       <CardContent>
         <Link to={`/books/${book.isbn}`} style={{ textDecoration: 'none' }}>
           <Box>
-            <img
-              src={book.image}
-              alt={`Book ${book.title}`}
-              style={{
-                width: '100%',
-                objectFit: 'cover',
-                borderRadius: '10px',
-              }}
-            />
+            <Box>
+              <img
+                src={book.image}
+                alt={`Book ${book.title}`}
+                style={{
+                  width: '100%',
+                  objectFit: 'cover',
+                  borderRadius: '10px',
+                }}
+              />
+            </Box>
             <Box
               sx={{
                 width: 'fit-content',

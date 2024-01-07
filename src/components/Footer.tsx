@@ -33,7 +33,7 @@ const Footer = () => {
           </Link>
         </Box>
         <Typography>
-          Project is inspired by{' '}
+          Inspired by{' '}
           <a href='https://openlibrary.org/' target='_blank' rel='noreferrer'>
             OpenLibrary
           </a>
