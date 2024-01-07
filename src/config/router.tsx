@@ -41,10 +41,6 @@ const router = createBrowserRouter([
         element: <Authors />,
       },
       {
-        path: '/genres',
-        element: <Authors />,
-      },
-      {
         path: '/account',
         element: (
           <ProtectedRoute>

@@ -8,29 +8,36 @@ type AccountInformationType = {
 
 const AccountInformation = ({ account }: AccountInformationType) => {
   return (
-    <Box sx={{ display: 'flex', flexDirection: 'column', width: 'fit-content', marginX: 'auto' }}>
+    <Box
+      sx={{
+        display: 'flex',
+        flexDirection: { xs: 'column', sm: 'row' },
+        width: 'fit-content',
+        gap: '40px',
+        marginX: 'auto',
+      }}
+    >
       <img
         src={account.image}
         alt={`Avatar of ${account.firstName}`}
-        style={{ width: '200px', borderRadius: '100px' }}
+        style={{ width: '180px', borderRadius: '100px' }}
       />
       <Box>
         {account.firstName.toUpperCase()} {account.lastName.toUpperCase()}
-      </Box>
-      <Box></Box>
-      <Box>Email: {account.email}</Box>
-      <Box>Role: {account.role.toLowerCase()}</Box>
-      <Box sx={{ display: 'flex', gap: '10px' }}>
-        <Link to={`/account/${account._id}/edit`}>
-          <Button size='small' variant='contained'>
-            Update account
-          </Button>
-        </Link>
-        <Link to={`/account/${account._id}/password`}>
-          <Button size='small' variant='contained' color='warning'>
-            Change password
-          </Button>
-        </Link>
+        <Box>Email: {account.email}</Box>
+        <Box>Role: {account.role.toLowerCase()}</Box>
+        <Box sx={{ display: 'flex', gap: '10px' }}>
+          <Link to={`/account/${account._id}/edit`}>
+            <Button size='small' variant='contained'>
+              Update account
+            </Button>
+          </Link>
+          <Link to={`/account/${account._id}/password`}>
+            <Button size='small' variant='contained' color='warning'>
+              Change password
+            </Button>
+          </Link>
+        </Box>
       </Box>
     </Box>
   );

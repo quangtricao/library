@@ -1,6 +1,7 @@
 import { ChangeEvent, useEffect } from 'react';
 import { Navigate } from 'react-router-dom';
-import { Box, Typography } from '@mui/material';
+import { Box, Button, Container, Grid, Typography } from '@mui/material';
+import ShoppingCartCheckoutIcon from '@mui/icons-material/ShoppingCartCheckout';
 
 import { useAppDispatch, useAppSelector } from '../redux/hooks';
 import { addBookToReturn, clearCart, removeBookToBorrow, removeBookToReturn } from '../redux/slices/cartSlice';
@@ -11,7 +12,6 @@ import { borrowBooks, getProfile, returnBooks } from '../services/accountService
 
 import { BookType } from '../types/book';
 import { clearCartFromLocalStorage, getTokenFromLocalStorage } from '../utils/localStorage';
-import Checkout from '../components/Checkout';
 import BookBorrowed from '../components/BookBorrowed';
 import BookInCartPreviewType from '../components/BookInCartPreview';
 import AccountInformation from '../components/AccountInformation';
@@ -84,34 +84,38 @@ const Account = () => {
   }
 
   return (
-    <Box
-      sx={{
-        maxWidth: '80%',
-        marginX: 'auto',
-        display: 'flex',
-        flexDirection: 'column',
-        gap: '40px',
-      }}
-    >
+    <Container maxWidth='lg' sx={{ my: '50px' }}>
       <AccountInformation account={account} />
       <BookBorrowed account={account} handleReturnBook={handleReturnBook} />
       <Box>
-        <Typography sx={{ fontSize: '25px', fontWeight: 'bold' }}>Book in Cart</Typography>
-        <BookInCartPreviewType
-          status='BooksToBorrow'
-          booksInCart={booksToBorrow}
-          handleNoBorrow={handleNoBorrow}
-          handleNoReturn={handleNoReturn}
-        />
-        <BookInCartPreviewType
-          status='BooksToReturn'
-          booksInCart={booksToReturn}
-          handleNoBorrow={handleNoBorrow}
-          handleNoReturn={handleNoReturn}
-        />
+        <Typography sx={{ fontSize: '25px', fontWeight: 'bold' }}>Your Cart</Typography>
+        {booksToBorrow.length !== 0 || booksToReturn.length !== 0 ? (
+          <>
+            <Grid container columns={{ xs: 1, sm: 2 }} spacing={5}>
+              <Grid item xs={1}>
+                <BookInCartPreviewType status='borrow' booksInCart={booksToBorrow} handleCancel={handleNoBorrow} />
+              </Grid>
+              <Grid item xs={1}>
+                <BookInCartPreviewType status='return' booksInCart={booksToReturn} handleCancel={handleNoReturn} />
+              </Grid>
+            </Grid>
+
+            <Box sx={{ display: 'flex', justifyContent: 'center' }}>
+              <Button
+                variant='contained'
+                sx={{ width: '60%' }}
+                startIcon={<ShoppingCartCheckoutIcon />}
+                onClick={handleCheckout}
+              >
+                Checkout
+              </Button>
+            </Box>
+          </>
+        ) : (
+          <Box sx={{ height: '300px' }}>You have no books in cart.</Box>
+        )}
       </Box>
-      <Checkout booksToBorrow={booksToBorrow} booksToReturn={booksToReturn} handleCheckout={handleCheckout} />
-    </Box>
+    </Container>
   );
 };
 

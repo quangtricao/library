@@ -26,15 +26,12 @@ import { setNotification } from '../redux/slices/notificationSlice';
 
 const settings = [
   { name: 'Profile', path: '/account' },
-  { name: 'Switch account', path: '/account/login' },
   { name: 'Logout', path: '/account/login' },
 ];
 
 const pages = [
   { name: 'Home', path: '/' },
   { name: 'Authors', path: '/authors' },
-  { name: 'Genres', path: '/genres' },
-  { name: 'Create', path: '/' },
 ];
 
 const NotLoggedIn = () => {
@@ -69,15 +66,13 @@ const LoggedIn = () => {
     if (settingName === 'Profile') {
       navigate('/account');
       return;
-    } else if (settingName === 'Logout' || settingName === 'Switch account') {
+    } else {
       dispatch(clearAccount());
       dispatch(clearCart());
       clearTokenAndAccountFromLocalStorage();
       clearCartFromLocalStorage();
       dispatch(setNotification({ message: 'Logout successfully', type: 'success' }));
       navigate('/account/login');
-      return;
-    } else {
       return;
     }
   };
@@ -131,7 +126,7 @@ const Header = () => {
   };
 
   return (
-    <AppBar position='static' >
+    <AppBar position='static'>
       <Container maxWidth='lg'>
         <Toolbar disableGutters>
           {/* Display when wide */}

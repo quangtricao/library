@@ -50,7 +50,7 @@ const Filter = () => {
 
       <Box
         sx={{
-          backgroundColor: `${theme ? 'rgb(238, 238, 238)' : 'rgb(66, 66, 66)'}`,
+          backgroundColor: `${theme ? '#eeeeee' : '#424242'}`,
           borderRadius: '15px',
           padding: '20px',
           marginTop: '10px',
